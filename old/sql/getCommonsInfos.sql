@@ -1,0 +1,1 @@
+SELECT datefr, datecn, datejp, Type FROM releases WHERE id = :id LIMIT 1

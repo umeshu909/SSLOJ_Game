@@ -1,0 +1,15 @@
+{
+    "14201": {
+      "name": "Gold Virgo Cloth",
+      "levels": [
+        "Boost de 10% de l'attaque.",
+        "Améliore la résistance magique de 15%.",
+        "Ajoute 5% de vampirisme.",
+        "Renforce la défense de 12%."
+      ],
+      "stats": [
+        { "name": "ATK", "value": "12%" },
+        { "name": "DEF", "value": "8%" }
+      ]
+    }
+  }
