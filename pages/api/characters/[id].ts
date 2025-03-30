@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const db    = await openDb(dbChoice as string);
-        const db2   = await openDb("commons" as string);
+        const db2   = await openDb("common" as string);
 
         // Charger la requête depuis le fichier SQL
         const sqlFilePath   = path.join(process.cwd(), "sql", "getCharacterInfo.sql");
