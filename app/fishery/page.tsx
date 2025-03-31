@@ -190,7 +190,7 @@ const FishPage = () => {
         </div>
 
         {/* Résultats */}
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
           {filteredFishes.length === 0 ? (
             <p className="col-span-full text-center text-white/60">
               Aucun poisson trouvé.
@@ -202,7 +202,7 @@ const FishPage = () => {
               const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
                 <div key={i} className={`${borderClass} overflow-hidden h-[300px] flex flex-col`}>
-                  <div className={`${backgroundClass} h-full flex flex-col py-4`}>
+                  <div className={`${backgroundClass} h-full flex flex-col pt-4`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center">
                       <IconCanvas
                         prefix={prefix}
@@ -213,7 +213,7 @@ const FishPage = () => {
                         size={2}
                       />
                     </div>
-                    <div className="flex flex-col p-3 flex-1">
+                    <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
                         <p><span className="text-white/50">Bonus :</span> {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}</p>
