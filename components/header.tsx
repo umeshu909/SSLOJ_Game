@@ -10,6 +10,7 @@ const navItems = [
   { label: "Arayashikis", href: "/arayashikis" },
   { label: "Vestiges", href: "/vestiges" },
   { label: "Artefacts", href: "/artefacts" },
+  { label: "Statues", href: "/statues" },
 ];
 
 export default function Header() {

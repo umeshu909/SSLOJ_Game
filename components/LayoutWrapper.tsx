@@ -8,7 +8,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const headerRef = useRef<HTMLElement>(null);
   const [offsetTop, setOffsetTop] = useState(0);
   const [activeLink, setActiveLink] = useState<string>("");
-  const [language, setLanguage] = useState<string>("FR");
+  const [language, setLanguage] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("lang") || "FR";
+    }
+    return "FR";
+  });
+
   const router = useRouter();
 
   useEffect(() => {
@@ -78,6 +84,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/arayashikis", label: "Arayashikis" },
               { href: "/artefacts", label: "Artefacts" },
               { href: "/vestiges", label: "Vestiges" },
+              { href: "/statues", label: "Statues" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (
@@ -109,6 +116,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/arayashikis", label: "Arayashikis" },
               { href: "/artefacts", label: "Artefacts" },
               { href: "/vestiges", label: "Vestiges" },
+              { href: "/statues", label: "Statues" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (
@@ -140,7 +148,11 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             <select
               className="bg-transparent border border-white/30 text-white text-sm px-2 py-1 rounded"
               value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => {
+                                  setLanguage(e.target.value);
+                                  window.location.reload(); // force un refresh complet
+                                }}
+
             >
               <option value="FR">FR</option>
               <option value="EN">EN</option>
