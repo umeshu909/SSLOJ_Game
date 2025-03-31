@@ -65,7 +65,7 @@ export default function CharacterSkills({ skills }: Props) {
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
   return (
-    <section className="px-6 pb-6 pt-4">
+    <section className="lg:px-6 pb-6 lg:pt-4">
       <h2 className="text-2xl font-semibold text-white mb-2">Compétences</h2>
 
       <div className="flex flex-col gap-2">
