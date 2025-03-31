@@ -111,7 +111,7 @@ export default function CharacterLinks() {
   if (links.length === 0) return <p>Aucun lien trouvé.</p>;
 
   return (
-    <section className="p-6">
+    <section className="lg:p-6">
       <h2 className="text-2xl font-semibold text-white mb-4">Liens</h2>
 
       <div className="space-y-2">

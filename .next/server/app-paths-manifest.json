@@ -1,0 +1,9 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/skills/parse/route": "app/api/skills/parse/route.js",
+  "/vestiges/page": "app/vestiges/page.js",
+  "/characters/[id]/page": "app/characters/[id]/page.js",
+  "/arayashikis/page": "app/arayashikis/page.js",
+  "/arayashikis/[id]/page": "app/arayashikis/[id]/page.js",
+  "/characters/page": "app/characters/page.js"
+}

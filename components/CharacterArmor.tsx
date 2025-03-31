@@ -75,7 +75,7 @@ export default function CharacterArmor() {
   };
 
   return (
-    <section className="p-6">
+    <section className="lg:px-6">
       <h2 className="text-2xl font-semibold text-white mb-2">Armure</h2>
 
       <div className="border border-white/20 rounded-xl overflow-hidden mb-4">
