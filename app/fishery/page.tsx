@@ -190,7 +190,7 @@ const FishPage = () => {
         </div>
 
         {/* Résultats */}
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:px-4">
           {filteredFishes.length === 0 ? (
             <p className="col-span-full text-center text-white/60">
               Aucun poisson trouvé.
@@ -201,7 +201,7 @@ const FishPage = () => {
               const borderClass = isPlatine ? "border-animated-gradient" : `border-2 ${getStaticBorderColor(fish.Grade)}`;
               const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
-                <div key={i} className={`${borderClass} overflow-hidden h-[300px] flex flex-col`}>
+                <div key={i} className={`${borderClass} overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}>
                   <div className={`${backgroundClass} h-full flex flex-col pt-4`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center">
                       <IconCanvas
