@@ -83,12 +83,11 @@ const ArayashikiDetailPage = () => {
 
             setDetail(data);
 
-            // Parse la description avec les valeurs calculées
             const parsed = await parseText(data.desc);
             setParsedDesc(parsed);
 
         } catch (error) {
-            console.error("Erreur lors de la r\u00e9cup\u00e9ration du d\u00e9tail:", error);
+            console.error("Erreur lors de la récupération du détail:", error);
         }
     };
 
@@ -130,8 +129,8 @@ const ArayashikiDetailPage = () => {
     if (detail.Attrib4) stats.push({ label: detail.Attrib4, value: detail.value4.toString() });
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6">
-            <div className="max-w-screen-lg mx-auto bg-[#14122a] rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-8">
+        <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6 pb-24">
+            <div className="max-w-screen-lg mx-auto bg-transparent md:bg-[#14122a] rounded-xl shadow-none md:shadow-lg p-0 md:p-6 flex flex-col md:flex-row lg:gap-8">
                 <div className="flex flex-col items-center gap-4">
                     <div className="relative w-[220px] aspect-[3/4]">
                         <span className="absolute top-0 left-0 text-white text-xs font-bold px-4.5 py-6.5 rounded-br-lg z-20">
@@ -139,7 +138,7 @@ const ArayashikiDetailPage = () => {
                         </span>
                         <img
                             src={`/overlays/quality-${detail.quality}.png`}
-                            alt="Habillage qualit\u00e9"
+                            alt="Habillage qualité"
                             className="absolute top-0 left-0 w-full h-full object-contain z-10 pointer-events-none"
                         />
                         <div className="absolute top-1/2 left-1/2 w-[90%] h-[90%] -translate-x-1/2 -translate-y-1/2 z-0 transition-all duration-300 ease-in-out group-hover:scale-105">
@@ -151,8 +150,7 @@ const ArayashikiDetailPage = () => {
                         </div>
                     </div>
                     <h2 className="text-xl font-semibold text-center">{detail.name}</h2>
-                    <p className="text-xs text-white/60 mt-1">S\u00e9lectionner le niveau d\u2019\u00e9toiles</p>
-                    <div className="flex justify-center gap-1">
+                    <div className="hidden md:flex justify-center gap-1 mt-2">
                         {[...Array(detail.levelMax)].map((_, index) => (
                             <span
                                 key={index}
@@ -217,6 +215,22 @@ const ArayashikiDetailPage = () => {
                     </Swiper>
                 </div>
             )}
+
+            {/* Sticky étoiles mobile */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-4">
+                <p className="text-center text-xs text-white/60 mb-1">Sélectionner le niveau d’étoiles</p>
+                <div className="flex justify-center gap-1">
+                    {[...Array(detail.levelMax)].map((_, index) => (
+                        <span
+                            key={index}
+                            onClick={() => fetchDetailLevel(index + 1)}
+                            className={`cursor-pointer text-yellow-400 text-2xl ${index < detail.level ? '' : 'opacity-40'}`}
+                        >
+                            ⭐️
+                        </span>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };
