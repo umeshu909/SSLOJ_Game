@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { Filter, X } from "lucide-react";
 
 interface Fish {
   ZoneNom: string;
@@ -41,10 +42,10 @@ const speciesTypePerso: Record<string, string> = {
 
 const getStaticBorderColor = (grade: string) => {
   switch (grade) {
-    case "Bleu": return "border-blue-500";
-    case "Violet": return "border-purple-500";
-    case "Or": return "border-yellow-400";
-    case "Rouge": return "border-red-500";
+    case "Bleu": return "border-blue-500/65";
+    case "Violet": return "border-purple-500/65";
+    case "Or": return "border-yellow-400/65";
+    case "Rouge": return "border-red-500/65";
     default: return "border-white/10";
   }
 };
@@ -67,6 +68,7 @@ const FishPage = () => {
   const [selectedBonus, setSelectedBonus] = useState<string | null>(null);
   const [availableBonuses, setAvailableBonuses] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
 
   const prefix = "sactx-0-4096x4096-ASTC 6x6-icon_daojv-";
 
@@ -104,11 +106,74 @@ const FishPage = () => {
     return matchesZone && matchesGrade && matchesSpecies && matchesBonus && matchesSearch;
   });
 
+  const renderFilters = () => (
+    <div className="space-y-6">
+      {[{
+        title: "Zone",
+        options: availableZones,
+        selected: selectedZone,
+        setSelected: setSelectedZone,
+        format: (z: string) => `Zone ${z}`
+      }, {
+        title: "Type de bonus",
+        options: availableBonuses,
+        selected: selectedBonus,
+        setSelected: setSelectedBonus
+      }, {
+        title: "Rareté",
+        options: availableGrades,
+        selected: selectedGrade,
+        setSelected: setSelectedGrade
+      }, {
+        title: "Espèce",
+        options: Object.keys(speciesLabels),
+        selected: selectedSpecies,
+        setSelected: setSelectedSpecies,
+        format: (s: string) => speciesLabels[s]
+      }].map(({ title, options, selected, setSelected, format }) => (
+        <div key={title} className="mb-4">
+          <h3 className="text-lg font-medium mb-2">{title}</h3>
+          <div className="flex flex-wrap gap-2">
+            {options.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => setSelected((prev: any) => (prev === opt ? null : opt))}
+                className={`px-4 py-2 rounded-full text-sm border ${selected === opt ? "border-[#82B0D6]" : "border-white/20"} bg-transparent hover:border-[#82B0D6] transition-all`}
+              >
+                {format ? format(opt) : opt}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white py-6 px-4 max-w-screen-xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br text-white py-6 px-4 max-w-screen-xl mx-auto">
+      {/* Recherche Mobile */}
+      <div className="lg:hidden w-full px-2 mb-4">
+        <input
+          type="text"
+          placeholder="Rechercher un poisson"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="px-4 py-2 rounded-full text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#14122a] text-white"
+        />
+      </div>
+
+      <div className="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center z-40">
+        <button
+          onClick={() => setShowMobileFilters(true)}
+          className="bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
+        >
+          <Filter size={18} /> Filtrer
+        </button>
+      </div>
+
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Filtres */}
-        <div className="w-full lg:w-[320px] sticky top-[98px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
+        {/* Filtres Desktop */}
+        <div className="hidden lg:block w-full lg:w-[320px] sticky top-[98px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
           <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
 
           <div className="mb-6">
@@ -121,77 +186,7 @@ const FishPage = () => {
             />
           </div>
 
-          {/* Zones */}
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-2">Zone</h3>
-            <div className="flex flex-wrap gap-2">
-              {availableZones.map((z) => (
-                <button
-                  key={z}
-                  onClick={() => setSelectedZone((prev) => (prev === z ? null : z))}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedZone === z ? "border-[#82B0D6]" : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  Zone {z}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Bonus */}
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-2">Type de bonus</h3>
-            <div className="flex flex-wrap gap-2">
-              {availableBonuses.map((bonus) => (
-                <button
-                  key={bonus}
-                  onClick={() => setSelectedBonus((prev) => (prev === bonus ? null : bonus))}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedBonus === bonus ? "border-[#82B0D6]" : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  {bonus}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grade */}
-          <div className="mb-4">
-            <h3 className="text-lg font-medium mb-2">Rareté</h3>
-            <div className="flex flex-wrap gap-2">
-              {availableGrades.map((grade) => (
-                <button
-                  key={grade}
-                  onClick={() => setSelectedGrade((prev) => (prev === grade ? null : grade))}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedGrade === grade ? "border-[#82B0D6]" : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  {grade}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Espèces */}
-          <div>
-            <h3 className="text-lg font-medium mb-2">Espèce</h3>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(speciesLabels).map((spec) => (
-                <button
-                  key={spec}
-                  onClick={() => setSelectedSpecies((prev) => (prev === spec ? null : spec))}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedSpecies === spec ? "border-[#82B0D6]" : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  {speciesLabels[spec]}
-                </button>
-              ))}
-            </div>
-          </div>
+          {renderFilters()}
         </div>
 
         {/* Résultats */}
@@ -203,18 +198,10 @@ const FishPage = () => {
           ) : (
             filteredFishes.map((fish, i) => {
               const isPlatine = fish.Grade === "Platine";
-              const borderClass = isPlatine
-                ? "border-animated-gradient"
-                : `border-2 ${getStaticBorderColor(fish.Grade)}`;
-              const backgroundClass = isPlatine
-                ? "bg-[#1c1b3a]/90"
-                : getStaticBackgroundColor(fish.Grade);
-
+              const borderClass = isPlatine ? "border-animated-gradient" : `border-2 ${getStaticBorderColor(fish.Grade)}`;
+              const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
-                <div
-                  key={i}
-                  className={`${borderClass} overflow-hidden h-[300px] flex flex-col`}
-                >
+                <div key={i} className={`${borderClass} overflow-hidden h-[300px] flex flex-col`}>
                   <div className={`${backgroundClass} h-full flex flex-col py-4`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center">
                       <IconCanvas
@@ -255,6 +242,20 @@ const FishPage = () => {
             })
           )}
         </div>
+      </div>
+
+      {/* Panneau Mobile Filtres */}
+      <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">Filtres</h2>
+          <button
+            onClick={() => setShowMobileFilters(false)}
+            className="text-white text-sm border border-white/30 px-3 py-1 rounded"
+          >
+            <X size={16} className="inline mr-1" /> Fermer
+          </button>
+        </div>
+        {renderFilters()}
       </div>
     </div>
   );
