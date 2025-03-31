@@ -31,7 +31,13 @@ const ConstellationsPage = () => {
     const fetchConstellations = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/characters/${id}/constellations`); // On envoie une requête à l'API
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch(`/api/characters/${id}/constellations`,
+        {
+          headers: {
+            "x-db-choice": lang,
+          },
+        }); // On envoie une requête à l'API
         if (!res.ok) {
           throw new Error("Erreur lors de la récupération des constellations");
         }

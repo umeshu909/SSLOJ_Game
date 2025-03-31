@@ -20,7 +20,13 @@ const ArtifactsPage = () => {
 
     const fetchArtifacts = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
-        const res = await fetch(`/api/artifacts${qualityParam}`);
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch(`/api/artifacts${qualityParam}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
         const data = await res.json();
         setArtifacts(data);
     };

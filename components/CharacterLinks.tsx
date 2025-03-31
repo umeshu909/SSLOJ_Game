@@ -69,7 +69,14 @@ export default function CharacterLinks() {
   useEffect(() => {
     async function fetchLinks() {
       try {
-        const res = await fetch(`/api/characters/${id}/links`);
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch(`/api/characters/${id}/links`,
+        {
+          headers: {
+            "x-db-choice": lang,
+          },
+        });
+        
         if (!res.ok) throw new Error("Erreur lors du chargement des liens");
         const data: LinkEntry[] = await res.json();
 

@@ -61,7 +61,12 @@ const ArayashikiDetailPage = () => {
 
     const fetchDetail = async (level = 1) => {
         try {
-            const res = await fetch(`/api/arayashikis/${id}?level=${level}`);
+            const lang = localStorage.getItem("lang") || "FR";
+            const res = await fetch(`/api/arayashikis/${id}?level=${level}`, {
+                headers: {
+                    "x-db-choice": lang
+                }
+            });
             const data = await res.json();
             let levelNiv = level * 10;
 
@@ -93,7 +98,12 @@ const ArayashikiDetailPage = () => {
 
     const fetchOthers = async () => {
         if (!detail) return;
-        const res = await fetch("/api/arayashikis");
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch("/api/arayashikis", {
+            headers: {
+                "x-db-choice": lang
+            }
+        });
         const all = await res.json();
         const filtered = all.filter(
             (a: ArayashikiDetail) => a.id !== Number(id) && a.quality === detail.quality

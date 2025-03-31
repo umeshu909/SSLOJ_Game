@@ -22,7 +22,13 @@ const VestigesPage = () => {
 
     const fetchVestiges = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
-        const res = await fetch(`/api/vestiges${qualityParam}`);
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch(`/api/vestiges${qualityParam}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
         const data = await res.json();
         setVestiges(data);
     };

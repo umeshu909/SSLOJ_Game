@@ -33,7 +33,13 @@ const ArtifactDetailPage = () => {
         if (!id) return;
 
         const fetchData = async () => {
-            const res = await fetch(`/api/artifacts/${id}?level=${level}`);
+            const lang = localStorage.getItem("lang") || "FR";
+            const res = await fetch(`/api/artifacts/${id}?level=${level}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
             const data = await res.json();
             setArtifact(data);
             if (data.length > 0) setQuality(parseInt(data[0].quality));
@@ -47,7 +53,13 @@ const ArtifactDetailPage = () => {
         if (!artifact) return;
 
         const fetchOthers = async () => {
-            const res = await fetch("/api/artifacts");
+            const lang = localStorage.getItem("lang") || "FR";
+            const res = await fetch("/api/artifacts",
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
             const all = await res.json();
 
             const filtered = all.filter((a: ArtifactDetail) => 

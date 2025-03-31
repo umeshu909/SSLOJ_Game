@@ -60,7 +60,13 @@ const VestigeDetailPage = () => {
     useEffect(() => {
         if (!id) return;
         const fetchData = async () => {
-            const res = await fetch(`/api/vestiges/${id}`);
+            const lang = localStorage.getItem("lang") || "FR";
+            const res = await fetch(`/api/vestiges/${id}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
             const data = await res.json();
             setDetails(data);
             if (data.length > 0) setQuality(data[0].quality);
@@ -71,8 +77,19 @@ const VestigeDetailPage = () => {
     useEffect(() => {
         if (!id || !quality) return;
         const fetchValues = async () => {
-            const res1 = await fetch(`/api/vestiges/${id}/values?level=${level}`);
-            const res2 = await fetch(`/api/vestiges/${id}/valuesall?level=${level}&quality=${quality}`);
+            const lang = localStorage.getItem("lang") || "FR";
+            const res1 = await fetch(`/api/vestiges/${id}/values?level=${level}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
+            const res2 = await fetch(`/api/vestiges/${id}/valuesall?level=${level}&quality=${quality}`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
             setCareerValues(await res1.json());
             const all = await res2.json();
             setAllValues(all[0]);
@@ -82,7 +99,13 @@ const VestigeDetailPage = () => {
 
     useEffect(() => {
         const fetchOthers = async () => {
-            const res = await fetch("/api/vestiges");
+            const lang = localStorage.getItem("lang") || "FR";
+            const res = await fetch("/api/vestiges",
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
             const all = await res.json();
             const filtered = all.filter((v: VestigeDetail) => v.id !== Number(id) && v.quality === quality);
             setOthers(filtered);
@@ -95,9 +118,10 @@ const VestigeDetailPage = () => {
             const newParsed: Record<string, string> = {};
             await Promise.all(
                 details.map(async (d) => {
+                    const lang = localStorage.getItem("lang") || "FR";
                     const res = await fetch("/api/skills/parse", {
                         method: "POST",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { "Content-Type": "application/json", "x-db-choice": lang },
                         body: JSON.stringify({ text: d.desc, dbChoice: "FR" }),
                     });
                     const json = await res.json();

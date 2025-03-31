@@ -11,6 +11,7 @@ const navItems = [
   { label: "Vestiges", href: "/vestiges" },
   { label: "Artefacts", href: "/artefacts" },
   { label: "Statues", href: "/statues" },
+  { label: "Pêche", href: "/fishery" },
 ];
 
 export default function Header() {

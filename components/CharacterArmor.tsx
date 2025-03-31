@@ -39,7 +39,13 @@ export default function CharacterArmor() {
     async function fetchArmor() {
       try {
         setLoading(true);
-        const response = await fetch(`/api/characters/${id}/armor?level=${level}`);
+        const lang = localStorage.getItem("lang") || "FR";
+        const response = await fetch(`/api/characters/${id}/armor?level=${level}`,
+        {
+          headers: {
+            "x-db-choice": lang,
+          },
+        });
         if (!response.ok) {
           throw new Error("Erreur lors de la récupération des informations d'armure");
         }

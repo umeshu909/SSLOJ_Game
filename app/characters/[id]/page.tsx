@@ -39,11 +39,11 @@ export default function CharacterPage() {
         async function fetchCharacterData() {
             try {
                 setLoading(true);
-
+                const lang = localStorage.getItem("lang") || "FR";
                 const characterResponse = await fetch(`/api/characters/${id}`, {
                     method: "GET",
                     headers: {
-                        "X-DB-Choice": "FR",
+                        "X-DB-Choice": lang,
                     },
                 });
 
@@ -58,7 +58,7 @@ export default function CharacterPage() {
                 const skillsResponse = await fetch(`/api/characters/${id}/skills`, {
                     method: "GET",
                     headers: {
-                        "X-DB-Choice": "FR",
+                        "X-DB-Choice": lang,
                     },
                 });
 
