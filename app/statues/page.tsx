@@ -8,18 +8,18 @@ interface Statues {
     icon: string;
 }
 
-/*const qualityMapping: Record<number, string> = {
-    3: "bg-purple-500",
-    4: "bg-yellow-500",
-};*/
-
 const StatuessPage = () => {
     const [Statuess, setStatuess] = useState<Statues[]>([]);
-    //const [selectedQuality, setSelectedQuality] = useState<number | null>(null);
 
     const fetchStatuess = async () => {
-        //const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
-        const res = await fetch(`/api/statues`);
+        const lang = localStorage.getItem("lang") || "FR";
+        const res = await fetch(`/api/statues`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            }
+        );
         const data = await res.json();
         setStatuess(data);
     };
@@ -27,14 +27,6 @@ const StatuessPage = () => {
     useEffect(() => {
         fetchStatuess();
     }, []);
-
-
-   /* const selectQuality = (qualityId: number) => {
-        setSelectedQuality((prevSelectedQuality) =>
-            prevSelectedQuality === qualityId ? null : qualityId
-        );
-    };*/
-
 
     const prefix = "sactx-0-1024x2048-ASTC 6x6-jiaotang-";
 

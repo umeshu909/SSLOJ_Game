@@ -8,7 +8,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const headerRef = useRef<HTMLElement>(null);
   const [offsetTop, setOffsetTop] = useState(0);
   const [activeLink, setActiveLink] = useState<string>("");
-  const [language, setLanguage] = useState<string>("FR");
+  const [language, setLanguage] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("lang") || "FR";
+    }
+    return "FR";
+  });
+
   const router = useRouter();
 
   useEffect(() => {

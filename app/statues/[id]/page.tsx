@@ -40,13 +40,25 @@ const StatueDetailPage = () => {
     if (!id) return;
 
     const fetchSkills = async () => {
-      const res = await fetch(`/api/statues/${id}/skills`);
+      const lang = localStorage.getItem("lang") || "FR";
+      const res = await fetch(`/api/statues/${id}/skills`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
       const data = await res.json();
       setSkills(data);
     };
 
     const fetchCharacters = async () => {
-      const res = await fetch(`/api/statues/${id}/characters`);
+      const lang = localStorage.getItem("lang") || "FR";
+      const res = await fetch(`/api/statues/${id}/characters`,
+            {
+              headers: {
+                "x-db-choice": lang,
+              },
+            });
       const data = await res.json();
       setCharacters(data);
     };
