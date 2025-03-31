@@ -5,6 +5,7 @@ import IconCanvas from "@/components/IconCanvas";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ArrowLeft } from "lucide-react";
 import "swiper/css";
+import Description from "@/components/Description";
 
 interface VestigeDetail {
     id: number;
@@ -47,6 +48,7 @@ const VestigeDetailPage = () => {
     const [allValues, setAllValues] = useState<AllValue | null>(null);
     const [others, setOthers] = useState<VestigeDetail[]>([]);
     const [parsedDescriptions, setParsedDescriptions] = useState<Record<string, string>>({});
+    const [lang, setLang] = useState<string | null>(null);
 
     const params = useParams();
     const router = useRouter();
@@ -58,9 +60,14 @@ const VestigeDetailPage = () => {
     const prefix2 = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
     useEffect(() => {
-        if (!id) return;
+      const storedLang = localStorage.getItem("lang") || "FR";
+      setLang(storedLang);
+    }, []);
+
+
+    useEffect(() => {
+        if (!id || !lang) return;
         const fetchData = async () => {
-            const lang = localStorage.getItem("lang") || "FR";
             const res = await fetch(`/api/vestiges/${id}`,
             {
               headers: {
@@ -68,16 +75,20 @@ const VestigeDetailPage = () => {
               },
             });
             const data = await res.json();
-            setDetails(data);
-            if (data.length > 0) setQuality(data[0].quality);
+            if (Array.isArray(data)) {
+              setDetails(data);
+              if (data.length > 0) setQuality(data[0].quality);
+            } else {
+              console.error("API /api/vestiges/:id n’a pas retourné un tableau :", data);
+            }
+
         };
         fetchData();
-    }, [id]);
+    }, [id, lang]);
 
     useEffect(() => {
-        if (!id || !quality) return;
+        if (!id || !quality || !lang) return;
         const fetchValues = async () => {
-            const lang = localStorage.getItem("lang") || "FR";
             const res1 = await fetch(`/api/vestiges/${id}/values?level=${level}`,
             {
               headers: {
@@ -90,58 +101,52 @@ const VestigeDetailPage = () => {
                 "x-db-choice": lang,
               },
             });
-            setCareerValues(await res1.json());
-            const all = await res2.json();
-            setAllValues(all[0]);
+
+            const data1 = await res1.json();
+            const data2 = await res2.json();
+
+            if (Array.isArray(data1)) {
+              setCareerValues(data1);
+            } else {
+              console.error("⚠ /api/vestiges/[id]/values a retourné autre chose qu'un tableau :", data1);
+            }
+
+            if (Array.isArray(data2)) {
+              setAllValues(data2[0]);
+            } else {
+              console.error("⚠ /api/vestiges/[id]/valuesall a retourné autre chose qu'un tableau :", data2);
+            }
+
         };
         fetchValues();
-    }, [id, level, quality]);
+    }, [id, level, quality, lang]);
 
     useEffect(() => {
-        const fetchOthers = async () => {
-            const lang = localStorage.getItem("lang") || "FR";
-            const res = await fetch("/api/vestiges",
-            {
-              headers: {
-                "x-db-choice": lang,
-              },
-            });
-            const all = await res.json();
-            const filtered = all.filter((v: VestigeDetail) => v.id !== Number(id) && v.quality === quality);
-            setOthers(filtered);
-        };
-        if (quality) fetchOthers();
-    }, [quality]);
+      const fetchOthers = async () => {
+        const res = await fetch("/api/vestiges", {
+          headers: {
+            "x-db-choice": lang,
+          },
+        });
+        const all = await res.json();
+        if (!Array.isArray(all)) {
+          console.error("Réponse invalide de /api/vestiges :", all);
+          return;
+        }
+        const filtered = all.filter((v: VestigeDetail) => v.id !== Number(id) && v.quality === quality);
+        setOthers(filtered);
+      };
 
-    useEffect(() => {
-        const parseDescriptions = async () => {
-            const newParsed: Record<string, string> = {};
-            await Promise.all(
-                details.map(async (d) => {
-                    const lang = localStorage.getItem("lang") || "FR";
-                    const res = await fetch("/api/skills/parse", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json", "x-db-choice": lang },
-                        body: JSON.stringify({ text: d.desc, dbChoice: "FR" }),
-                    });
-                    const json = await res.json();
-                    let parsed = json.result || d.desc;
-                    parsed = parsed
-                        .replace(/(\d+([.,]\d+)?[\s\u00A0]*%)/g, '<span style="color: lightgreen;">$1</span>')
-                        .replace(/\[(.*?)\]/g, '<span style="color: orange;">[$1]</span>');
-                    newParsed[d.skillid + "_" + d.level] = parsed;
-                })
-            );
-            setParsedDescriptions(newParsed);
-        };
-        if (details.length > 0) parseDescriptions();
-    }, [details]);
+      if (quality && lang) fetchOthers();
+    }, [quality, lang]);
 
-    if (details.length === 0) {
-        return <p className="text-white">Chargement...</p>;
+
+    if (!lang || !Array.isArray(details) || details.length === 0) {
+      return <p className="text-white">Chargement...</p>;
     }
 
     const main = details[0];
+
 
     const getLevelThreshold = (skillIndex: number, skillLevelIndex: number): number => {
         if ([...new Set(details.map((d) => d.skillid))].length === 1) {
@@ -219,17 +224,13 @@ const VestigeDetailPage = () => {
                                                     const threshold = getLevelThreshold(i, j);
                                                     const isActive = level >= threshold;
                                                     return (
-                                                        <p
+                                                        <div
                                                             key={j}
                                                             className={`text-sm leading-snug ${isActive ? "opacity-100" : "opacity-30"}`}
                                                         >
                                                             <span className="font-semibold">Niv {g.level} : </span>
-                                                            <span
-                                                                dangerouslySetInnerHTML={{
-                                                                    __html: parsedDescriptions[g.skillid + "_" + g.level] || g.desc,
-                                                                }}
-                                                            />
-                                                        </p>
+                                                            <Description text={g.desc} dbChoice = {lang} />
+                                                        </div>
                                                     );
                                                 })}
                                             </div>
@@ -262,7 +263,7 @@ const VestigeDetailPage = () => {
                 <div className="p-0">
                     <h3 className="text-sl mb-4 text-left">Statistiques selon le rôle</h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                        {careerValues.map((cv, idx) => (
+                        {Array.isArray(careerValues) && careerValues.map((cv, idx) => (
                             <div key={idx} className="bg-white/5 border border-white/10 rounded-lg p-6 text-sm">
                                 <h4 className="text-white font-semibold text-center mb-2">{cv.metierText}</h4>
                                 <ul className="text-sm text-white/80 space-y-1">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Description from "@/components/Description";
 
 interface ArmorSkill {
   skillId: number;
@@ -34,12 +35,17 @@ export default function CharacterArmor() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [level, setLevel] = useState<number>(30); // Niveau initial de l'armure (par défaut 30)
+  const [lang, setLang] = useState<string | null>(null);
+
+  useEffect(() => {
+      const storedLang = localStorage.getItem("lang") || "FR";
+      setLang(storedLang);
+  }, []);
 
   useEffect(() => {
     async function fetchArmor() {
       try {
         setLoading(true);
-        const lang = localStorage.getItem("lang") || "FR";
         const response = await fetch(`/api/characters/${id}/armor?level=${level}`,
         {
           headers: {
@@ -58,18 +64,18 @@ export default function CharacterArmor() {
       }
     }
 
-    if (id) {
+    if (id && lang) {
       fetchArmor();
     }
-  }, [id, level]);
+  }, [id, level, lang]);
 
   if (loading) return <p className="text-white">Chargement de l'armure...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!armor) return <p>Aucune armure disponible.</p>;
 
-  const formatDescription = (text: string) => {
+  /*const formatDescription = (text: string) => {
     return text.replace(/\[([^\]]+)\]/g, '<span class="text-orange-300">$1</span>');
-  };
+  };*/
 
   // Utilisation de la logique pour déterminer si le switch est possible
   const canSwitch = armor.party === 5 || armor.party === 6 || armor.showtp === 7;
@@ -100,10 +106,11 @@ export default function CharacterArmor() {
             {armor.skills.length > 0 && (
               <div className="p-6 space-y-1 text-white text-sm">
                 {armor.skills.map((skill, index) => (
-                  <p key={index}>
-                    <span className="font-semibold">Lv {skill.unlockSkillLv}:</span>{" "}
-                    <span dangerouslySetInnerHTML={{ __html: formatDescription(skill.skillDescription) }} />
-                  </p>
+                  <div key={index} className="mt-2 text-sm text-white flex flex-wrap items-start gap-1">
+                    <span className="font-semibold">Lv {skill.unlockSkillLv}:</span>
+                    <Description text={skill.skillDescription} dbChoice={lang} />
+                  </div>
+
                 ))}
               </div>
             )}

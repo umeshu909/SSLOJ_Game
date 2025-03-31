@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import IconCanvas from "@/components/IconCanvas";
+import Description from "@/components/Description";
 
 interface Skill {
   skillid: string;
@@ -31,16 +32,20 @@ const StatueDetailPage = () => {
   const { id } = useParams();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [parsedDescriptions, setParsedDescriptions] = useState<Record<string, string>>({});
+  const [lang, setLang] = useState<string | null>(null);
 
   const prefixCharacter = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const prefixSkill = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
   useEffect(() => {
-    if (!id) return;
+      const storedLang = localStorage.getItem("lang") || "FR";
+      setLang(storedLang);
+  }, []);
+    
+  useEffect(() => {
+    if (!id || !lang) return;
 
     const fetchSkills = async () => {
-      const lang = localStorage.getItem("lang") || "FR";
       const res = await fetch(`/api/statues/${id}/skills`,
             {
               headers: {
@@ -52,7 +57,6 @@ const StatueDetailPage = () => {
     };
 
     const fetchCharacters = async () => {
-      const lang = localStorage.getItem("lang") || "FR";
       const res = await fetch(`/api/statues/${id}/characters`,
             {
               headers: {
@@ -65,30 +69,7 @@ const StatueDetailPage = () => {
 
     fetchSkills();
     fetchCharacters();
-  }, [id]);
-
-  useEffect(() => {
-    const parseAll = async () => {
-      const newParsed: Record<string, string> = {};
-      await Promise.all(
-        skills.map(async (s) => {
-          const res = await fetch("/api/skills/parse", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: s.textSkill, dbChoice: "FR" }),
-          });
-          const json = await res.json();
-          let parsed = json.result || s.textSkill;
-          parsed = parsed
-            .replace(/(\d+([.,]\d+)?[\s\u00A0]*%)/g, '<span style="color: lightgreen;">$1</span>')
-            .replace(/\[(.*?)\]/g, '<span style="color: orange;">[$1]</span>');
-          newParsed[s.skillid + "_" + s.level] = parsed;
-        })
-      );
-      setParsedDescriptions(newParsed);
-    };
-    if (skills.length > 0) parseAll();
-  }, [skills]);
+  }, [id, lang]);
 
   const [multiplier, setMultiplier] = useState<number>(100);
 
@@ -189,18 +170,13 @@ const StatueDetailPage = () => {
                     <h3 className="text-md font-semibold mb-2">{skill.nameSkill}</h3>
                     <div className="space-y-2">
                       {group.map((g, j) => (
-                        <p
+                        <div
                           key={j}
                           className="text-sm leading-snug"
                         >
                           <span className="font-semibold">Niv {g.level} : </span>
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html:
-                                parsedDescriptions[g.skillid + "_" + g.level] || g.textSkill,
-                            }}
-                          />
-                        </p>
+                          <Description text={g.textSkill} dbChoice={lang} />
+                        </div>
                       ))}
                     </div>
                   </div>

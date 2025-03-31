@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { parseText } from "@/utils/parseText";
+import Description from "@/components/Description";
 
 interface ArayashikiDetail {
     id: number;
@@ -36,12 +36,15 @@ interface ArayashikiDetail {
     hero_names: string | null;
 }
 
+
+
+
 const ArayashikiDetailPage = () => {
     const [detail, setDetail] = useState<ArayashikiDetail | null>(null);
-    const [parsedDesc, setParsedDesc] = useState<string>("");
     const [otherArayashikis, setOtherArayashikis] = useState<ArayashikiDetail[]>([]);
     const params = useParams();
     const id = params?.id as string | undefined;
+    const [lang, setLang] = useState<string | null>(null);
 
     const calculateValue = (baseValue: number, gwnum: number, percent: number | null, level: number): string => {
         let adjustedValue = 0;
@@ -61,7 +64,6 @@ const ArayashikiDetailPage = () => {
 
     const fetchDetail = async (level = 1) => {
         try {
-            const lang = localStorage.getItem("lang") || "FR";
             const res = await fetch(`/api/arayashikis/${id}?level=${level}`, {
                 headers: {
                     "x-db-choice": lang
@@ -88,8 +90,6 @@ const ArayashikiDetailPage = () => {
 
             setDetail(data);
 
-            const parsed = await parseText(data.desc);
-            setParsedDesc(parsed);
 
         } catch (error) {
             console.error("Erreur lors de la récupération du détail:", error);
@@ -98,7 +98,7 @@ const ArayashikiDetailPage = () => {
 
     const fetchOthers = async () => {
         if (!detail) return;
-        const lang = localStorage.getItem("lang") || "FR";
+
         const res = await fetch("/api/arayashikis", {
             headers: {
                 "x-db-choice": lang
@@ -116,10 +116,17 @@ const ArayashikiDetailPage = () => {
     };
 
     useEffect(() => {
-        if (id) {
+        const storedLang = localStorage.getItem("lang") || "FR";
+        setLang(storedLang);
+    }, []);
+
+
+    useEffect(() => {
+        if (id && lang) {
             fetchDetail();
         }
-    }, [id]);
+    }, [id, lang]);
+
 
     useEffect(() => {
         if (detail) {
@@ -127,9 +134,10 @@ const ArayashikiDetailPage = () => {
         }
     }, [detail]);
 
-    if (!detail) {
+    if (!detail || !lang) {
         return <p className="text-white">Chargement...</p>;
     }
+
 
     const stats: { label: string; value: string }[] = [];
 
@@ -178,7 +186,10 @@ const ArayashikiDetailPage = () => {
                         <p className="text-sm opacity-80 mb-4">
                             [{detail.hero_names || "Tous les chevaliers peuvent porter"}]
                         </p>
-                        <div className="leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: parsedDesc }} />
+                        <div className="leading-relaxed text-sm">
+                          <Description text={detail.desc} dbChoice={lang} />
+                        </div>
+
                     </div>
                     {stats.length > 0 && (
                         <div className="bg-[#1d1b35] border border-white/10 rounded-lg p-4 text-sm flex flex-wrap gap-6">

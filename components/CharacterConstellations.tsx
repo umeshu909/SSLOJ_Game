@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // Utilisation de useParams pour récupérer l'ID dynamique
 import IconCanvas from "@/components/IconCanvas"; // Importation du composant IconCanvas
+import Description from "@/components/Description";
 
 interface ConstellationSkill {
   skillId: string;
@@ -21,17 +22,22 @@ const ConstellationsPage = () => {
   const [constellationData, setConstellationData] = useState<Constellation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [lang, setLang] = useState<string | null>(null);
 
   // Définir le préfixe pour les icônes de constellation
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
   useEffect(() => {
-    if (!id) return; // Si l'ID est manquant, on arrête l'exécution
+      const storedLang = localStorage.getItem("lang") || "FR";
+      setLang(storedLang);
+  }, []);
+
+  useEffect(() => {
+    if (!id || !lang) return; // Si l'ID est manquant, on arrête l'exécution
 
     const fetchConstellations = async () => {
       try {
         setLoading(true);
-        const lang = localStorage.getItem("lang") || "FR";
         const res = await fetch(`/api/characters/${id}/constellations`,
         {
           headers: {
@@ -51,7 +57,7 @@ const ConstellationsPage = () => {
     };
 
     fetchConstellations();
-  }, [id]); // Ce useEffect se déclenche à chaque changement d'ID
+  }, [id, lang]); // Ce useEffect se déclenche à chaque changement d'ID
 
   // Fonction pour afficher les images de constellations en fonction de suitNeed
   const renderSuitNeedImages = (suitNeed: number) => {
@@ -103,9 +109,9 @@ const ConstellationsPage = () => {
   };
 
   // Fonction pour rendre la description avec HTML intégré
-  const renderDescription = (description: string) => {
+  /*const renderDescription = (description: string) => {
     return <span dangerouslySetInnerHTML={{ __html: description }} />;
-  };
+  };*/
 
   if (loading) return <div>Chargement des constellations...</div>; // Afficher pendant le chargement
   if (error) return <div>{error}</div>; // Afficher l'erreur s'il y en a
@@ -140,7 +146,9 @@ const ConstellationsPage = () => {
                 {/* Bloc droit - description et niveau */}
                 <div className="flex-1 flex flex-col justify-between text-center md:text-left">
                   {/* Description avec interprétation HTML */}
-                  <p className="mt-2 text-sm text-white">{renderDescription(skill.skillDescription)}</p>
+                  <div className="mt-2 text-sm text-white">
+                    <Description text={skill.skillDescription} dbChoice = {lang} />
+                  </div>
                 </div>
               </div>
             ))}

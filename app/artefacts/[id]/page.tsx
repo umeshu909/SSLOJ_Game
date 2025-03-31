@@ -22,18 +22,25 @@ interface ArtifactDetail {
     quality: number;
 }
 
+
 const ArtifactDetailPage = () => {
     const { id } = useParams();
     const [artifact, setArtifact] = useState<ArtifactDetail | null>(null);
     const [others, setOthers] = useState<ArtifactDetail[]>([]);
     const [level, setLevel] = useState<number>(1);
     const [quality, setQuality] = useState<number>(0);
+    const [lang, setLang] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!id) return;
+        const storedLang = localStorage.getItem("lang") || "FR";
+        setLang(storedLang);
+    }, []);
+
+
+    useEffect(() => {
+        if (!id || !lang) return;
 
         const fetchData = async () => {
-            const lang = localStorage.getItem("lang") || "FR";
             const res = await fetch(`/api/artifacts/${id}?level=${level}`,
             {
               headers: {
@@ -47,13 +54,12 @@ const ArtifactDetailPage = () => {
         };
 
         fetchData();
-    }, [id, level]);
+    }, [id, level, lang]);
 
     useEffect(() => {
         if (!artifact) return;
 
         const fetchOthers = async () => {
-            const lang = localStorage.getItem("lang") || "FR";
             const res = await fetch("/api/artifacts",
             {
               headers: {
@@ -75,7 +81,7 @@ const ArtifactDetailPage = () => {
 
 
 
-    if (!artifact) {
+    if (!artifact || !lang) {
         return <p className="text-white">Chargement...</p>;
     }
 
@@ -112,11 +118,11 @@ const ArtifactDetailPage = () => {
                 <div className="flex-1 flex flex-col justify-between gap-6 pt-4">
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Compétence 1</h3>
-                        <Description text={artifact.skill1} dbChoice="FR" />
+                        <Description text={artifact.skill1} dbChoice={lang} />
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 2</h3>
-                        <Description text={artifact.skill2} dbChoice="FR" />
+                        <Description text={artifact.skill2} dbChoice={lang} />
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 3</h3>
-                        <Description text={artifact.skill3} dbChoice="FR" />
+                        <Description text={artifact.skill3} dbChoice={lang} />
                     </div>
 
                     {/* Stats */}

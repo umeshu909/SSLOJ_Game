@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import Description from "@/components/Description";
 
 interface SkillLevel {
   level: number;
@@ -54,11 +55,21 @@ function mapSkillTag(tag: string | number | undefined): string {
 
 export default function CharacterSkills({ skills }: Props) {
   const [extractedSkills, setExtractedSkills] = useState<Skill[] | null>(null);
+  const [lang, setLang] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!skills) return;
-    extractSkills(skills).then(setExtractedSkills);
-  }, [skills]);
+    const storedLang = localStorage.getItem("lang") || "FR";
+    setLang(storedLang);
+  }, []);
+
+  useEffect(() => {
+    if (!skills || !lang) return;
+    extractSkills(skills, lang).then(setExtractedSkills);
+  }, [skills, lang]);
+
+  if (!extractedSkills || !lang) {
+      return <p className="text-white">Chargement...</p>;
+  }
 
   if (!extractedSkills) return null;
 
@@ -99,14 +110,10 @@ export default function CharacterSkills({ skills }: Props) {
               <div className="flex-1 flex flex-col justify-between">
                 <div className="text-sm text-white space-y-3 mb-3 p-4">
                   {skill.levels.map((lvl) => (
-                    <p key={lvl.level}>
+                    <div key={lvl.level}>
                       <span className="font-semibold">Lv {lvl.level}:</span>{" "}
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: lvl.description,
-                        }}
-                      />
-                    </p>
+                      <Description text={lvl.description} dbChoice = {lang} />
+                    </div>
                   ))}
                 </div>
 
@@ -151,7 +158,7 @@ export default function CharacterSkills({ skills }: Props) {
   );
 }
 
-async function extractSkills(data: any): Promise<Skill[]> {
+async function extractSkills(data: any, lang: string): Promise<Skill[]> {
   const skills: Skill[] = [];
 
   for (let i = 1; i <= 4; i++) {
@@ -163,18 +170,20 @@ async function extractSkills(data: any): Promise<Skill[]> {
       const levelKey = `Skill${i}Level${j}`;
       const rawDescription = data[levelKey];
       if (rawDescription) {
-        const lang = localStorage.getItem("lang") || "FR";
         const res = await fetch("/api/skills/parse", {
           method: "POST",
-          body: JSON.stringify({ text: rawDescription }),
-          headers: { "Content-Type": "application/json", "x-db-choice": lang },
+          body: JSON.stringify({ text: rawDescription, dbChoice: lang }),
+          headers: {
+            "Content-Type": "application/json"
+          },
         });
+
         const { result } = await res.json();
 
         const withLineBreaks = result
           .replace(/\\n/g, '<br/>')
           .replace(/(^|<br\/?>)(\s*[A-Za-zÀ-ÿ\-]{4,15})\s*:/g, '$1<span class="text-purple-200">$2:</span>')
-          .replace(/\[(.*?)\]/g, '<span class="text-orange-300">$1</span>'); // Remplacement du orange avec un ton plus doux
+          .replace(/\[(.*?)\]/g, '<span class="text-orange-300">$1</span>');
 
         levels.push({ level: j, description: withLineBreaks });
       }
@@ -196,5 +205,6 @@ async function extractSkills(data: any): Promise<Skill[]> {
       });
     }
   }
+
   return skills;
 }
