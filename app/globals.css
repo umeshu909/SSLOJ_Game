@@ -78,3 +78,19 @@ html {
 .border-animated-gradient:hover {
   animation-duration: 4s;
 }
+
+.fish-card-wrapper {
+  overflow: hidden;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fish-card-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
