@@ -218,14 +218,14 @@ const VestigeDetailPage = () => {
                 </div>
             </div>
 
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 px-6 pt-2 pb-4 flex flex-col items-center justify-center gap-2">
-                <span className="text-sm text-white/60">Sélectionner le niveau</span>
-                <div className="flex gap-1">
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-10">
+                <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau</p>
+                <div className="flex justify-center gap-1">
                     {[5, 10, 15, 20, 25, 30].map((lvl) => (
                         <button
                             key={lvl}
                             onClick={() => setLevel(lvl)}
-                            className={`px-3 py-1 text-sm rounded-md transition-all duration-150 ${level === lvl ? "bg-blue-600 text-white" : "bg-white/10 text-white/60 hover:bg-white/20"
+                            className={`px-3 py-2 text-sm rounded-md transition-all duration-150 ${level === lvl ? "bg-blue-600 text-white" : "bg-white/10 text-white/60 hover:bg-white/20"
                                 }`}
                         >
                             {lvl}

@@ -217,8 +217,8 @@ const ArayashikiDetailPage = () => {
             )}
 
             {/* Sticky étoiles mobile */}
-            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-4">
-                <p className="text-center text-xs text-white/60 mb-1">Sélectionner le niveau d’étoiles</p>
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-10">
+                <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau d’étoiles</p>
                 <div className="flex justify-center gap-1">
                     {[...Array(detail.levelMax)].map((_, index) => (
                         <span
