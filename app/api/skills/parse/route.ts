@@ -5,6 +5,7 @@ import { replacePlaceholders } from "@/utils/replacePlaceholders";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    //const lang = localStorage.getItem("lang") || "FR";
     const { text, dbChoice = "FR" } = body;
 
     if (!text) {

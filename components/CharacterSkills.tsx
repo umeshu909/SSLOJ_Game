@@ -163,10 +163,11 @@ async function extractSkills(data: any): Promise<Skill[]> {
       const levelKey = `Skill${i}Level${j}`;
       const rawDescription = data[levelKey];
       if (rawDescription) {
+        const lang = localStorage.getItem("lang") || "FR";
         const res = await fetch("/api/skills/parse", {
           method: "POST",
           body: JSON.stringify({ text: rawDescription }),
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "x-db-choice": lang },
         });
         const { result } = await res.json();
 

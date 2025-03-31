@@ -6,6 +6,7 @@ export async function parseText(text: string): Promise<string> {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-db-choice": lang
         },
         body: JSON.stringify({ text, dbChoice: lang }),
       });

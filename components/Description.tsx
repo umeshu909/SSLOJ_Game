@@ -10,12 +10,13 @@ const Description = ({ text, dbChoice = "FR" }: Props) => {
   const [parsed, setParsed] = useState<string>("Chargement...");
 
   useEffect(() => {
+    const lang = localStorage.getItem("lang") || "FR";
     const fetchParsed = async () => {
       try {
         // Appel vers ton nouvel endpoint "skills/parse"
         const res = await fetch("/api/skills/parse", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",  "x-db-choice": lang },
           body: JSON.stringify({ text, dbChoice })
         });
 
