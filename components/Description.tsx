@@ -26,6 +26,7 @@ const Description = ({ text, dbChoice = "FR" }: Props) => {
         // Appliquer la coloration des % et des crochets ici (si ton API ne le fait pas déjà)
         parsedText = parsedText
           .replace(/(\d+([.,]\d+)?[\s\u00A0]*%)/g, '<span style="color: lightgreen;">$1</span>')
+          .replace(/(\d+(?:[.,]\d+)?)(?=\s*(secondes?|seconde|sec|couches?|points?|fois?)\b|s\b)/gi, '<span style="color: #82B0D6;">$1</span>')
           .replace(/\[(.*?)\]/g, '<span style="color: orange;">[$1]</span>');
 
         setParsed(parsedText);

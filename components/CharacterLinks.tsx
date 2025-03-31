@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import IconCanvas from "@/components/IconCanvas";
 import { getImageSrc, loadIcons } from "@/utils/iconLoader";
+import Description from "@/components/Description";
 
 interface LinkEntry {
   FetterID: number;
@@ -34,10 +35,16 @@ export default function CharacterLinks() {
   const [links, setLinks] = useState<LinkGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lang, setLang] = useState<string | null>(null);
 
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const jsonDir = "/images/atlas/icon_touxiang/";
   const imgHeight = 2048;
+
+  useEffect(() => {
+      const storedLang = localStorage.getItem("lang") || "FR";
+      setLang(storedLang);
+  }, []);
 
   useEffect(() => {
     async function preloadAtlas() {
@@ -156,10 +163,10 @@ export default function CharacterLinks() {
               <div className="flex-1 p-6 space-y-3">
                 <div className="space-y-1 text-sm text-white">
                   {link.skills.map((skill, idx) => (
-                    <p key={idx}>
+                    <div key={idx}>
                       <span className="font-semibold">Niv {skill.level} :</span>{" "}
-                      {skill.description}
-                    </p>
+                      <Description text={skill.description} dbChoice = {lang} />
+                    </div>
                   ))}
                 </div>
               </div>
