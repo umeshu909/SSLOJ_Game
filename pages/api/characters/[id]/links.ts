@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const sqlFilePath = path.join(process.cwd(), "sql", "getCharacterLinks.sql");
     const sqlQuery = fs.readFileSync(sqlFilePath, "utf-8");
 
-    const links = await db.all(sqlQuery, [id]);
+    const links = await db.all(sqlQuery, [id, id, id, id, id]);
 
     if (!links || links.length === 0) {
       return res.status(404).json({ error: "Liens non trouvés pour ce personnage" });

@@ -1,103 +1,61 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const setDbChoice = (dbChoice: string, id: number, categId: string) => {
+    fetch("/api/set-db-choice", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `dbChoice=${dbChoice}`,
+    })
+      .then(() => {
+        router.push(`/characters/${id}?dbChoice=${dbChoice}&categId=${categId}`);
+      })
+      .catch((error) => console.error("Erreur lors de la mise à jour de la session :", error));
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white py-12 px-4 sm:px-10">
+      <div className="max-w-6xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8 text-center">Last Releases</h1>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
+            <h3 className="text-xl font-semibold text-yellow-400">Chinese Version</h3>
+            <button onClick={() => setDbChoice("CN", 55311, "stats")}>              
+              <img src="/images/actual/483866251_1568376057443274_1363687941621132760_n.jpg" alt="CN" className="rounded-lg mt-2 mb-2" />
+            </button>
+            <p>12.03.2025</p>
+          </div>
+          <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
+            <h3 className="text-xl font-semibold text-yellow-400">Global Version</h3>
+            <button onClick={() => setDbChoice("FR", 45202, "stats")}>              
+              <img src="/images/actual/GMC1wDZWUAAw1eJ.jpeg" alt="GL" className="rounded-lg mt-2 mb-2" />
+            </button>
+            <p>13.03.2025</p>
+          </div>
+          <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
+            <h3 className="text-xl font-semibold text-yellow-400">Japanese Version</h3>
+            <button onClick={() => setDbChoice("JP", 34202, "stats")}>              
+              <img src="/images/actual/484951514_122228135144028168_4459275125812890120_n.jpg" alt="JP" className="rounded-lg mt-2 mb-2" />
+            </button>
+            <p>20.03.2025</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="mt-16">
+          <h2 className="text-2xl font-bold text-center mb-6">Preview CN</h2>
+          <div className="flex justify-center">
+            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Young Athena</h3>
+              <img src="/images/actual/K_yadianna_you.png" alt="Preview" className="rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
