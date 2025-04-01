@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Description from "@/components/Description";
+import IconCanvas from "@/components/IconCanvas";
 
 interface ArayashikiDetail {
     id: number;
@@ -65,6 +66,7 @@ const ArayashikiDetailPage = () => {
 
     const fetchDetail = async (level = 1) => {
         try {
+
             const res = await fetch(`/api/arayashikis/${id}?level=${level}`, {
                 headers: {
                     "x-db-choice": lang
@@ -201,9 +203,31 @@ const ArayashikiDetailPage = () => {
 
                 <div className="flex-1 flex flex-col justify-between gap-4 pt-4">
                     <div className="gap-4">
-                        <p className="text-sm opacity-80 mb-4">
-                            [{detail.hero_names || "Tous les chevaliers peuvent porter"}]
-                        </p>
+
+                        <div className="flex flex-wrap items-center justify-start gap-2 mb-4">
+
+                          {detail.hero_names
+                            ? detail.hero_names
+                                .split(",")
+                                .filter(name => name.trim() !== "")
+                                   .map((imgName, index) => {
+                                  return (
+                                    <IconCanvas
+                                      key={index}
+                                      prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
+                                      iconName={imgName}
+                                      jsonDir="/images/atlas/icon_touxiang/"
+                                      canvasId={`main-canvas-${imgName}`}
+                                      imgHeight={2048}
+                                      size={2}
+                                    />
+                                  );
+                                })
+
+                            : <p className="text-sm opacity-80">Tous les chevaliers peuvent porter</p>
+                          }
+                        </div>
+
                         <div className="leading-relaxed text-sm">
                           <Description text={detail.desc} dbChoice={lang} />
                         </div>

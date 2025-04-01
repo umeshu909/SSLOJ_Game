@@ -52,7 +52,7 @@ ep.value4,
 ep.gwnum4,
 ep.param,
 -- Concaténer les noms des héros
-GROUP_CONCAT(DISTINCT (hc.name || ' ' || hc.firstname )) AS hero_names
+GROUP_CONCAT(DISTINCT (hc.icon )) AS hero_names
 FROM 
 EndlessPowerConfig ep
 LEFT JOIN 

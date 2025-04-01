@@ -1,7 +1,7 @@
 SELECT 
   A.artifactid as id,
   A.name,
-'/images/atlas/shenqi_page/' || A.showimg || '02.png' as icon,
+  '/images/atlas/shenqi_page/' || A.showimg || '02.png' as icon,
   A.level,
 
   -- Stats actuelles (niveau sélectionné)
@@ -23,52 +23,52 @@ SELECT
     ELSE CAST(A.propsum3 * 100 AS TEXT) || '%'
   END AS value3,
 
-  -- Skill 1 (niveau 1)
   STC1.desc AS skill1,
-
-  -- Skill 2 (niveau 3)
   STC2.desc AS skill2,
-
-  -- Skill 3 (niveau 5)
   STC3.desc AS skill3,
 
-CASE ArtifactPointConfig.profession
-  WHEN 0 THEN 0
-  ELSE 1
-END AS quality
+  CASE ArtifactPointConfig.profession
+    WHEN 0 THEN 0
+    ELSE 1
+  END AS quality
 
 FROM ArtifactDevConfig A
 
 LEFT JOIN ArtifactPointConfig ON ArtifactPointConfig.id = A.artifactid
 
--- Joins attributs
+-- Attributs
 LEFT JOIN AttributeConfig AC1 ON AC1.id = A.prop1
 LEFT JOIN AttributeConfig AC2 ON AC2.id = A.prop2
 LEFT JOIN AttributeConfig AC3 ON AC3.id = A.prop3
 
--- Skill du niveau 1
+-- Skill niveau 1
 LEFT JOIN (
-  SELECT skillid, desc FROM SkillTextConfig WHERE level = 1
+  SELECT skillid, level, desc
+  FROM SkillTextConfig
 ) AS STC1 ON STC1.skillid = (
-  SELECT skillid FROM ArtifactDevConfig 
-  WHERE artifactid = A.artifactid AND level = 1
+  SELECT skillid FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 1
+) AND STC1.level = (
+  SELECT skilllv FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 1
 )
 
--- Skill du niveau 3
+-- Skill niveau 3
 LEFT JOIN (
-  SELECT skillid, desc FROM SkillTextConfig WHERE level = 1
+  SELECT skillid, level, desc
+  FROM SkillTextConfig
 ) AS STC2 ON STC2.skillid = (
-  SELECT skillid FROM ArtifactDevConfig 
-  WHERE artifactid = A.artifactid AND level = 3
+  SELECT skillid FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 3
+) AND STC2.level = (
+  SELECT skilllv FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 3
 )
 
--- Skill du niveau 5
+-- Skill niveau 5
 LEFT JOIN (
-  SELECT skillid, desc FROM SkillTextConfig WHERE level = 1
+  SELECT skillid, level, desc
+  FROM SkillTextConfig
 ) AS STC3 ON STC3.skillid = (
-  SELECT skillid FROM ArtifactDevConfig 
-  WHERE artifactid = A.artifactid AND level = 5
+  SELECT skillid FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 5
+) AND STC3.level = (
+  SELECT skilllv FROM ArtifactDevConfig WHERE artifactid = A.artifactid AND level = 5
 )
 
--- Sélection du niveau principal
 WHERE A.artifactid = ? AND A.level = ?

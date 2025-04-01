@@ -30,6 +30,7 @@ const ArtifactDetailPage = () => {
     const [level, setLevel] = useState<number>(1);
     const [quality, setQuality] = useState<number>(0);
     const [lang, setLang] = useState<string | null>(null);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         const storedLang = localStorage.getItem("lang") || "FR";
@@ -41,15 +42,29 @@ const ArtifactDetailPage = () => {
         if (!id || !lang) return;
 
         const fetchData = async () => {
-            const res = await fetch(`/api/artifacts/${id}?level=${level}`,
-            {
-              headers: {
-                "x-db-choice": lang,
-              },
-            });
-            const data = await res.json();
-            setArtifact(data);
-            if (data.length > 0) setQuality(parseInt(data[0].quality));
+            try {
+                const res = await fetch(`/api/artifacts/${id}?level=${level}`,
+                {
+                  headers: {
+                    "x-db-choice": lang,
+                  },
+                });
+
+                if (!res.ok) {
+                    setNotFound(true);
+                    setArtifact(null);
+                    return;
+                }
+
+                const data = await res.json();
+                setArtifact(data);
+                setNotFound(false); // tout va bien
+                if (data.length > 0) setQuality(parseInt(data[0].quality));
+            } catch (error) {
+                console.error("Erreur lors de la récupération du détail:", error);
+                setNotFound(true);
+                setArtifact(null);
+            }
 
         };
 
@@ -79,7 +94,13 @@ const ArtifactDetailPage = () => {
         fetchOthers();
     }, [artifact]);
 
-
+    if (notFound) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-center text-white p-6">
+                <p className="text-lg">Cet artefact n’est pas disponible dans la base de données sélectionnée.</p>
+            </div>
+        );
+    }
 
     if (!artifact || !lang) {
         return <p className="text-white">Chargement...</p>;
