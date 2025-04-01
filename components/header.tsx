@@ -12,7 +12,6 @@ const navItems = [
   { label: "Artefacts", href: "/artefacts" },
   { label: "Statues", href: "/statues" },
   { label: "Pêche", href: "/fishery" },
-  { label: "Timeline", href: "/timeline" },
 ];
 
 export default function Header() {

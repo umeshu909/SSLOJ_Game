@@ -89,7 +89,6 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/vestiges", label: "Vestiges" },
               { href: "/statues", label: "Statues" },
               { href: "/fishery", label: "Pêche" },
-              { href: "/timeline", label: "Timeline" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (
@@ -123,7 +122,6 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/vestiges", label: "Vestiges" },
               { href: "/statues", label: "Statues" },
               { href: "/fishery", label: "Pêche" },
-              { href: "/timeline", label: "Timeline" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (
