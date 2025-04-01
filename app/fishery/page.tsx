@@ -162,7 +162,7 @@ const FishPage = () => {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
         <input
           type="text"
-          placeholder="Rechercher un poissonss"
+          placeholder="Rechercher un poisson"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
