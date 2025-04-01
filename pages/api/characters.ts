@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { role, type, language, searchQuery, onlyAvailable } = req.query;  // Ajout de onlyAvailable
+  const { role, type, language, searchQuery, onlyAvailable, onlyAstraux } = req.query;  // Ajout de onlyAvailable
   const dbChoice = req.headers["x-db-choice"] || "FR";  // Choisir la base de données, par défaut "FR"
 
   try {
@@ -29,6 +29,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Si `onlyAvailable` est vrai, filtrer par isshow = 1
     if (onlyAvailable === 'true') {
       query += " AND HeroConfig.isshow = 1";  // Filtrer les personnages disponibles
+    }
+
+    // Si `onlyAAstraux` est vrai, filtrer par showtp = 7
+    if (onlyAstraux === 'true') {
+      query += " AND HeroConfig.showtp = 7";  // Filtrer les personnages Astraux
     }
 
     // Filtrer par searchQuery (nom commence par le texte)

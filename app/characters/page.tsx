@@ -34,12 +34,13 @@ const CharactersPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
+  const [onlyAstraux, setOnlyAstraux] = useState<boolean>(false);
   const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
 
   const fetchCharacters = async () => {
     const lang = localStorage.getItem("lang") || "FR";
     const res = await fetch(
-      `/api/characters?role=${selectedRoles.join(",")}&type=${selectedTypes.join(",")}&searchQuery=${searchQuery}&onlyAvailable=${onlyAvailable}`,
+      `/api/characters?role=${selectedRoles.join(",")}&type=${selectedTypes.join(",")}&searchQuery=${searchQuery}&onlyAvailable=${onlyAvailable}&onlyAstraux=${onlyAstraux}`,
       {
         headers: {
           "x-db-choice": lang,
@@ -52,7 +53,7 @@ const CharactersPage = () => {
 
   useEffect(() => {
     fetchCharacters();
-  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable]);
+  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, onlyAstraux]);
 
   const toggleRole = (roleId: number) => {
     setSelectedRoles((prev) =>
@@ -72,6 +73,10 @@ const CharactersPage = () => {
 
   const handleOnlyAvailableToggle = () => {
     setOnlyAvailable((prev) => !prev);
+  };
+
+  const handleOnlyAstrauxToggle = () => {
+    setOnlyAstraux((prev) => !prev);
   };
 
   return (
@@ -146,9 +151,23 @@ const CharactersPage = () => {
               })}
             </div>
           </div>
-          < div className="mt-6">
-            <p>Ajouter toggle perso astraux ici</p>
+          <div className="flex items-center mb-6 p-4 border border-white/20 rounded mt-6">
+            <label className="mr-2 text-s text-white/70">
+              Afficher uniquement les Astraux
+            </label>
+
+            <div
+              onClick={handleOnlyAstrauxToggle}
+              className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
+                }`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[12px]" : ""
+                  }`}
+              />
+            </div>
           </div>
+
           <div className="flex items-center mb-6 p-4 border border-white/20 rounded mt-6">
             <label className="mr-2 text-s text-white/70">
               Afficher uniquement les disponibles
@@ -165,6 +184,7 @@ const CharactersPage = () => {
               />
             </div>
           </div>
+
         </div>
 
         {/* Grille de personnages */}
