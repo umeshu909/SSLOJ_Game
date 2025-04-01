@@ -45,6 +45,7 @@ const ArayashikiDetailPage = () => {
     const params = useParams();
     const id = params?.id as string | undefined;
     const [lang, setLang] = useState<string | null>(null);
+    const [notFound, setNotFound] = useState(false);
 
     const calculateValue = (baseValue: number, gwnum: number, percent: number | null, level: number): string => {
         let adjustedValue = 0;
@@ -69,6 +70,13 @@ const ArayashikiDetailPage = () => {
                     "x-db-choice": lang
                 }
             });
+
+            if (!res.ok) {
+                setNotFound(true);
+                setDetail(null);
+                return;
+            }
+
             const data = await res.json();
             let levelNiv = level * 10;
 
@@ -89,10 +97,12 @@ const ArayashikiDetailPage = () => {
             }
 
             setDetail(data);
-
+            setNotFound(false); // tout va bien
 
         } catch (error) {
             console.error("Erreur lors de la récupération du détail:", error);
+            setNotFound(true);
+            setDetail(null);
         }
     };
 
@@ -133,6 +143,14 @@ const ArayashikiDetailPage = () => {
             fetchOthers();
         }
     }, [detail]);
+
+    if (notFound) {
+        return (
+            <div className="min-h-screen flex items-center justify-center text-center text-white p-6">
+                <p className="text-lg">Cette carte n’est pas disponible dans la base de données sélectionnée.</p>
+            </div>
+        );
+    }
 
     if (!detail || !lang) {
         return <p className="text-white">Chargement...</p>;
