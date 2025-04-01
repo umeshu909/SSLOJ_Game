@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Filter, X, Search } from "lucide-react";
 
 interface Character {
   id: number;
@@ -89,22 +90,24 @@ const CharactersPage = () => {
       <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-4">
         {/* Filtres desktop */}
         <div className="hidden lg:flex flex-col w-[320px] sticky top-[98px] h-fit bg-[#14122a] p-6 text-white">
-          <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
+          <h2 className="text-xl font-semibold mb-4">Filtres</h2>
 
-          <div className="mb-4">
+          <div className="mb-6 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
               type="text"
-              placeholder="Rechercher un personnage"
+              placeholder="Rechercher un poissonss"
               value={searchQuery}
-              onChange={handleSearch}
-              className="px-4 py-2 rounded-full text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
             />
           </div>
 
-          <div className="flex items-center mb-4">
-            <label className="mr-2 text-s text-purple-200/80">
+          <div className="flex items-center mb-6 p-4 border border-white/20 rounded">
+            <label className="mr-2 text-s text-white/50">
               Afficher uniquement les disponibles
             </label>
+            
             <div
               onClick={handleOnlyAvailableToggle}
               className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${
@@ -113,26 +116,26 @@ const CharactersPage = () => {
             >
               <div
                 className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                  onlyAvailable ? "translate-x-6" : ""
+                  onlyAvailable ? "translate-x-[12px]" : ""
                 }`}
               />
             </div>
           </div>
 
           <div>
-            <h3 className="text-lg font-medium mb-2">Rôle</h3>
-            <div className="space-x-2">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
+            <div className="flex flex-wrap gap-2">
               {Object.keys(roleMapping).map((key) => {
                 const roleId = Number(key);
                 return (
                   <button
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
-                    className={`px-4 py-2 rounded-full m-1 text-sm border ${
+                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70  ${
                       selectedRoles.includes(roleId)
-                        ? "border-[#82B0D6]"
-                        : "border-white/20"
-                    } bg-transparent hover:border-[#82B0D6] transition-all`}
+                      ? "text-white/100 bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40"}  
+                    hover:text-white hover:border-white transition-all`}
                   >
                     {roleMapping[roleId]}
                   </button>
@@ -142,19 +145,19 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
-            <h3 className="text-lg font-medium mb-2">Type</h3>
-            <div className="space-x-2">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <div className="flex flex-wrap gap-2">
               {Object.keys(typeMapping).map((key) => {
                 const typeId = Number(key);
                 return (
                   <button
                     key={typeId}
                     onClick={() => toggleType(typeId)}
-                    className={`px-4 py-2 rounded-full m-1 text-sm border ${
+                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${
                       selectedTypes.includes(typeId)
-                        ? "border-[#82B0D6]"
-                        : "border-white/20"
-                    } bg-transparent hover:border-[#82B0D6] transition-all`}
+                      ? "text-white/100 bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40"}  
+                    hover:text-white hover:border-white transition-all`}
                   >
                     {typeMapping[typeId]}
                   </button>
@@ -247,7 +250,7 @@ const CharactersPage = () => {
         </div>
 
         <div className="mb-6">
-          <h3 className="text-lg font-medium mb-2">Rôle</h3>
+          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
           <div className="flex flex-wrap gap-2">
             {Object.keys(roleMapping).map((key) => {
               const roleId = Number(key);
@@ -269,7 +272,7 @@ const CharactersPage = () => {
         </div>
 
         <div>
-          <h3 className="text-lg font-medium mb-2">Type</h3>
+          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
           <div className="flex flex-wrap gap-2">
             {Object.keys(typeMapping).map((key) => {
               const typeId = Number(key);

@@ -141,7 +141,11 @@ const FishPage = () => {
               <button
                 key={opt}
                 onClick={() => setSelected((prev: any) => (prev === opt ? null : opt))}
-                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selected === opt ? "border-white text-white" : "border-white/40 text-white/70"} bg-transparent hover:text-white hover:border-white transition-all`}
+                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70
+                  ${selected === opt
+                    ? "text-white/100 bg-purple-300/15 border-white/80"
+                    : "text-white/70 bg-transparent border-white/40"}  
+                  hover:text-white hover:border-white transition-all`}
               >
                 {format ? format(opt) : opt}
               </button>
@@ -154,13 +158,14 @@ const FishPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br text-white py-6 px-4 max-w-screen-xl mx-auto">
-      <div className="lg:hidden w-full px-2 mb-4">
+      <div className="lg:hidden w-full mb-4 relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
         <input
           type="text"
-          placeholder="Rechercher un poisson"
+          placeholder="Rechercher un poissonss"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-4 py-3 text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#14122a] text-white"
+          className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
         />
       </div>
 
@@ -180,10 +185,10 @@ const FishPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
               type="text"
-              placeholder="Rechercher un poisson"
+              placeholder="Rechercher un poissonss"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded border-b border-transparent pl-10 pr-4 py-3 text-sm focus:border-b-white focus:bg-white/10 focus:outline-none w-full bg-white/5 text-white hover:border-[#82B0D6] transition-all duration-300 ease-in-out"
+              className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
             />
           </div>
           {renderFilters()}
