@@ -26,6 +26,7 @@ SELECT
     WHEN 5 THEN 'Lumière'
     WHEN 6 THEN 'Ombre'
   END AS Type,
+  HeroConfig.showtp,
   
   -- Partie pour les descriptions
   HeroConfig.herodesc,
