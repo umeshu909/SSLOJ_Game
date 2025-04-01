@@ -120,8 +120,8 @@ const CharactersPage = () => {
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
                     className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70  ${selectedRoles.includes(roleId)
-                        ? "text-white/100 bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40"}  
+                      ? "text-white/100 bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40"}  
                     hover:text-white hover:border-white transition-all`}
                   >
                     {roleMapping[roleId]}
@@ -141,8 +141,8 @@ const CharactersPage = () => {
                     key={typeId}
                     onClick={() => toggleType(typeId)}
                     className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selectedTypes.includes(typeId)
-                        ? "text-white/100 bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40"}  
+                      ? "text-white/100 bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40"}  
                     hover:text-white hover:border-white transition-all`}
                   >
                     {typeMapping[typeId]}
@@ -151,35 +151,33 @@ const CharactersPage = () => {
               })}
             </div>
           </div>
-          <div className="flex items-center mb-6 p-4 border border-white/20 rounded mt-6">
-            <label className="mr-2 text-s text-white/70">
-              Afficher uniquement les Astraux
-            </label>
 
+          <div className="flex items-center mt-12 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les Astraux
+            </div>
             <div
               onClick={handleOnlyAstrauxToggle}
-              className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
                 }`}
             >
               <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[12px]" : ""
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
                   }`}
               />
             </div>
           </div>
-
-          <div className="flex items-center mb-6 p-4 border border-white/20 rounded mt-6">
-            <label className="mr-2 text-s text-white/70">
-              Afficher uniquement les disponibles
-            </label>
-
+          <div className="flex items-center mt-6 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les persos disponibles sur la glo
+            </div>
             <div
               onClick={handleOnlyAvailableToggle}
-              className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
                 }`}
             >
               <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[12px]" : ""
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
                   }`}
               />
             </div>
@@ -250,21 +248,36 @@ const CharactersPage = () => {
         </div>
 
         {/* Filtres mobiles */}
-        <div className="mb-6">
-          <label className="mr-2 text-s text-purple-200/80">
-            Afficher uniquement les disponibles
-          </label>
-          <div
-            onClick={handleOnlyAvailableToggle}
-            className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
-              }`}
-          >
+        <div className="flex items-center mt-12 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les Astraux
+            </div>
             <div
-              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-6" : ""
+              onClick={handleOnlyAstrauxToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
                 }`}
-            />
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
+                  }`}
+              />
+            </div>
           </div>
-        </div>
+          <div className="flex items-center mt-6 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les persos disponibles sur la glo
+            </div>
+            <div
+              onClick={handleOnlyAvailableToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+                }`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
+                  }`}
+              />
+            </div>
+          </div>
 
         <div className="mb-6">
           <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
@@ -276,8 +289,8 @@ const CharactersPage = () => {
                   key={roleId}
                   onClick={() => toggleRole(roleId)}
                   className={`px-4 py-2 rounded-full text-sm border ${selectedRoles.includes(roleId)
-                      ? "border-[#82B0D6]"
-                      : "border-white/20"
+                    ? "border-[#82B0D6]"
+                    : "border-white/20"
                     } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
                   {roleMapping[roleId]}
@@ -297,8 +310,8 @@ const CharactersPage = () => {
                   key={typeId}
                   onClick={() => toggleType(typeId)}
                   className={`px-4 py-2 rounded-full text-sm border ${selectedTypes.includes(typeId)
-                      ? "border-[#82B0D6]"
-                      : "border-white/20"
+                    ? "border-[#82B0D6]"
+                    : "border-white/20"
                     } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
                   {typeMapping[typeId]}
