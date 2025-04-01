@@ -87,16 +87,19 @@ const ArayashikiDetailPage = () => {
             data.value3 = calculateValue(data.value3, data.gwnum3, data.Percent3, levelNiv);
             data.value4 = calculateValue(data.value4, data.gwnum4, data.Percent4, levelNiv);
 
+            let hero_names_translated = null;
             const translations: Record<string, string> = {
-                "虚拟施法者 ": "Protectors knights",
-                "战斗测试4 ": "Assistants knights",
-                "战斗测试2 ": "Skilled knights",
-                "战斗测试3 ": "Assassins knights",
-                "战斗测试1 ": "Warriors knights"
+              "虚拟施法者 ": "Protectors knights",
+              "战斗测试4 ": "Assistants knights",
+              "战斗测试2 ": "Skilled knights",
+              "战斗测试3 ": "Assassins knights",
+              "战斗测试1 ": "Warriors knights"
             };
             if (data.hero_names && translations[data.hero_names]) {
-                data.hero_names = translations[data.hero_names];
+              hero_names_translated = translations[data.hero_names];
             }
+            data.hero_names_translated = hero_names_translated;
+
 
             setDetail(data);
             setNotFound(false); // tout va bien
@@ -204,29 +207,32 @@ const ArayashikiDetailPage = () => {
                 <div className="flex-1 flex flex-col justify-between gap-4 pt-4">
                     <div className="gap-4">
 
-                        <div className="flex flex-wrap items-center justify-start gap-2 mb-4">
+<div className="mb-4">
+  {detail.hero_names_translated ? (
+    <p className="text-sm opacity-80">{detail.hero_names_translated}</p>
+  ) : detail.hero_imgs && detail.hero_imgs.trim() !== "" ? (
+    <div className="flex flex-wrap items-center justify-start gap-2">
+      {detail.hero_imgs
+        .split(",")
+        .filter(name => name.trim() !== "")
+        .map((imgName, index) => (
+          <IconCanvas
+            key={index}
+            prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
+            iconName={imgName}
+            jsonDir="/images/atlas/icon_touxiang/"
+            canvasId={`main-canvas-${imgName}`}
+            imgHeight={2048}
+            size={2}
+          />
+        ))}
+    </div>
+  ) : (
+    <p className="text-sm opacity-80">Tous les chevaliers peuvent porter</p>
+  )}
+</div>
 
-                          {detail.hero_names
-                            ? detail.hero_names
-                                .split(",")
-                                .filter(name => name.trim() !== "")
-                                   .map((imgName, index) => {
-                                  return (
-                                    <IconCanvas
-                                      key={index}
-                                      prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
-                                      iconName={imgName}
-                                      jsonDir="/images/atlas/icon_touxiang/"
-                                      canvasId={`main-canvas-${imgName}`}
-                                      imgHeight={2048}
-                                      size={2}
-                                    />
-                                  );
-                                })
 
-                            : <p className="text-sm opacity-80">Tous les chevaliers peuvent porter</p>
-                          }
-                        </div>
 
                         <div className="leading-relaxed text-sm">
                           <Description text={detail.desc} dbChoice={lang} />
