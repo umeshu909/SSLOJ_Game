@@ -9,7 +9,7 @@ export default function CharacterStats({ stats }: Props) {
 
   return (
     <section className="mt-6 text-white text-sm">
-      <h2 className="text-2xl font-semibold mb-4">Statistiques</h2>
+      <h2 className="text-xl font-semibold mb-4">Statistiques</h2>
 
       <div className="space-y-1">
         {Object.entries(stats).map(([label, value]) => (

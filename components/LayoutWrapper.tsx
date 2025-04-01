@@ -1,4 +1,4 @@
-"use client"; // Directive pour indiquer que ce composant est un composant client-side
+"use client";
 
 import React, { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -29,13 +29,20 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   }, []);
 
   useEffect(() => {
-    if (headerRef.current) {
-      setOffsetTop(headerRef.current.offsetHeight);
-    }
+    if (!headerRef.current) return;
+
+    const updateOffset = () => {
+      setOffsetTop(headerRef.current!.offsetHeight);
+    };
+
+    updateOffset();
+    const observer = new ResizeObserver(updateOffset);
+    observer.observe(headerRef.current);
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
-    // Stocker la langue sélectionnée dans localStorage
     localStorage.setItem("lang", language);
   }, [language]);
 
@@ -51,113 +58,26 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 w-full bg-[#0a091c] shadow-md z-50 px-4 text-white"
+        className="fixed top-0 right-0 left-0 w-full bg-[#0a091c] shadow-md z-50 text-white"
       >
-        {/* --- Mobile layout --- */}
-        <div className="md:hidden">
-          {/* Rangée supérieure : flèche + logo + sélecteur */}
-          <div className="relative flex items-center justify-center pt-2 pb-2">
-            <div className="absolute left-4 h-6 flex items-center">
-              <button onClick={handleBack} className="p-1 hover:opacity-80 transition">
-                <ArrowLeft className="w-6 h-6 text-white" strokeWidth={1} />
-              </button>
-            </div>
+        {/* Header commun mobile/desktop */}
+        <div className="relative flex items-center justify-between pt-2 pb-2">
+          <button onClick={handleBack} className="md:hidden p-1 hover:opacity-80 transition absolute left-3">
+            <ArrowLeft className="w-6 h-6 text-white" strokeWidth={1} />
+          </button>
+
+          <div className="flex-1 flex justify-center">
             <img src="/images/logo.png" alt="Logo" className="h-14" />
-            <div className="absolute right-4">
-              <select
-                className="bg-transparent border border-white/30 text-white text-sm px-2 py-1 rounded"
-                value={language}
-                onChange={(e) => {
-                    setLanguage(e.target.value);
-                    window.location.reload(); // force un refresh complet
-                  }}
-              >
-                <option value="FR">FR</option>
-                <option value="EN">EN</option>
-                <option value="CN">CN</option>
-                <option value="JP">JP</option>
-              </select>
-            </div>
           </div>
 
-          {/* Navigation scrollable horizontalement en dessous */}
-          <nav className="flex overflow-x-auto space-x-1 scrollbar-hide w-full justify-start px-2 pt-2 pb-4">
-            {[
-              { href: "/characters", label: "Personnages" },
-              { href: "/arayashikis", label: "Arayashikis" },
-              { href: "/artefacts", label: "Artefacts" },
-              { href: "/vestiges", label: "Vestiges" },
-              { href: "/statues", label: "Statues" },
-              { href: "/fishery", label: "Pêche" },
-            ].map(({ href, label }) => {
-              const isActive = activeLink.startsWith(href);
-              return (
-                <a
-                  key={href}
-                  href={href}
-                  className={`flex-shrink-0 relative group text-sm px-3 py-1 rounded transition-all whitespace-nowrap ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
-                    }`}
-                >
-                  {label}
-                  <span
-                    className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive
-                        ? "w-14 opacity-100"
-                        : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"
-                      }`}
-                  />
-                </a>
-              );
-            })}
-          </nav>
-        </div>
-
-        {/* --- Desktop layout --- */}
-        <div className="hidden md:flex items-center justify-between h-[80px] px-6">
-          {/* Navigation à gauche */}
-          <nav className="flex space-x-1">
-            {[
-              { href: "/characters", label: "Personnages" },
-              { href: "/arayashikis", label: "Arayashikis" },
-              { href: "/artefacts", label: "Artefacts" },
-              { href: "/vestiges", label: "Vestiges" },
-              { href: "/statues", label: "Statues" },
-              { href: "/fishery", label: "Pêche" },
-            ].map(({ href, label }) => {
-              const isActive = activeLink.startsWith(href);
-              return (
-                <a
-                  key={href}
-                  href={href}
-                  className={`relative group text-m px-3 py-1 rounded transition-all ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
-                    }`}
-                >
-                  {label}
-                  <span
-                    className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive
-                        ? "w-14 opacity-100"
-                        : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"
-                      }`}
-                  />
-                </a>
-              );
-            })}
-          </nav>
-
-          {/* Logo centré */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <img src="/images/logo.png" alt="Logo" className="h-15" />
-          </div>
-
-          {/* Sélecteur de langue à droite */}
-          <div>
+          <div className="absolute right-4">
             <select
               className="bg-transparent border border-white/30 text-white text-sm px-2 py-1 rounded"
               value={language}
               onChange={(e) => {
-                                  setLanguage(e.target.value);
-                                  window.location.reload(); // force un refresh complet
-                                }}
-
+                setLanguage(e.target.value);
+                window.location.reload();
+              }}
             >
               <option value="FR">FR</option>
               <option value="EN">EN</option>
@@ -166,10 +86,45 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             </select>
           </div>
         </div>
+
+        <nav
+          className="
+            flex items-center gap-1
+            px-2 pb-3 pt-2
+            overflow-x-auto scrollbar-hide
+            md:justify-center md:flex-wrap md:overflow-visible
+          "
+        >
+          {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery", "timeline"].map((path) => {
+            const href = `/${path}`;
+            const label = path.charAt(0).toUpperCase() + path.slice(1);
+            const isActive = activeLink.startsWith(href);
+            return (
+              <a
+                key={href}
+                href={href}
+                className={`relative group text-sm px-3 py-1 rounded transition-all whitespace-nowrap ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
+                  }`}
+              >
+                {label}
+                <span
+                  className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive
+                      ? "w-14 opacity-100"
+                      : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"
+                    }`}
+                />
+              </a>
+            );
+          })}
+        </nav>
       </header>
 
-      {/* Contenu principal avec un padding en fonction de la hauteur du header */}
-      <main style={{ paddingTop: offsetTop }}>{children}</main>
+      <main
+        style={{ paddingTop: offsetTop }}
+        className="bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] min-h-screen"
+      >
+        {children}
+      </main>
     </>
   );
 }

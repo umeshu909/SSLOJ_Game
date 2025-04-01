@@ -109,7 +109,7 @@ export default function CharacterPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
+        <div className="min-h-screen text-white">
             <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
                 <button
                     onClick={handleBack}
@@ -128,25 +128,25 @@ export default function CharacterPage() {
 
                 <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto">
                     {/* Sidebar à gauche (desktop uniquement) */}
-                    <aside className="hidden lg:block w-[320px] sticky top-[96px] self-start bg-[#14122a] text-white">
+                    <aside className="hidden lg:block w-[320px] sticky top-[132px] self-start bg-[#14122a] text-white">
                         {selectedCharacter && <CharacterSidebar character={selectedCharacter} />}
                     </aside>
 
                     {/* Contenu principal */}
                     <div className="flex-1">
-                        <section className="lg:px-6 pb-6">
+                        <section className="lg:px-6 pb-4">
                             <CharacterSkills skills={skills} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterArmor armor={armor} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterConstellations constellations={constellations} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterLinks links={links} />
                         </section>
 

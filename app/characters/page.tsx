@@ -80,21 +80,22 @@ const CharactersPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white relative pb-20 pt-[20px]">
+    <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white relative pb-20">
       {/* Recherche mobile */}
-      <div className="lg:hidden w-full px-4 mb-4">
-        <input
-          type="text"
-          placeholder="Rechercher un personnage"
-          value={searchQuery}
-          onChange={handleSearch}
-          className="px-4 py-2 rounded-full text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#14122a] text-white"
-        />
-      </div>
+      <div className="lg:hidden w-full px-4 my-4 relative">
+            <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Rechercher un personnage"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
+            />
+          </div>
 
-      <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-4">
+      <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-[12px]">
         {/* Filtres desktop */}
-        <div className="hidden lg:flex flex-col w-[320px] sticky top-[98px] h-fit bg-[#14122a] p-6 text-white">
+        <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
           <h2 className="text-xl font-semibold mb-4">Filtres</h2>
 
           <div className="mb-6 relative">
@@ -248,37 +249,6 @@ const CharactersPage = () => {
         </div>
 
         {/* Filtres mobiles */}
-        <div className="flex items-center mt-12 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les Astraux
-            </div>
-            <div
-              onClick={handleOnlyAstrauxToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
-                }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
-                  }`}
-              />
-            </div>
-          </div>
-          <div className="flex items-center mt-6 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les persos disponibles sur la glo
-            </div>
-            <div
-              onClick={handleOnlyAvailableToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
-                }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
-                  }`}
-              />
-            </div>
-          </div>
-
         <div className="mb-6">
           <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
           <div className="flex flex-wrap gap-2">
@@ -320,6 +290,36 @@ const CharactersPage = () => {
             })}
           </div>
         </div>
+        <div className="flex items-center mt-12 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les Astraux
+            </div>
+            <div
+              onClick={handleOnlyAstrauxToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
+                }`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
+                  }`}
+              />
+            </div>
+          </div>
+          <div className="flex items-center mt-6 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les persos disponibles sur la glo
+            </div>
+            <div
+              onClick={handleOnlyAvailableToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+                }`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
+                  }`}
+              />
+            </div>
+          </div>
       </div>
     </div>
   );
