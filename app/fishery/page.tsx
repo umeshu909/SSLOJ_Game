@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
-import { Filter, X } from "lucide-react";
+import { Filter, X, Search } from "lucide-react";
+
 
 interface Fish {
   ZoneNom: string;
@@ -42,10 +43,10 @@ const speciesTypePerso: Record<string, string> = {
 
 const getStaticBorderColor = (grade: string) => {
   switch (grade) {
-    case "Bleu": return "border-blue-500/65";
-    case "Violet": return "border-purple-500/65";
-    case "Or": return "border-yellow-400/65";
-    case "Rouge": return "border-red-500/65";
+    case "Bleu": return "border-blue-500/65 hover:border-blue-500/85 transition-all duration-300 ease-in-out";
+    case "Violet": return "border-purple-500/65 hover:border-purple-500/85 transition-all duration-300 ease-in-out";
+    case "Or": return "border-yellow-400/65 hover:border-yellow-400/75 transition-all duration-300 ease-in-out";
+    case "Rouge": return "border-red-500/65 hover:border-red-500/85 transition-all duration-300 ease-in-out";
     default: return "border-white/10";
   }
 };
@@ -131,14 +132,14 @@ const FishPage = () => {
         setSelected: setSelectedSpecies,
         format: (s: string) => speciesLabels[s]
       }].map(({ title, options, selected, setSelected, format }) => (
-        <div key={title} className="mb-4">
-          <h3 className="text-lg font-medium mb-2">{title}</h3>
+        <div key={title} className="mb-8">
+          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{title}</h3>
           <div className="flex flex-wrap gap-2">
             {options.map((opt) => (
               <button
                 key={opt}
                 onClick={() => setSelected((prev: any) => (prev === opt ? null : opt))}
-                className={`px-4 py-2 rounded-full text-sm border ${selected === opt ? "border-[#82B0D6]" : "border-white/20"} bg-transparent hover:border-[#82B0D6] transition-all`}
+                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selected === opt ? "border-white" : "border-white/40"} bg-transparent hover:text-white hover:border-white transition-all`}
               >
                 {format ? format(opt) : opt}
               </button>
@@ -158,14 +159,14 @@ const FishPage = () => {
           placeholder="Rechercher un poisson"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-4 py-2 rounded-full text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#14122a] text-white"
+          className="px-4 py-3 text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#14122a] text-white"
         />
       </div>
 
       <div className="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center z-40">
         <button
           onClick={() => setShowMobileFilters(true)}
-          className="bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
+          className=" rounded-full bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
         >
           <Filter size={18} /> Filtrer
         </button>
@@ -174,15 +175,17 @@ const FishPage = () => {
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Filtres Desktop */}
         <div className="hidden lg:block w-full lg:w-[320px] sticky top-[98px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
-          <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
+          <h2 className="text-xl font-semibold mb-4">Filtres</h2>
 
-          <div className="mb-6">
+          <div className="mb-6 relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
               type="text"
               placeholder="Rechercher un poisson"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-4 py-2 rounded-full text-sm border border-white/20 focus:border-[#82B0D6] focus:outline-none w-full bg-[#0e0c1e] text-white"
+              className="rounded border-b-transparent pl-10 pr-4 py-3 text-sm focus:border-transparent focus:bg-white/10 focus:outline-none focus:border-b-white
+ w-full bg-white/5 text-white hover:border-[#82B0D6] transition-all duration-300 ease-in-out"
             />
           </div>
 
@@ -202,8 +205,8 @@ const FishPage = () => {
               const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
                 <div key={i} className={`${borderClass} overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}>
-                  <div className={`${backgroundClass} h-full flex flex-col pt-4`}>
-                    <div className="w-full aspect-[2/1] flex items-center justify-center">
+                  <div className={`${backgroundClass} h-full flex flex-col pt-4 group transition-all duration-300`}>
+                    <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                       <IconCanvas
                         prefix={prefix}
                         iconName={fish.iconid}
