@@ -28,6 +28,7 @@ CASE ep.quality
     WHEN 4 THEN 'Or'
     WHEN 5 THEN 'Rouge'
 END AS quality,
+ep.condition,
 ep.level AS levelMax, 
 ep.skillid, 
 stc.id as skillid_id,

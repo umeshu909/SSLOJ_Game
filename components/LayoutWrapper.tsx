@@ -81,7 +81,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           </div>
 
           {/* Navigation scrollable horizontalement en dessous */}
-          <nav className="flex overflow-x-auto space-x-4 scrollbar-hide w-full justify-start px-2 pt-2 pb-4">
+          <nav className="flex overflow-x-auto space-x-1 scrollbar-hide w-full justify-start px-2 pt-2 pb-4">
             {[
               { href: "/characters", label: "Personnages" },
               { href: "/arayashikis", label: "Arayashikis" },
@@ -89,6 +89,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/vestiges", label: "Vestiges" },
               { href: "/statues", label: "Statues" },
               { href: "/fishery", label: "Pêche" },
+              { href: "/timeline", label: "Timeline" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (
@@ -114,7 +115,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         {/* --- Desktop layout --- */}
         <div className="hidden md:flex items-center justify-between h-[80px] px-6">
           {/* Navigation à gauche */}
-          <nav className="flex space-x-2">
+          <nav className="flex space-x-1">
             {[
               { href: "/characters", label: "Personnages" },
               { href: "/arayashikis", label: "Arayashikis" },
@@ -122,6 +123,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               { href: "/vestiges", label: "Vestiges" },
               { href: "/statues", label: "Statues" },
               { href: "/fishery", label: "Pêche" },
+              { href: "/timeline", label: "Timeline" },
             ].map(({ href, label }) => {
               const isActive = activeLink.startsWith(href);
               return (

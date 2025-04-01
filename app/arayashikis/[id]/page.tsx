@@ -100,6 +100,14 @@ const ArayashikiDetailPage = () => {
             }
             data.hero_names_translated = hero_names_translated;
 
+            // Conversion spéciale pour les cartes des chevaliers d'or
+            const translationsOr: Record<string, string> = {
+              4: "Chevaliers d'or"
+            };
+            if (data.condition && translationsOr[data.condition]) {
+              hero_names_translated = translationsOr[data.condition];
+            }
+            data.hero_names_translated = hero_names_translated;
 
             setDetail(data);
             setNotFound(false); // tout va bien

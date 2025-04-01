@@ -13,6 +13,7 @@
     "next": "^15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-vertical-timeline-component": "^3.5.3",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "swiper": "^11.2.6"
