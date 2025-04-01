@@ -53,6 +53,10 @@ export default function Home() {
               <h3 className="text-lg font-semibold text-yellow-400 mb-2">Young Athena</h3>
               <img src="/images/actual/K_yadianna_you.png" alt="Preview" className="rounded-lg" />
             </div>
+            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
+              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Shiryu semi-naked</h3>
+              <img src="/images/actual/K_zilong_chuancheng.png" alt="Preview" className="rounded-lg" />
+            </div>
           </div>
         </div>
       </div>
