@@ -103,24 +103,7 @@ const CharactersPage = () => {
             />
           </div>
 
-          <div className="flex items-center mb-6 p-4 border border-white/20 rounded">
-            <label className="mr-2 text-s text-white/50">
-              Afficher uniquement les disponibles
-            </label>
-            
-            <div
-              onClick={handleOnlyAvailableToggle}
-              className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${
-                onlyAvailable ? "bg-green-500" : "bg-gray-500"
-              }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                  onlyAvailable ? "translate-x-[12px]" : ""
-                }`}
-              />
-            </div>
-          </div>
+
 
           <div>
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
@@ -131,10 +114,9 @@ const CharactersPage = () => {
                   <button
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
-                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70  ${
-                      selectedRoles.includes(roleId)
-                      ? "text-white/100 bg-purple-300/15 border-white/80"
-                      : "text-white/70 bg-transparent border-white/40"}  
+                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70  ${selectedRoles.includes(roleId)
+                        ? "text-white/100 bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40"}  
                     hover:text-white hover:border-white transition-all`}
                   >
                     {roleMapping[roleId]}
@@ -153,16 +135,34 @@ const CharactersPage = () => {
                   <button
                     key={typeId}
                     onClick={() => toggleType(typeId)}
-                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${
-                      selectedTypes.includes(typeId)
-                      ? "text-white/100 bg-purple-300/15 border-white/80"
-                      : "text-white/70 bg-transparent border-white/40"}  
+                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selectedTypes.includes(typeId)
+                        ? "text-white/100 bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40"}  
                     hover:text-white hover:border-white transition-all`}
                   >
                     {typeMapping[typeId]}
                   </button>
                 );
               })}
+            </div>
+          </div>
+          < div className="mt-6">
+            <p>Ajouter toggle perso astraux ici</p>
+          </div>
+          <div className="flex items-center mb-6 p-4 border border-white/20 rounded mt-6">
+            <label className="mr-2 text-s text-white/70">
+              Afficher uniquement les disponibles
+            </label>
+
+            <div
+              onClick={handleOnlyAvailableToggle}
+              className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+                }`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[12px]" : ""
+                  }`}
+              />
             </div>
           </div>
         </div>
@@ -216,9 +216,8 @@ const CharactersPage = () => {
 
       {/* Overlay filtres mobile */}
       <div
-        className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${
-          showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"
+          }`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
@@ -237,14 +236,12 @@ const CharactersPage = () => {
           </label>
           <div
             onClick={handleOnlyAvailableToggle}
-            className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${
-              onlyAvailable ? "bg-green-500" : "bg-gray-500"
-            }`}
+            className={`relative inline-block w-12 h-6 rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+              }`}
           >
             <div
-              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                onlyAvailable ? "translate-x-6" : ""
-              }`}
+              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-6" : ""
+                }`}
             />
           </div>
         </div>
@@ -258,11 +255,10 @@ const CharactersPage = () => {
                 <button
                   key={roleId}
                   onClick={() => toggleRole(roleId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedRoles.includes(roleId)
+                  className={`px-4 py-2 rounded-full text-sm border ${selectedRoles.includes(roleId)
                       ? "border-[#82B0D6]"
                       : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
+                    } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
                   {roleMapping[roleId]}
                 </button>
@@ -280,11 +276,10 @@ const CharactersPage = () => {
                 <button
                   key={typeId}
                   onClick={() => toggleType(typeId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedTypes.includes(typeId)
+                  className={`px-4 py-2 rounded-full text-sm border ${selectedTypes.includes(typeId)
                       ? "border-[#82B0D6]"
                       : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
+                    } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
                   {typeMapping[typeId]}
                 </button>
