@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
 import { Filter, X, Search } from "lucide-react";
 
-
 interface Fish {
   ZoneNom: string;
   Zone: string;
@@ -15,6 +14,7 @@ interface Fish {
   iconid: string;
   iconid2: string;
   fishgrade: number;
+  fishspecies: number;
   stat1: string;
   stat2: string;
   stat3: string;
@@ -97,7 +97,9 @@ const FishPage = () => {
   const filteredFishes = fishes.filter((f) => {
     const matchesZone = selectedZone ? f.Zone === selectedZone : true;
     const matchesGrade = selectedGrade ? f.Grade === selectedGrade : true;
-    const matchesSpecies = selectedSpecies ? f.fishgrade.toString() === selectedSpecies : true;
+    const matchesSpecies = selectedSpecies
+      ? f.fishspecies?.toString() === selectedSpecies
+      : true;
     const matchesBonus = selectedBonus
       ? [f.stat1, f.stat2, f.stat3].some((s) => s && s.includes(selectedBonus))
       : true;
@@ -139,7 +141,7 @@ const FishPage = () => {
               <button
                 key={opt}
                 onClick={() => setSelected((prev: any) => (prev === opt ? null : opt))}
-                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selected === opt ? "border-white" : "border-white/40"} bg-transparent hover:text-white hover:border-white transition-all`}
+                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selected === opt ? "border-white text-white" : "border-white/40 text-white/70"} bg-transparent hover:text-white hover:border-white transition-all`}
               >
                 {format ? format(opt) : opt}
               </button>
@@ -152,7 +154,6 @@ const FishPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br text-white py-6 px-4 max-w-screen-xl mx-auto">
-      {/* Recherche Mobile */}
       <div className="lg:hidden w-full px-2 mb-4">
         <input
           type="text"
@@ -166,17 +167,15 @@ const FishPage = () => {
       <div className="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center z-40">
         <button
           onClick={() => setShowMobileFilters(true)}
-          className=" rounded-full bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
+          className="rounded-full bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
         >
           <Filter size={18} /> Filtrer
         </button>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
-        {/* Filtres Desktop */}
         <div className="hidden lg:block w-full lg:w-[320px] sticky top-[98px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
           <h2 className="text-xl font-semibold mb-4">Filtres</h2>
-
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
@@ -184,15 +183,12 @@ const FishPage = () => {
               placeholder="Rechercher un poisson"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded border-b-transparent pl-10 pr-4 py-3 text-sm focus:border-transparent focus:bg-white/10 focus:outline-none focus:border-b-white
- w-full bg-white/5 text-white hover:border-[#82B0D6] transition-all duration-300 ease-in-out"
+              className="rounded border-b border-transparent pl-10 pr-4 py-3 text-sm focus:border-b-white focus:bg-white/10 focus:outline-none w-full bg-white/5 text-white hover:border-[#82B0D6] transition-all duration-300 ease-in-out"
             />
           </div>
-
           {renderFilters()}
         </div>
 
-        {/* Résultats */}
         <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:px-4">
           {filteredFishes.length === 0 ? (
             <p className="col-span-full text-center text-white/60">
@@ -206,7 +202,7 @@ const FishPage = () => {
               return (
                 <div key={i} className={`${borderClass} overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}>
                   <div className={`${backgroundClass} h-full flex flex-col pt-4 group transition-all duration-300`}>
-                    <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 cursor-pointer">
                       <IconCanvas
                         prefix={prefix}
                         iconName={fish.iconid}
@@ -247,7 +243,6 @@ const FishPage = () => {
         </div>
       </div>
 
-      {/* Panneau Mobile Filtres */}
       <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
