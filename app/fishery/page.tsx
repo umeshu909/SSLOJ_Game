@@ -95,7 +95,7 @@ const FishPage = () => {
   }, []);
 
   const filteredFishes = fishes.filter((f) => {
-    const matchesZone = selectedZone ? f.Zone === selectedZone : true;
+    const matchesZone = selectedZone ? f.Zone.split("|").includes(selectedZone) : true;
     const matchesGrade = selectedGrade ? f.Grade === selectedGrade : true;
     const matchesSpecies = selectedSpecies
       ? f.fishspecies?.toString() === selectedSpecies
