@@ -179,7 +179,7 @@ const FishPage = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="hidden lg:block w-full lg:w-[320px] sticky top-[132px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
+        <div className="hidden lg:block w-full lg:w-[320px] sticky top-[132px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] p-6 text-white custom-scrollbar">
           <h2 className="text-xl font-semibold mb-4">Filtres</h2>
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
