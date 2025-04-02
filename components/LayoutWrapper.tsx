@@ -67,7 +67,15 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           </button>
 
           <div className="flex-1 flex justify-center">
-            <img src="/images/logo.png" alt="Logo" className="h-14" />
+            <img
+              src="/images/logo.png"
+              alt="Logo"
+              className="h-14 cursor-pointer"
+              onClick={() => {
+                setActiveLink("/"); // ← mise à jour manuelle de l'état actif
+                router.push("/");
+              }}
+            />
           </div>
 
           <div className="absolute right-4">
@@ -98,20 +106,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery", "timeline"].map((path) => {
             const href = `/${path}`;
             const label = path.charAt(0).toUpperCase() + path.slice(1);
-            const isActive = activeLink.startsWith(href);
+            const isActive = activeLink !== "/" && activeLink.startsWith(href);
             return (
               <a
                 key={href}
                 href={href}
-                className={`relative group text-sm px-3 py-1 rounded transition-all whitespace-nowrap ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"
-                  }`}
+                className={`relative group text-sm px-3 py-1 rounded transition-all whitespace-nowrap ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
               >
                 {label}
                 <span
-                  className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive
-                      ? "w-14 opacity-100"
-                      : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"
-                    }`}
+                  className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive ? "w-14 opacity-100" : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"}`}
                 />
               </a>
             );
