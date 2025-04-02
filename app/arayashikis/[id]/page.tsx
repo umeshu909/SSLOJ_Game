@@ -209,7 +209,7 @@ const ArayashikiDetailPage = () => {
                 </div>
 
                 {/* DETAILS */}
-                <div className="flex-1 flex flex-col justify-between gap-4 pt-4">
+                <div className="flex-1 flex flex-col justify-between gap-4 p-6">
                     <div className="space-y-4">
                         {/* Groupe image + description */}
                         {detail.hero_names_translated ? (
@@ -258,36 +258,40 @@ const ArayashikiDetailPage = () => {
             {otherArayashikis.length > 0 && (
                 <div className="max-w-screen-lg mx-auto my-12">
                     <h3 className="text-xl font-bold mb-4 text-center">Autres Arayashikis</h3>
-                    <Swiper
-                        spaceBetween={16}
-                        slidesPerView={2}
-                        breakpoints={{
-                            640: { slidesPerView: 4 },
-                            1024: { slidesPerView: 6 }
-                        }}
-                    >
-                        {otherArayashikis.map((a) => (
-                            <SwiperSlide key={a.id}>
-                                <a
-                                    href={`/arayashikis/${a.id}`}
-                                    className="block relative w-full aspect-[3/4] rounded-xl overflow-hidden"
-                                >
-                                    <img
-                                        src={`/overlays/quality-${a.quality}.png`}
-                                        alt="overlay"
-                                        className="absolute top-0 left-0 w-full h-full object-contain pointer-events-none z-10"
-                                    />
-                                    <div className="absolute top-1/2 left-1/2 w-[90%] h-[90%] -translate-x-1/2 -translate-y-1/2 z-0">
+
+                    {/* ✅ Wrapper avec padding horizontal */}
+                    <div className="px-6">
+                        <Swiper
+                            spaceBetween={16}
+                            breakpoints={{
+                                0: { slidesPerView: 3, spaceBetween: 12 }, // Mobile
+                                640: { slidesPerView: 4 },
+                                1024: { slidesPerView: 6 },
+                            }}
+                        >
+                            {otherArayashikis.map((a) => (
+                                <SwiperSlide key={a.id}>
+                                    <a
+                                        href={`/arayashikis/${a.id}`}
+                                        className="block relative w-full aspect-[3/4] rounded-xl overflow-hidden"
+                                    >
                                         <img
-                                            src={a.pic}
-                                            alt={a.name}
-                                            className="w-full h-full object-contain"
+                                            src={`/overlays/quality-${a.quality}.png`}
+                                            alt="overlay"
+                                            className="absolute top-0 left-0 w-full h-full object-contain pointer-events-none z-10"
                                         />
-                                    </div>
-                                </a>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                                        <div className="absolute top-1/2 left-1/2 w-[90%] h-[90%] -translate-x-1/2 -translate-y-1/2 z-0">
+                                            <img
+                                                src={a.pic}
+                                                alt={a.name}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                    </a>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
                 </div>
             )}
 
