@@ -49,9 +49,9 @@ const TimelinePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
-      <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-6 gap-6">
+      <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pb-6 pt-[12px] gap-6">
         {/* Sidebar avec recherche */}
-        <div className="hidden lg:flex flex-col w-[320px] sticky top-[68px] h-fit bg-[#14122a] rounded-xl p-6 text-white">
+        <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a]  p-6 text-white">
           {/* Champ de recherche */}
           <div className="mb-6">
             <input

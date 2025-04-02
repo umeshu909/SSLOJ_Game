@@ -11,13 +11,9 @@ SELECT
   END AS quality,
   ep.level,
   ac1.name AS Attrib1,
-  ep.value1,
   ac2.name AS Attrib2,
-  ep.value2,
   ac3.name AS Attrib3,
-  ep.value3,
-  ac4.name AS Attrib4,
-  ep.value4
+  ac4.name AS Attrib4
 FROM EndlessPowerConfig ep
 LEFT JOIN AttributeConfig ac1 ON ac1.id = ep.prop1
 LEFT JOIN AttributeConfig ac2 ON ac2.id = ep.prop2

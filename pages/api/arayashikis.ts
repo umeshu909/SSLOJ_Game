@@ -4,29 +4,28 @@ import fs from "fs";
 import path from "path";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { quality } = req.query;  
+  const { quality } = req.query;
   const dbChoice = req.headers["x-db-choice"] || "FR";
 
   try {
     const db = await openDb(dbChoice as string);
+    const baseSqlPath = path.join(process.cwd(), "sql", "getArayashikis.sql");
+    let sql = fs.readFileSync(baseSqlPath, "utf-8");
 
-    // Charger le fichier SQL principal (déjà enrichi avec les attributs)
-    const mainSqlPath = path.join(process.cwd(), "sql", "getArayashikis.sql");
-    let mainQuery = fs.readFileSync(mainSqlPath, "utf-8");
+    const params: any[] = [];
 
-    // Adapter la requête si quality est vide
-    if (!quality || quality === "") {
-      mainQuery = mainQuery.replace("WHERE ep.level = ? AND", "WHERE");
+    if (quality) {
+      sql += `\nWHERE ep.quality = ?`; // On filtre bien sur ep.quality ici
+      params.push(Number(quality));
     }
 
-    const rows = quality ? await db.all(mainQuery, [quality]) : await db.all(mainQuery);
+    const data = await db.all(sql, params);
 
-    if (!rows || !Array.isArray(rows)) {
-      return res.status(404).json({ error: "cartes non trouvées" });
+    if (!Array.isArray(data)) {
+      return res.status(404).json({ error: "Cartes non trouvées" });
     }
 
-    // Nettoyer les caractères spéciaux
-    const cleanData = JSON.parse(JSON.stringify(rows, (key, value) =>
+    const cleanData = JSON.parse(JSON.stringify(data, (key, value) =>
       typeof value === "string" ? value.replace(/\u00A0/g, " ") : value
     ));
 

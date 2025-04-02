@@ -96,3 +96,8 @@ html {
   padding-bottom: 1rem;
 }
 
+.vertical-timeline-element::after {
+  border: none !important;
+  background: transparent !important;
+}
+
