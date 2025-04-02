@@ -103,7 +103,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             md:justify-center md:flex-wrap md:overflow-visible
           "
         >
-          {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery", "timeline"].map((path) => {
+          {["Chevaliers", "Arayashikis", "Artefacts", "Vestiges", "statues", "Pêche", "timeline"].map((path) => {
             const href = `/${path}`;
             const label = path.charAt(0).toUpperCase() + path.slice(1);
             const isActive = activeLink !== "/" && activeLink.startsWith(href);
