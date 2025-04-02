@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Saint Seiya Codex – Derniers ajouts",
     description: "Toutes les nouveautés des versions CN, JP et Global du jeu Saint Seiya: Legend of Justice.",
-    images: ["/images/logo.png"],
+    images: ["/images/share-logo.png"],
     creator: "@saintseiyacodex",
   },
   icons: {
