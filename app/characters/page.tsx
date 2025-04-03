@@ -28,6 +28,10 @@ const typeMapping: Record<number, string> = {
   6: "Ombre",
 };
 
+// Fonction pour retirer les accents des lettres
+const normalizeString = (str: string) =>
+  str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
 const CharactersPage = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
@@ -48,7 +52,11 @@ const CharactersPage = () => {
       }
     );
     const data = await res.json();
-    setCharacters(data.reverse());
+    if (Array.isArray(data)) {
+      setCharacters(data.reverse());
+    } else {
+      setCharacters([]);
+    }
   };
 
   useEffect(() => {
@@ -68,7 +76,9 @@ const CharactersPage = () => {
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    const rawValue = event.target.value;
+    const normalized = normalizeString(rawValue);
+    setSearchQuery(normalized);
   };
 
   const handleOnlyAvailableToggle = () => {
