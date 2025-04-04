@@ -59,7 +59,7 @@ const StatuessPage = () => {
 
                                     {/* Nom de la statue */}
                                     <h3
-                                        className="mt-3 text-xs font-semibold text-white leading-tight text-center w-full max-w-full"
+                                        className="mt-3 text-sm font-semibold text-white leading-tight text-center w-full max-w-full"
                                         title={Statues.name}
                                     >
                                         {Statues.name}

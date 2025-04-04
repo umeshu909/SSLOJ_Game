@@ -46,13 +46,13 @@ const VestigesPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white pb-20">
-            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-4">
+            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pb-4 pt-[12px]">
                 {/* Sidebar des filtres */}
-                <div className="hidden lg:flex flex-col w-[320px] sticky top-[98px] h-fit bg-[#14122a] rounded p-6 text-white">
+                <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] rounded p-6 text-white">
                     <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
 
                     <div className="mt-6">
-                        <h3 className="text-lg font-medium mb-2">Qualité</h3>
+                        <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Qualité</h3>
                         <div className="space-x-2">
                             {Object.keys(qualityMapping).map((key) => {
                                 const qualityId = Number(key);
@@ -74,7 +74,7 @@ const VestigesPage = () => {
                     {Vestiges.length === 0 ? (
                         <p className="text-center text-lg mt-4">Aucune carte trouvée</p>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4">
                             {Vestiges.map((Vestige) => (
                                 <a
                                     key={Vestige.id}
@@ -93,7 +93,7 @@ const VestigesPage = () => {
                                             />
                                         </div>
                                     </div>
-                                    <h3 className="mt-2 text-xs font-semibold text-white leading-tight text-center w-full max-w-full">
+                                    <h3 className="mt-2 text-sm font-semibold text-white leading-tight text-center w-full max-w-full">
                                         {Vestige.name}
                                     </h3>
                                 </a>
@@ -116,7 +116,7 @@ const VestigesPage = () => {
             {/* Panneau de filtres mobile */}
             <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-semibold">Filtres</h2>
+                    <h2 className="text-xl font-semibold mb-4">Filtres</h2>
                     <button
                         onClick={() => setShowMobileFilters(false)}
                         className="text-white text-sm border border-white/30 px-3 py-1 rounded"
