@@ -41,7 +41,7 @@ const StatuessPage = () => {
                                 <a
                                     key={Statues.id}
                                     href={`/statues/${Statues.id}`}
-                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded-xl p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded- p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
                                 >
                                     {/* Carte avec ratio fixe */}
                                     <div className="relative w-full aspect-[3/4] flex items-center justify-center">

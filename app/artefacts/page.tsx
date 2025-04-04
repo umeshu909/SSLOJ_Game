@@ -42,14 +42,14 @@ const ArtifactsPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
-            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-6">
+            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pb-6 pt-[12px]">
                 {/* Sidebar des filtres */}
-                <div className="hidden lg:flex flex-col w-[320px] sticky top-[68px] h-fit bg-[#14122a] rounded-xl p-6 text-white">
-                    <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
+                <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] rounded p-6 text-white">
+                    <h2 className="text-xl font-semibold mb-4">Filtres</h2>
 
                     <div className="mt-6">
-                        <h3 className="text-lg font-medium mb-2">Qualité</h3>
-                        <div className="flex flex-col gap-2">
+                        <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Qualité</h3>
+                        <div className="flex flex-wrap gap-2">
                             {Object.entries(qualityMapping).map(([key, label]) => {
                                 const qualityId = Number(key);
                                 const isSelected = selectedQuality === qualityId;
@@ -57,11 +57,10 @@ const ArtifactsPage = () => {
                                     <button
                                         key={qualityId}
                                         onClick={() => selectQuality(qualityId)}
-                                        className={`px-4 py-2 rounded-md text-sm text-left border ${
-                                            isSelected
-                                                ? "bg-blue-600 text-white border-blue-500"
-                                                : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10"
-                                        }`}
+                                        className={`w-fit px-4 py-2 rounded text-sm text-left border rounded-full ${isSelected
+                                            ? "text-white bg-purple-300/15 border-white/80"
+                                            : "text-white/70 bg-transparent border-white/40"
+                                        } hover:text-white hover:border-white transition-all`}
                                     >
                                         {label}
                                     </button>
@@ -81,7 +80,7 @@ const ArtifactsPage = () => {
                                 <a
                                     key={artifact.id}
                                     href={`/artefacts/${artifact.id}`}
-                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded-xl p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
                                 >
                                     <div className="relative w-full aspect-[3/4] flex items-center justify-center">
                                         <img
