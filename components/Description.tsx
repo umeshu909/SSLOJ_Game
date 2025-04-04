@@ -39,7 +39,8 @@ const Description = ({ text, dbChoice = "FR" }: Props) => {
     fetchParsed();
   }, [text, dbChoice]);
 
-  return <p dangerouslySetInnerHTML={{ __html: parsed }} />;
+  return <p className="inline" dangerouslySetInnerHTML={{ __html: parsed }} />;
+
 };
 
 export default Description;

@@ -205,7 +205,16 @@ const FishPage = () => {
               const borderClass = isPlatine ? "border-animated-gradient" : `border-2 ${getStaticBorderColor(fish.Grade)}`;
               const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
-                <div key={i} className={`${borderClass} overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}>
+                <div
+                  key={i}
+                  className={`${borderClass} relative overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}
+                >
+                  <div className="absolute top-1 right-1 z-10 bg-opacity-50 text-white text-xs font-bold px-1 py-0.5 rounded">
+                    <p>
+                      <span className="text-white/50">Zone :</span> {fish.Zone}
+                    </p>
+                  </div>
+
                   <div className={`${backgroundClass} h-full flex flex-col pt-4 group transition-all duration-300`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 cursor-pointer">
                       <IconCanvas
@@ -220,10 +229,16 @@ const FishPage = () => {
                     <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
-                        <p><span className="text-white/50">Zone :</span> {[fish.Zone]}</p>
-                        <p><span className="text-white/50">Bonus :</span> {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}</p>
-                        <p><span className="text-white/50">Espèces :</span> {speciesLabels[fish.fishgrade] || "Inconnue"}</p>
-                        <p><span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}</p>
+                        <p>
+                          <span className="text-white/50">Bonus :</span>{" "}
+                          {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}
+                        </p>
+                        <p>
+                          <span className="text-white/50">Espèces :</span> {speciesLabels[fish.fishgrade] || "Inconnue"}
+                        </p>
+                        <p>
+                          <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}
+                        </p>
                       </div>
                       {fish.Appât && (
                         <div className="mt-auto pt-2 flex items-center text-sm justify-between text-white/60">
@@ -243,6 +258,7 @@ const FishPage = () => {
                     </div>
                   </div>
                 </div>
+
               );
             })
           )}

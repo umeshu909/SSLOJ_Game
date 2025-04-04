@@ -253,7 +253,7 @@ const VestigeDetailPage = () => {
                                                                 className={`text-sm leading-snug ${isActive ? "opacity-100" : "opacity-30"}`}
                                                             >
                                                                 <span className="font-semibold">Niv {g.level} : </span>
-                                                                <Description text={g.desc} dbChoice = {lang} />
+                                                                <div className="text-md inline"><Description text={g.desc} dbChoice = {lang} /></div>
                                                             </div>
                                                         );
                                                     })}

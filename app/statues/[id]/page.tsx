@@ -196,17 +196,17 @@ const StatueDetailPage = () => {
                     </div>
                     <div className="flex-1 p-4">
                       <h3 className="text-md font-semibold mb-2">{skill.nameSkill}</h3>
-                      <div className="space-y-2">
-                        {group.map((g, j) => (
-                          <div
-                            key={j}
-                            className="text-sm leading-snug"
-                          >
-                            <span className="font-semibold">Niv {g.level} : </span>
-                            <Description text={g.textSkill} dbChoice={lang} />
-                          </div>
-                        ))}
-                      </div>
+                        <div className="space-y-2">
+                          {group.map((g, j) => (
+                            <div key={j} className="text-sm leading-snug">
+                              <span className="font-semibold inline">Niv {g.level} : </span>
+                              <span className="text-md inline">
+                                <Description text={g.textSkill} dbChoice={lang} />
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+
                     </div>
                   </div>
                 </div>

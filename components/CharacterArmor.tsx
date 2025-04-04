@@ -106,9 +106,9 @@ export default function CharacterArmor() {
             {armor.skills.length > 0 && (
               <div className="p-6 space-y-1 text-white text-sm">
                 {armor.skills.map((skill, index) => (
-                  <div key={index} className="mt-2 text-sm text-white flex flex-wrap items-start gap-1">
-                    <span className="font-semibold">Lv {skill.unlockSkillLv}:</span>
-                    <Description text={skill.skillDescription} dbChoice={lang} />
+                  <div key={index} className="mt-2 text-sm text-white">
+                    <span className="font-semibold inline">Lv {skill.unlockSkillLv}: </span>
+                    <span className="inline"><Description text={skill.skillDescription} dbChoice={lang} /></span>
                   </div>
 
                 ))}

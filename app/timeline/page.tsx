@@ -3,6 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import IconCanvas from "@/components/IconCanvas";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
+import Link from "next/link";
 
 type TimelineItem = {
   id: number;
@@ -82,7 +83,7 @@ const TimelinePage = () => {
         </div>
 
         {/* Timeline */}
-        <div className="w-full lg:flex-1 px-2">
+        <div className="w-full lg:flex-1 px-20">
           <VerticalTimeline>
             {filteredItems.map((item, index) => (
               <VerticalTimelineElement
@@ -97,18 +98,20 @@ const TimelinePage = () => {
                   padding: 0,
                 }}
                 icon={
-                  item.icon ? (
-                    <IconCanvas
-                      prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
-                      iconName={item.icon}
-                      jsonDir="/images/atlas/icon_touxiang/"
-                      canvasId={`timeline-canvas-${item.id}-${index}`}
-                      imgHeight={2048}
-                      size={1.6}
-                    />
-                  ) : (
-                    <div className="text-xs bg-white text-black rounded-full p-2">?</div>
-                  )
+                  <Link href={`/characters/${item.id}`}>
+                    {item.icon ? (
+                      <IconCanvas
+                        prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
+                        iconName={item.icon}
+                        jsonDir="/images/atlas/icon_touxiang/"
+                        canvasId={`timeline-canvas-${item.id}-${index}`}
+                        imgHeight={2048}
+                        size={2}
+                      />
+                    ) : (
+                      <div className="text-xs bg-white text-black rounded-full p-2">?</div>
+                    )}
+                  </Link>
                 }
                 contentStyle={{ background: "#14122a", color: "#fff" }}
                 contentArrowStyle={{ borderRight: "7px solid #14122a" }}
@@ -116,9 +119,7 @@ const TimelinePage = () => {
                 <h4 className="text-lg font-semibold mb-1">
                   {item.name || ""}
                 </h4>
-                <p className="text-lg font-semibold mb-1">{item.firstname}</p>
-                <p className="text-sm text-white/80">Date : {item.date}</p>
-                <p className="text-sm text-white/80">Version : {item.version}</p>
+                <p className="text-xs text-white/80">Date ({item.version}) : {item.date}</p>
               </VerticalTimelineElement>
             ))}
           </VerticalTimeline>

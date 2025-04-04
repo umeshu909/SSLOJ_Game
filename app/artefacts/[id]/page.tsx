@@ -143,11 +143,11 @@ const ArtifactDetailPage = () => {
                 <div className="flex-1 flex flex-col justify-between gap-6 pt-4">
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Compétence 1</h3>
-                        <Description text={artifact.skill1} dbChoice={lang} />
+                        <div className="text-md"><Description text={artifact.skill1} dbChoice={lang} /></div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 2</h3>
-                        <Description text={artifact.skill2} dbChoice={lang} />
+                        <div className="text-md"><Description text={artifact.skill2} dbChoice={lang} /></div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 3</h3>
-                        <Description text={artifact.skill3} dbChoice={lang} />
+                        <div className="text-md"><Description text={artifact.skill3} dbChoice={lang} /></div>
                     </div>
 
                     {/* Stats */}
