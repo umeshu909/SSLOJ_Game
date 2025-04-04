@@ -35,15 +35,15 @@ export default function Home() {
                 className="rounded-lg mt-2 mb-2"
               />
             </button>
-            <p>12.03.2025</p>
+            <p>03.04.2025</p>
           </div>
           <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
             <h3 className="text-xl font-semibold text-yellow-400">
               Global Version
             </h3>
-            <button onClick={() => setDbChoice("FR", 45202, "stats")}>
+            <button onClick={() => setDbChoice("FR", 15202, "stats")}>
               <img
-                src="/images/actual/GMC1wDZWUAAw1eJ.jpeg"
+                src="/images/actual/GLO.jpg"
                 alt="GL"
                 className="rounded-lg mt-2 mb-2"
               />
@@ -54,7 +54,7 @@ export default function Home() {
             <h3 className="text-xl font-semibold text-yellow-400">
               Japanese Version
             </h3>
-            <button onClick={() => setDbChoice("JP", 34202, "stats")}>
+            <button onClick={() => setDbChoice("JP", 55305, "stats")}>
               <img
                 src="/images/actual/484951514_122228135144028168_4459275125812890120_n.jpg"
                 alt="JP"
