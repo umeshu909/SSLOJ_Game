@@ -25,6 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(404).json({ error: "Personnage non trouvé" });
         }
 
+        const formatDate = (date: string) => date === "0000-00-00" ? "Not released" : date;
+
+
         // Construire la structure JSON comme demandé
         const formattedData = {
             [data.id]: {
@@ -36,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 "element": data.Type,
                 "role": data.Category,
                 "release": data2 ? {
-                    "Date": dbChoice === 'FR' ? data2.datefr : dbChoice === 'CN' ? data2.datecn : data2.datejp,
+                    "Date": dbChoice === 'JP' ? formatDate(data2.datecn) : dbChoice === 'CN' ? formatDate(data2.datecn) : formatDate(data2.datefr),
                     "Type invocation": data2.Type !== '' ? data2.Type : ''
                 } : null,
                 "stats": {
@@ -47,10 +50,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "DÉF": data.DEF,
                     "Vitesse ATQ": `${data.VitesseAttaque}%`,
                     "Taux Crit.": `${data.TauxCrit}%`,
-                    "Taux Tenacité": "1.1%",
+                    "Taux Tenacité": `${data.Tenacite}%`,
                     "GT Crit.": "0%",
                     "RÉS DGT CC": "0%",
-                    "Frappe": 239,
+                    "Frappe": `${data.Frappe}`,
                     "Esquive": 0,
                     "Vol Vie": "0%",
                     "Effet Soin": "0%",

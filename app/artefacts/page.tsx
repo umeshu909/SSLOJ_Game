@@ -21,12 +21,11 @@ const ArtifactsPage = () => {
     const fetchArtifacts = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
         const lang = localStorage.getItem("lang") || "FR";
-        const res = await fetch(`/api/artifacts${qualityParam}`,
-            {
-              headers: {
+        const res = await fetch(`/api/artifacts${qualityParam}`, {
+            headers: {
                 "x-db-choice": lang,
-              },
-            });
+            },
+        });
         const data = await res.json();
         setArtifacts(data);
     };
@@ -36,11 +35,8 @@ const ArtifactsPage = () => {
     }, [selectedQuality]);
 
     const selectQuality = (qualityId: number) => {
-        setSelectedQuality((prevSelectedQuality) =>
-            prevSelectedQuality === qualityId ? null : qualityId
-        );
+        setSelectedQuality((prev) => (prev === qualityId ? null : qualityId));
     };
-
 
     const prefix = "sactx-0-4096x4096-ASTC 6x6-icon_daojv-";
 
@@ -62,7 +58,9 @@ const ArtifactsPage = () => {
                                         key={qualityId}
                                         onClick={() => selectQuality(qualityId)}
                                         className={`px-4 py-2 rounded-md text-sm text-left border ${
-                                            isSelected ? "bg-blue-600 text-white border-blue-500" : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10"
+                                            isSelected
+                                                ? "bg-blue-600 text-white border-blue-500"
+                                                : "bg-white/5 text-white/70 border-white/10 hover:bg-white/10"
                                         }`}
                                     >
                                         {label}
@@ -70,43 +68,35 @@ const ArtifactsPage = () => {
                                 );
                             })}
                         </div>
-
                     </div>
                 </div>
 
-                {/* Grille des cartes */}
+                {/* Grille des artefacts */}
                 <div className="w-full lg:w-3/4 px-6">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-2">
-                        {Artifacts.length === 0 ? (
-                            <p className="text-center text-lg">Aucun artefact trouvé</p>
-                        ) : (
-                            Artifacts.map((Artifact, index) => (
+                    {Artifacts.length === 0 ? (
+                        <p className="text-center text-lg mt-4">Aucun artefact trouvé</p>
+                    ) : (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                            {Artifacts.map((artifact) => (
                                 <a
-                                    key={Artifact.id}
-                                    href={`/artefacts/${Artifact.id}`}
-                                    className="group block rounded-xl overflow-visible"
+                                    key={artifact.id}
+                                    href={`/artefacts/${artifact.id}`}
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded-xl p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
                                 >
-                                    {/* Carte avec ratio fixe */}
-                                    <div className="relative w-full aspect-[3/4]">
-
-                                      <img
-                                        src={Artifact.icon}
-                                        alt={Artifact.name}
-                                        className="relative z-10 w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102"
-                                      />
-
+                                    <div className="relative w-full aspect-[3/4] flex items-center justify-center">
+                                        <img
+                                            src={artifact.icon}
+                                            alt={artifact.name}
+                                            className="w-full h-auto object-contain z-10"
+                                        />
                                     </div>
-
-                                    {/* Nom du personnage */}
-                                    <div className="mt-1 px-1">
-                                        <h3 className="text-md font-semibold text-white text-center leading-tight">
-                                            {Artifact.name} 
-                                        </h3>
-                                    </div>
+                                    <h3 className="mt-3 text-sm font-semibold text-white leading-tight">
+                                        {artifact.name}
+                                    </h3>
                                 </a>
-                            ))
-                        )}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

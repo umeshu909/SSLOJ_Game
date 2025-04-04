@@ -23,12 +23,11 @@ const VestigesPage = () => {
     const fetchVestiges = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
         const lang = localStorage.getItem("lang") || "FR";
-        const res = await fetch(`/api/vestiges${qualityParam}`,
-            {
-              headers: {
+        const res = await fetch(`/api/vestiges${qualityParam}`, {
+            headers: {
                 "x-db-choice": lang,
-              },
-            });
+            },
+        });
         const data = await res.json();
         setVestiges(data);
     };
@@ -70,20 +69,19 @@ const VestigesPage = () => {
                     </div>
                 </div>
 
-                {/* Grille des cartes */}
+                {/* Grille des vestiges */}
                 <div className="w-full lg:w-3/4 lg:px-6">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-3">
-                        {Vestiges.length === 0 ? (
-                            <p className="text-center text-lg">Aucune carte trouvée</p>
-                        ) : (
-                            Vestiges.map((Vestige) => (
+                    {Vestiges.length === 0 ? (
+                        <p className="text-center text-lg mt-4">Aucune carte trouvée</p>
+                    ) : (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-4">
+                            {Vestiges.map((Vestige) => (
                                 <a
                                     key={Vestige.id}
                                     href={`/vestiges/${Vestige.id}`}
-                                    className="group block rounded-xl overflow-visible mb-1"
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded-xl p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
                                 >
                                     <div className="relative w-full h-0 pb-[100%]">
-                                        {/* Maintenir un aspect 1/1 avec la hauteur égale à la largeur */}
                                         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                                             <IconCanvas
                                                 prefix={prefix}
@@ -91,19 +89,17 @@ const VestigesPage = () => {
                                                 jsonDir="/images/atlas/shenghen/"
                                                 canvasId={`canvas-${Vestige.id}`}
                                                 imgHeight={4096}
-                                                size={4}
+                                                size={5}
                                             />
                                         </div>
                                     </div>
-                                    <div className="mt-1 px-1">
-                                        <h3 className="text-sm font-semibold text-white text-center leading-tight">
-                                            {Vestige.name}
-                                        </h3>
-                                    </div>
+                                    <h3 className="mt-2 text-xs font-semibold text-white leading-tight text-center w-full max-w-full">
+                                        {Vestige.name}
+                                    </h3>
                                 </a>
-                            ))
-                        )}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 

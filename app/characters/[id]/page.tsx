@@ -8,6 +8,7 @@ import CharacterSidebar from "@/components/CharacterSidebar";
 import CharacterHeaderInfo from "@/components/CharacterHeaderInfo";
 import CharacterStatsList from "@/components/CharacterStatsList";
 import BackButton from "@/components/BackButton";
+import { ArrowLeft } from "lucide-react";
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -31,8 +32,8 @@ export default function CharacterPage() {
     const [constellations, setConstellations] = useState<Constellation[]>([]);
     const [links, setLinks] = useState<Link[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         async function fetchCharacterData() {
@@ -47,7 +48,8 @@ export default function CharacterPage() {
                 });
 
                 if (!characterResponse.ok) {
-                    throw new Error(`Erreur lors de la récupération des données du personnage (code ${characterResponse.status})`);
+                    setNotFound(true);
+                    return;
                 }
 
                 const dataCharacter = await characterResponse.json();
@@ -62,15 +64,16 @@ export default function CharacterPage() {
                 });
 
                 if (!skillsResponse.ok) {
-                    throw new Error(`Erreur lors de la récupération des données du personnage (code ${skillsResponse.status})`);
+                    setNotFound(true);
+                    return;
                 }
 
                 const dataSkills = await skillsResponse.json();
                 setSkills(dataSkills || []);
-                setError(null);
+                setNotFound(false);
             } catch (error: any) {
                 console.error("Erreur lors du chargement des personnages:", error);
-                setError(error.message || "Erreur inconnue");
+                setNotFound(true);
             } finally {
                 setLoading(false);
             }
@@ -89,11 +92,15 @@ export default function CharacterPage() {
         );
     }
 
-    if (error) {
+    if (notFound) {
         return (
-            <div className="min-h-screen flex justify-center items-center">
-                <p className="text-red-500">{error}</p>
+            <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+                {/* TEXTE D'INFORMATION */}
+                <p className="text-lg mt-4">
+                    Cet personnage’est pas disponible dans la base de données sélectionnée.
+                </p>
             </div>
+
         );
     }
 

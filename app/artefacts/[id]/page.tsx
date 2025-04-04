@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import Description from "@/components/Description";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { ArrowLeft } from "lucide-react";
 
 interface ArtifactDetail {
     id: number;
@@ -96,8 +97,11 @@ const ArtifactDetailPage = () => {
 
     if (notFound) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-center text-white p-6">
-                <p className="text-lg">Cet artefact n’est pas disponible dans la base de données sélectionnée.</p>
+            <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+                {/* TEXTE D'INFORMATION */}
+                <p className="text-lg mt-4">
+                    Cet artefact n’est pas disponible dans la base de données sélectionnée.
+                </p>
             </div>
         );
     }

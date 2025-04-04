@@ -143,9 +143,24 @@ const ArayashikiDetailPage = () => {
 
     if (notFound) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-center text-white p-6">
-                <p className="text-lg">Cette carte n’est pas disponible dans la base de données sélectionnée.</p>
+            <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+                {/* RETOUR */}
+                <div className="hidden md:block py-2">
+                    <button
+                        onClick={() => router.push("/arayashikis")}
+                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                    >
+                        <ArrowLeft size={16} />
+                        Retour aux arayashikis
+                    </button>
+                </div>
+
+                {/* TEXTE D'INFORMATION */}
+                <p className="text-lg mt-4">
+                    Cette carte n’est pas disponible dans la base de données sélectionnée.
+                </p>
             </div>
+
         );
     }
 
