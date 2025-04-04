@@ -147,7 +147,7 @@ const CharactersPage = () => {
                   <button
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
-                    className={`px-4 py-2 rounded cursor-pointer text-sm border ${
+                    className={`px-4 py-2 rounded-full cursor-pointer text-sm border ${
                       selectedRoles.includes(roleId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40"
@@ -174,7 +174,7 @@ const CharactersPage = () => {
                   <button
                     key={typeId}
                     onClick={() => toggleType(typeId)}
-                    className={`px-4 py-2 rounded cursor-pointer text-sm border ${
+                    className={`px-4 py-2 rounded-full cursor-pointer text-sm border ${
                       selectedTypes.includes(typeId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40"
