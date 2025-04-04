@@ -18,6 +18,14 @@ const roleMapping: Record<number, string> = {
   4: "Assassin",
   5: "Support",
 };
+const roleIconMapping: Record<number, string> = {
+  1: "/images/icons/icon_12g_fang_attack.png", // Tank
+  2: "/images/icons/icon_12g_gong_attack.png", // Guerrier
+  3: "/images/icons/icon_12g_ji_attack.png",    // Compétence
+  4: "/images/icons/icon_12g_ci_attack.png",    // Assassin
+  5: "/images/icons/icon_12g_fu_attack.png",    // Support
+};
+
 
 const typeMapping: Record<number, string> = {
   1: "Eau",
@@ -27,6 +35,15 @@ const typeMapping: Record<number, string> = {
   5: "Lumière",
   6: "Ombre",
 };
+const typeIconMapping: Record<number, string> = {
+  1: "/images/icons/sds_shenqi_shui.png", // Eau
+  2: "/images/icons/sds_shenqi_huo.png",   // Feu
+  3: "/images/icons/sds_shenqi_feng.png",  // Vent
+  4: "/images/icons/sds_shenqi_tu.png",    // Terre
+  5: "/images/icons/sds_shenqi_guang.png", // Lumière
+  6: "/images/icons/sds_shenqi_an.png",    // Ombre
+};
+
 
 // Fonction pour retirer les accents des lettres
 const normalizeString = (str: string) =>
@@ -130,15 +147,21 @@ const CharactersPage = () => {
                   <button
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
-                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70  ${selectedRoles.includes(roleId)
-                      ? "text-white/100 bg-purple-300/15 border-white/80"
-                      : "text-white/70 bg-transparent border-white/40"}  
-                    hover:text-white hover:border-white transition-all`}
+                    className={`px-4 py-2 rounded cursor-pointer text-sm border ${
+                      selectedRoles.includes(roleId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40"
+                    } hover:text-white hover:border-white transition-all`}
                   >
-                    {roleMapping[roleId]}
+                    <img
+                      src={roleIconMapping[roleId]}
+                      alt={roleMapping[roleId]}
+                      className="w-6 h-6"
+                    />
                   </button>
                 );
               })}
+
             </div>
           </div>
 
@@ -151,15 +174,21 @@ const CharactersPage = () => {
                   <button
                     key={typeId}
                     onClick={() => toggleType(typeId)}
-                    className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70 ${selectedTypes.includes(typeId)
-                      ? "text-white/100 bg-purple-300/15 border-white/80"
-                      : "text-white/70 bg-transparent border-white/40"}  
-                    hover:text-white hover:border-white transition-all`}
+                    className={`px-4 py-2 rounded cursor-pointer text-sm border ${
+                      selectedTypes.includes(typeId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40"
+                    } hover:text-white hover:border-white transition-all`}
                   >
-                    {typeMapping[typeId]}
+                    <img
+                      src={typeIconMapping[typeId]}
+                      alt={typeMapping[typeId]}
+                      className="w-6 h-6"
+                    />
                   </button>
                 );
               })}
+
             </div>
           </div>
 
@@ -268,15 +297,21 @@ const CharactersPage = () => {
                 <button
                   key={roleId}
                   onClick={() => toggleRole(roleId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${selectedRoles.includes(roleId)
-                    ? "border-[#82B0D6]"
-                    : "border-white/20"
-                    } bg-transparent hover:border-[#82B0D6] transition-all`}
+                  className={`px-4 py-2 rounded-full text-sm border ${
+                    selectedRoles.includes(roleId)
+                      ? "border-[#82B0D6]"
+                      : "border-white/20"
+                  } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
-                  {roleMapping[roleId]}
+                  <img
+                    src={roleIconMapping[roleId]}
+                    alt={roleMapping[roleId]}
+                    className="w-6 h-6"
+                  />
                 </button>
               );
             })}
+
           </div>
         </div>
 
@@ -289,15 +324,21 @@ const CharactersPage = () => {
                 <button
                   key={typeId}
                   onClick={() => toggleType(typeId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${selectedTypes.includes(typeId)
-                    ? "border-[#82B0D6]"
-                    : "border-white/20"
-                    } bg-transparent hover:border-[#82B0D6] transition-all`}
+                  className={`px-4 py-2 rounded-full text-sm border ${
+                    selectedTypes.includes(typeId)
+                      ? "border-[#82B0D6]"
+                      : "border-white/20"
+                  } bg-transparent hover:border-[#82B0D6] transition-all`}
                 >
-                  {typeMapping[typeId]}
+                  <img
+                    src={typeIconMapping[typeId]}
+                    alt={typeMapping[typeId]}
+                    className="w-6 h-6"
+                  />
                 </button>
               );
             })}
+
           </div>
         </div>
         <div className="flex items-center mt-12 gap-4">
