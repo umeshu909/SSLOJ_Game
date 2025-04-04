@@ -35,7 +35,7 @@ export default function Home() {
                 className="rounded-lg mt-2 mb-2"
               />
             </button>
-            <p>03.04.2025</p>
+            <p>12.03.2025</p>
           </div>
           <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
             <h3 className="text-xl font-semibold text-yellow-400">
@@ -48,7 +48,7 @@ export default function Home() {
                 className="rounded-lg mt-2 mb-2"
               />
             </button>
-            <p>13.03.2025</p>
+            <p>03.04.2025</p>
           </div>
           <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
             <h3 className="text-xl font-semibold text-yellow-400">
