@@ -168,22 +168,22 @@ const CharactersPage = () => {
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
             <div className="flex flex-wrap gap-2">
   {Object.keys(roleMapping).map((key) => {
-    const roleId = Number(key);
+    const typeId = Number(key);
     return (
       <button
-        key={roleId}
-        onClick={() => toggleRole(roleId)}
+        key={typeId}
+        onClick={() => toggleType(typeId)}
         className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-          ${selectedRoles.includes(roleId)
+          ${selectedTypes.includes(typeId)
             ? "text-white bg-purple-300/15 border-white/80"
             : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
       >
         <img
-          src={typeIconMapping[roleId]}
-          alt={typeMapping[roleId]}
+          src={typeIconMapping[typeId]}
+          alt={typeMapping[typeId]}
           className="w-6 h-6"
         />
-        <span className="whitespace-nowrap">{typeMapping[roleId]}</span>
+        <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
       </button>
     );
   })}
