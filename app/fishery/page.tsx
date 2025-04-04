@@ -220,6 +220,7 @@ const FishPage = () => {
                     <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
+                        <p><span className="text-white/50">Zone :</span> {[fish.Zone]}</p>
                         <p><span className="text-white/50">Bonus :</span> {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}</p>
                         <p><span className="text-white/50">Espèces :</span> {speciesLabels[fish.fishgrade] || "Inconnue"}</p>
                         <p><span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}</p>

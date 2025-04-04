@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 "element": data.Type,
                 "role": data.Category,
                 "release": data2 ? {
-                    "Date": dbChoice === 'JP' ? formatDate(data2.datecn) : dbChoice === 'CN' ? formatDate(data2.datecn) : formatDate(data2.datefr),
+                    "Date": dbChoice === 'JP' ? formatDate(data2.datejp) : dbChoice === 'CN' ? formatDate(data2.datecn) : formatDate(data2.datefr),
                     "Type invocation": data2.Type !== '' ? data2.Type : ''
                 } : null,
                 "stats": {
