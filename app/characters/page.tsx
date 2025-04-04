@@ -141,58 +141,56 @@ const CharactersPage = () => {
           <div>
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
             <div className="flex flex-wrap gap-2">
-              {Object.keys(roleMapping).map((key) => {
-                const roleId = Number(key);
-                return (
-                  <button
-                    key={roleId}
-                    onClick={() => toggleRole(roleId)}
-                    className={`px-4 py-2 rounded-full cursor-pointer text-sm border ${
-                      selectedRoles.includes(roleId)
-                        ? "text-white bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40"
-                    } hover:text-white hover:border-white transition-all`}
-                  >
-                    <img
-                      src={roleIconMapping[roleId]}
-                      alt={roleMapping[roleId]}
-                      className="w-6 h-6"
-                    />
-                  </button>
-                );
-              })}
-
-            </div>
+  {Object.keys(roleMapping).map((key) => {
+    const roleId = Number(key);
+    return (
+      <button
+        key={roleId}
+        onClick={() => toggleRole(roleId)}
+        className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+          ${selectedRoles.includes(roleId)
+            ? "text-white bg-purple-300/15 border-white/80"
+            : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+      >
+        <img
+          src={roleIconMapping[roleId]}
+          alt={roleMapping[roleId]}
+          className="w-6 h-6"
+        />
+        <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
+      </button>
+    );
+  })}
+</div>
           </div>
 
           <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
             <div className="flex flex-wrap gap-2">
-              {Object.keys(typeMapping).map((key) => {
-                const typeId = Number(key);
-                return (
-                  <button
-                    key={typeId}
-                    onClick={() => toggleType(typeId)}
-                    className={`px-4 py-2 rounded-full cursor-pointer text-sm border ${
-                      selectedTypes.includes(typeId)
-                        ? "text-white bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40"
-                    } hover:text-white hover:border-white transition-all`}
-                  >
-                    <img
-                      src={typeIconMapping[typeId]}
-                      alt={typeMapping[typeId]}
-                      className="w-6 h-6"
-                    />
-                  </button>
-                );
-              })}
-
-            </div>
+  {Object.keys(roleMapping).map((key) => {
+    const roleId = Number(key);
+    return (
+      <button
+        key={roleId}
+        onClick={() => toggleRole(roleId)}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+          ${selectedRoles.includes(roleId)
+            ? "text-white bg-purple-300/15 border-white/80"
+            : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+      >
+        <img
+          src={typeIconMapping[roleId]}
+          alt={typeMapping[roleId]}
+          className="w-6 h-6"
+        />
+        <span className="whitespace-nowrap">{typeMapping[roleId]}</span>
+      </button>
+    );
+  })}
+</div>
           </div>
 
-          <div className="flex items-center mt-12 gap-4">
+          <div className="flex items-center mt-6 gap-4">
             <div className="flex-1 text-sm text-white/70 leading-snug">
               Afficher uniquement les Astraux
             </div>
