@@ -48,7 +48,7 @@ const VestigesPage = () => {
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white pb-20">
             <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-4">
                 {/* Sidebar des filtres */}
-                <div className="hidden lg:flex flex-col w-[320px] sticky top-[98px] h-fit bg-[#14122a] rounded-xl p-6 text-white">
+                <div className="hidden lg:flex flex-col w-[320px] sticky top-[98px] h-fit bg-[#14122a] rounded p-6 text-white">
                     <h2 className="text-2xl font-semibold mb-4">Filtres</h2>
 
                     <div className="mt-6">
@@ -59,7 +59,7 @@ const VestigesPage = () => {
                                 return (
                                     <button
                                         key={qualityId}
-                                        className={`w-8 h-8 rounded-full m-1 border-2 ${selectedQuality === qualityId ? "border-[#82B0D6]" : "border-white/20"} ${qualityMapping[qualityId]} hover:border-[#82B0D6] transition-all`}
+                                        className={`w-8 h-8 rounded m-1 border-2 ${selectedQuality === qualityId ? "border-[#82B0D6]" : "border-white/20"} ${qualityMapping[qualityId]} hover:border-[#82B0D6] transition-all`}
                                         onClick={() => selectQuality(qualityId)}
                                         title={qualityMapping[qualityId].replace("bg-", "").replace("-500", "")}
                                     />
@@ -79,7 +79,7 @@ const VestigesPage = () => {
                                 <a
                                     key={Vestige.id}
                                     href={`/vestiges/${Vestige.id}`}
-                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded-xl p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
                                 >
                                     <div className="relative w-full h-0 pb-[100%]">
                                         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
