@@ -30,7 +30,7 @@ const StatuessPage = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
-            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-6">
+            <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-6 justify-center">
                 {/* Grille des cartes */}
                 <div className="w-full lg:w-3/4 px-6">
                     {Statuess.length === 0 ? (
@@ -41,7 +41,7 @@ const StatuessPage = () => {
                                 <a
                                     key={Statues.id}
                                     href={`/statues/${Statues.id}`}
-                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded- p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.02]"
+                                    className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded- p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.01]"
                                 >
                                     {/* Carte avec ratio fixe */}
                                     <div className="relative w-full aspect-[3/4] flex items-center justify-center">
