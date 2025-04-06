@@ -2,6 +2,7 @@ SELECT
   HeroConfig.id,
   ArmorInfoConfig.icon,
   ArmorInfoConfig.overname,
+  HeroConfig.showtp,
   AC_Armor1.name AS ArmorAttrib1, AC_Armor1.percent AS percentArmor1, ArmorInfoConfig.grownum1,
   AC_Armor2.name AS ArmorAttrib2, AC_Armor2.percent AS percentArmor2, ArmorInfoConfig.grownum2,
   AC_Armor3.name AS ArmorAttrib3, AC_Armor3.percent AS percentArmor3, ArmorInfoConfig.grownum3,

@@ -78,7 +78,9 @@ export default function CharacterArmor() {
   };*/
 
   // Utilisation de la logique pour déterminer si le switch est possible
-  const canSwitch = armor.party === 5 || armor.party === 6 || armor.showtp === 7;
+  const canSwitch = armor.party === 5 || armor.party === 6 || armor.showtp == 7;
+
+console.log("LA VALEUR DE SHOWTP :" + armor.showtp);
 
   const handleLevelChange = (selectedLevel: number) => {
     if (canSwitch) {
