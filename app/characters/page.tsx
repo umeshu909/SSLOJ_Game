@@ -110,15 +110,15 @@ const CharactersPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white relative pb-20">
       {/* Recherche mobile */}
       <div className="lg:hidden w-full px-4 my-4 relative">
-            <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Rechercher un personnage"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
-            />
-          </div>
+        <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
+        <input
+          type="text"
+          placeholder="Rechercher un personnage"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
+        />
+      </div>
 
       <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 py-[12px]">
         {/* Filtres desktop */}
@@ -141,53 +141,53 @@ const CharactersPage = () => {
           <div>
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
             <div className="flex flex-wrap gap-2">
-  {Object.keys(roleMapping).map((key) => {
-    const roleId = Number(key);
-    return (
-      <button
-        key={roleId}
-        onClick={() => toggleRole(roleId)}
-        className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+              {Object.keys(roleMapping).map((key) => {
+                const roleId = Number(key);
+                return (
+                  <button
+                    key={roleId}
+                    onClick={() => toggleRole(roleId)}
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
           ${selectedRoles.includes(roleId)
-            ? "text-white bg-purple-300/15 border-white/80"
-            : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-      >
-        <img
-          src={roleIconMapping[roleId]}
-          alt={roleMapping[roleId]}
-          className="w-6 h-6"
-        />
-        <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
-      </button>
-    );
-  })}
-</div>
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                  >
+                    <img
+                      src={roleIconMapping[roleId]}
+                      alt={roleMapping[roleId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
             <div className="flex flex-wrap gap-2">
-  {Object.keys(roleMapping).map((key) => {
-    const typeId = Number(key);
-    return (
-      <button
-        key={typeId}
-        onClick={() => toggleType(typeId)}
-        className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+              {Object.keys(typeMapping).map((key) => {
+                const typeId = Number(key);
+                return (
+                  <button
+                    key={typeId}
+                    onClick={() => toggleType(typeId)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
           ${selectedTypes.includes(typeId)
-            ? "text-white bg-purple-300/15 border-white/80"
-            : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-      >
-        <img
-          src={typeIconMapping[typeId]}
-          alt={typeMapping[typeId]}
-          className="w-6 h-6"
-        />
-        <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
-      </button>
-    );
-  })}
-</div>
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                  >
+                    <img
+                      src={typeIconMapping[typeId]}
+                      alt={typeMapping[typeId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="flex items-center mt-6 gap-4">
@@ -286,89 +286,87 @@ const CharactersPage = () => {
         </div>
 
         {/* Filtres mobiles */}
-        <div className="mb-6">
-          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
-          <div className="flex flex-wrap gap-2">
-            {Object.keys(roleMapping).map((key) => {
-              const roleId = Number(key);
-              return (
-                <button
-                  key={roleId}
-                  onClick={() => toggleRole(roleId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedRoles.includes(roleId)
-                      ? "border-[#82B0D6]"
-                      : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  <img
-                    src={roleIconMapping[roleId]}
-                    alt={roleMapping[roleId]}
-                    className="w-6 h-6"
-                  />
-                </button>
-              );
-            })}
-
-          </div>
-        </div>
-
         <div>
-          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
-          <div className="flex flex-wrap gap-2">
-            {Object.keys(typeMapping).map((key) => {
-              const typeId = Number(key);
-              return (
-                <button
-                  key={typeId}
-                  onClick={() => toggleType(typeId)}
-                  className={`px-4 py-2 rounded-full text-sm border ${
-                    selectedTypes.includes(typeId)
-                      ? "border-[#82B0D6]"
-                      : "border-white/20"
-                  } bg-transparent hover:border-[#82B0D6] transition-all`}
-                >
-                  <img
-                    src={typeIconMapping[typeId]}
-                    alt={typeMapping[typeId]}
-                    className="w-6 h-6"
-                  />
-                </button>
-              );
-            })}
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.keys(roleMapping).map((key) => {
+                const roleId = Number(key);
+                return (
+                  <button
+                    key={roleId}
+                    onClick={() => toggleRole(roleId)}
+                    className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+          ${selectedRoles.includes(roleId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                  >
+                    <img
+                      src={roleIconMapping[roleId]}
+                      alt={roleMapping[roleId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
+          <div className="mt-6">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.keys(typeMapping).map((key) => {
+                const typeId = Number(key);
+                return (
+                  <button
+                    key={typeId}
+                    onClick={() => toggleType(typeId)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+          ${selectedTypes.includes(typeId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                  >
+                    <img
+                      src={typeIconMapping[typeId]}
+                      alt={typeMapping[typeId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        <div className="flex items-center mt-12 gap-4">
+          <div className="flex-1 text-sm text-white/70 leading-snug">
+            Afficher uniquement les Astraux
+          </div>
+          <div
+            onClick={handleOnlyAstrauxToggle}
+            className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
+              }`}
+          >
+            <div
+              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
+                }`}
+            />
           </div>
         </div>
-        <div className="flex items-center mt-12 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les Astraux
-            </div>
-            <div
-              onClick={handleOnlyAstrauxToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
-                }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
-                  }`}
-              />
-            </div>
+        <div className="flex items-center mt-6 gap-4">
+          <div className="flex-1 text-sm text-white/70 leading-snug">
+            Afficher uniquement les persos disponibles sur la glo
           </div>
-          <div className="flex items-center mt-6 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les persos disponibles sur la glo
-            </div>
+          <div
+            onClick={handleOnlyAvailableToggle}
+            className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+              }`}
+          >
             <div
-              onClick={handleOnlyAvailableToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
+              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
                 }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
-                  }`}
-              />
-            </div>
+            />
           </div>
+        </div>
       </div>
     </div>
   );
