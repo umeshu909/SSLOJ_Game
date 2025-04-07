@@ -92,6 +92,7 @@ const TimelinePage = () => {
               className="w-full px-4 py-2 rounded-md bg-[#1e1c3a] border border-white/10 placeholder-white/40 text-white"
             />
           </div>
+
           <VerticalTimeline>
             {filteredItems.map((item, index) => (
               <VerticalTimelineElement
@@ -121,18 +122,19 @@ const TimelinePage = () => {
                     )}
                   </Link>
                 }
-                contentStyle={{ background: "#14122a", color: "#fff" }}
-                contentArrowStyle={{ borderRight: "7px solid #14122a" }}
+                contentStyle={{ background: "#2C2F58", color: "#fff" }}
+                contentArrowStyle={{ borderRight: "7px solid #2C2F58" }}
               >
                 <h4 className="text-lg font-semibold mb-1">
                   {item.name || ""}
                 </h4>
                 <p className="text-xs text-white/80">
-                  Date ({item.version}) : {item.date}
+                  <b>Date ({item.version})</b> : {item.date}
                 </p>
               </VerticalTimelineElement>
             ))}
           </VerticalTimeline>
+          
         </div>
       </div>
 
