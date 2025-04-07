@@ -246,7 +246,7 @@ const FishPage = () => {
                           <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}
                         </p>
                         <p>
-                          <span className="text-white/50">Taille max :</span> {fish.fishsize}
+                          <span className="text-white/50">Taille max :</span> {fish.fishsize} cm
                         </p>
 
                       </div>
