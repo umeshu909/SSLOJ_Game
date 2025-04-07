@@ -33,7 +33,6 @@ const TimelinePage = () => {
   const filteredItems = useMemo(() => {
     const query = search.trim().toLowerCase();
     if (!query) return items;
-
     return items.filter((item) =>
       [item.name, item.firstname, item.lastname]
         .filter(Boolean)
@@ -51,8 +50,8 @@ const TimelinePage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
       <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pb-6 pt-[12px] gap-6">
-        {/* Sidebar avec recherche */}
-        <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a]  p-6 text-white">
+        {/* Sidebar de filtre pour desktop */}
+        <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
           {/* Champ de recherche */}
           <div className="mb-6">
             <input
@@ -63,7 +62,6 @@ const TimelinePage = () => {
               className="w-full px-4 py-2 rounded-md bg-[#1e1c3a] border border-white/10 placeholder-white/40 text-white"
             />
           </div>
-
           <h2 className="text-2xl font-semibold mb-4">Versions</h2>
           <div className="flex flex-col gap-2">
             {(["ALL", "GLO", "CN", "JP"] as const).map((version) => (
@@ -83,7 +81,17 @@ const TimelinePage = () => {
         </div>
 
         {/* Timeline */}
-        <div className="w-full lg:flex-1 px-20">
+        <div className="w-full lg:flex-1 px-4">
+          {/* Pour mobile, on affiche un champ de recherche en haut */}
+          <div className="lg:hidden mb-4">
+            <input
+              type="text"
+              placeholder="Rechercher un personnage..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-4 py-2 rounded-md bg-[#1e1c3a] border border-white/10 placeholder-white/40 text-white"
+            />
+          </div>
           <VerticalTimeline>
             {filteredItems.map((item, index) => (
               <VerticalTimelineElement
@@ -119,10 +127,32 @@ const TimelinePage = () => {
                 <h4 className="text-lg font-semibold mb-1">
                   {item.name || ""}
                 </h4>
-                <p className="text-xs text-white/80">Date ({item.version}) : {item.date}</p>
+                <p className="text-xs text-white/80">
+                  Date ({item.version}) : {item.date}
+                </p>
               </VerticalTimelineElement>
             ))}
           </VerticalTimeline>
+        </div>
+      </div>
+
+      {/* Filtre mobile fixé en bas */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md p-4">
+        <p className="text-center text-sm text-white/60 mb-2">Versions</p>
+        <div className="flex flex-wrap justify-center gap-1 text-xs">
+          {(["ALL", "GLO", "CN", "JP"] as const).map((version) => (
+            <button
+              key={version}
+              onClick={() => setSelectedVersion(version)}
+              className={`px-4 py-2 rounded-md text-sm ${
+                selectedVersion === version
+                  ? "bg-blue-600 text-white"
+                  : "bg-white/5 text-white/70 hover:bg-white/10"
+              }`}
+            >
+              {versionLabels[version]}
+            </button>
+          ))}
         </div>
       </div>
     </div>
