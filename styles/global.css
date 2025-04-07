@@ -1,0 +1,60 @@
+/* Texte blanc pour les événements */
+.fc .fc-event-title,
+.fc .fc-daygrid-event-dot,
+.fc .fc-timegrid-event .fc-event-title {
+  color: white !important;
+}
+
+/* Texte blanc pour les en-têtes de jour */
+.fc .fc-col-header-cell-cushion {
+  color: white !important;
+}
+
+/* Pour les heures de la colonne de gauche */
+.fc .fc-timegrid-slot-label {
+  color: white !important;
+}
+/* Pour changer le fond du calendrier */
+.fc {
+  background-color: #111827;
+}
+
+/* Titre du mois (ex: April 2025) */
+.fc .fc-toolbar-title {
+  color: white !important;
+}
+
+/* Jours de la semaine (ex: Mon 07) */
+.fc .fc-col-header-cell-cushion {
+  color: black !important;
+}
+
+/* Flèches prev/next + bouton "Today" */
+.fc .fc-button {
+  color: white !important;
+  background-color: #1f2937 !important; /* gris foncé */
+  border: none !important;
+}
+
+.fc .fc-button:hover {
+  background-color: #374151 !important;
+}
+.fc-daygrid-day-number {
+  display: block !important;
+  color: white !important;
+  font-size: 0.875rem;
+  padding: 4px 6px;
+  text-align: right;
+  z-index: 1;
+}
+
+/* Fond de la cellule du jour actuel */
+.fc .fc-day-today {
+  background-color: #5f2f46 !important; /* gris violet plus clair */
+}
+
+/* Optionnel : texte plus lisible dans la cellule du jour */
+.fc .fc-day-today .fc-daygrid-day-number {
+  color: white !important;
+  font-weight: bold;
+}

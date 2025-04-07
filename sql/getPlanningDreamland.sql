@@ -1,6 +1,6 @@
 SELECT 
 d.opentime AS 'Start',
-d.duration || ' days' AS 'Nb days',
+d.duration AS duration,
 CASE d.mapgroup 
     WHEN 1 THEN 'Poseidon'
     WHEN 2 THEN 'Pope'
