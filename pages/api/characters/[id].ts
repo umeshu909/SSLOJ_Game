@@ -61,8 +61,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "Accélération": 0,
                     "Dégâts Infligés": "0%",
                     "Degats Reduits": "0%",
-                    "Régénération sur les Attaques": "10.34%",
-                    "Régénération sur les Dégâts": "1.76%"
+                    "Régénération sur les Attaques": "0%",
+                    "Régénération sur les Dégâts": "0%"
                 }
             }
         };

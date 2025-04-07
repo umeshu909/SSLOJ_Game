@@ -146,7 +146,7 @@ const StatueDetailPage = () => {
                     {char.Attrib1 && (
                       <span>
                         {char.Attrib1.trim()} :{" "}
-                        {char.Percent1 === "1"
+                        {char.Percent1 == "1"
                           ? `${(char.valup1 * 100 * (multiplier / 2)).toFixed(2)}%`
                           : (char.valup1 * (multiplier / 2)).toFixed(2)}
                       </span>
@@ -154,7 +154,7 @@ const StatueDetailPage = () => {
                     {char.Attrib2 && (
                       <span>
                         {char.Attrib2.trim()} :{" "}
-                        {char.Percent2 === "1"
+                        {char.Percent2 == "1"
                           ? `${(char.valup2 * 100 * (multiplier / 2)).toFixed(2)}%`
                           : (char.valup2 * (multiplier / 2)).toFixed(2)}
                       </span>
@@ -162,7 +162,7 @@ const StatueDetailPage = () => {
                     {char.Attrib3 && (
                       <span>
                         {char.Attrib3.trim()} :{" "}
-                        {char.Percent3 === "1"
+                        {char.Percent3 == "1"
                           ? `${(char.valup3 * 100 * (multiplier / 2)).toFixed(2)}%`
                           : (char.valup3 * (multiplier / 2)).toFixed(2)}
                       </span>
@@ -172,6 +172,8 @@ const StatueDetailPage = () => {
               </div>
             ))}
           </div>
+
+
         </div>
 
         {/* Skills */}
