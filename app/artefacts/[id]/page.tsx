@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import Description from "@/components/Description";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { ArrowLeft } from "lucide-react";
 
 interface ArtifactDetail {
     id: number;
@@ -23,7 +22,6 @@ interface ArtifactDetail {
     quality: number;
 }
 
-
 const ArtifactDetailPage = () => {
     const { id } = useParams();
     const [artifact, setArtifact] = useState<ArtifactDetail | null>(null);
@@ -38,67 +36,54 @@ const ArtifactDetailPage = () => {
         setLang(storedLang);
     }, []);
 
-
     useEffect(() => {
         if (!id || !lang) return;
-
         const fetchData = async () => {
             try {
-                const res = await fetch(`/api/artifacts/${id}?level=${level}`,
-                {
-                  headers: {
-                    "x-db-choice": lang,
-                  },
+                const res = await fetch(`/api/artifacts/${id}?level=${level}`, {
+                    headers: {
+                        "x-db-choice": lang,
+                    },
                 });
-
                 if (!res.ok) {
                     setNotFound(true);
                     setArtifact(null);
                     return;
                 }
-
                 const data = await res.json();
                 setArtifact(data);
-                setNotFound(false); // tout va bien
+                setNotFound(false);
                 if (data.length > 0) setQuality(parseInt(data[0].quality));
             } catch (error) {
                 console.error("Erreur lors de la récupération du détail:", error);
                 setNotFound(true);
                 setArtifact(null);
             }
-
         };
-
         fetchData();
     }, [id, level, lang]);
 
     useEffect(() => {
         if (!artifact) return;
-
         const fetchOthers = async () => {
-            const res = await fetch("/api/artifacts",
-            {
-              headers: {
-                "x-db-choice": lang,
-              },
+            const res = await fetch("/api/artifacts", {
+                headers: {
+                    "x-db-choice": lang,
+                },
             });
             const all = await res.json();
-
-            const filtered = all.filter((a: ArtifactDetail) => 
+            const filtered = all.filter((a: ArtifactDetail) =>
                 a.id !== Number(id) &&
                 String(a.quality) === String(artifact.quality)
             );
-
             setOthers(filtered);
         };
-
         fetchOthers();
     }, [artifact]);
 
     if (notFound) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
-                {/* TEXTE D'INFORMATION */}
                 <p className="text-lg mt-4">
                     Cet artefact n’est pas disponible dans la base de données sélectionnée.
                 </p>
@@ -110,19 +95,28 @@ const ArtifactDetailPage = () => {
         return <p className="text-white">Chargement...</p>;
     }
 
+    // Définition des seuils pour activer chaque compétence
+    const skillThresholds = {
+        skill1: 1,
+        skill2: 3,
+        skill3: 5,
+    };
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6">
             <div className="max-w-screen-lg mx-auto bg-[#14122a] rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-8">
-                {/* Image + nom */}
-                <div className="flex flex-col items-center gap-4">
-                    <div className="relative w-[220px] aspect-[3/4]">
-                        <img
-                            src={artifact.icon}
-                            alt={artifact.name}
-                            className="relative z-10 w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102"
-                        />
-                    </div>
-                    <h2 className="text-xl font-semibold text-center">{artifact.name}</h2>
+            {/* Image et nom */}
+            <div className="flex flex-col items-center gap-4">
+                <div className="relative w-[220px] aspect-[3/4]">
+                    <img
+                        src={artifact.icon}
+                        alt={artifact.name}
+                        className="relative z-10 w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102"
+                    />
+                </div>
+                <h2 className="text-xl font-semibold text-center">{artifact.name}</h2>
+                {/* Cette sélection est visible uniquement en mode desktop */}
+                <div className="hidden md:block">
                     <p className="text-xs text-white/60 mt-1">Sélectionner le niveau</p>
                     <div className="flex flex-wrap justify-center gap-2 mt-1">
                         {[1, 2, 3, 4, 5].map((lvl) => (
@@ -138,19 +132,27 @@ const ArtifactDetailPage = () => {
                         ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Description + Skills */}
+
+                {/* Description des compétences */}
                 <div className="flex-1 flex flex-col justify-between gap-6 pt-4">
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Compétence 1</h3>
-                        <div className="text-md"><Description text={artifact.skill1} dbChoice={lang} /></div>
+                        <div className={`text-md ${level >= skillThresholds.skill1 ? "opacity-100" : "opacity-30"}`}>
+                            <Description text={artifact.skill1} dbChoice={lang} />
+                        </div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 2</h3>
-                        <div className="text-md"><Description text={artifact.skill2} dbChoice={lang} /></div>
+                        <div className={`text-md ${level >= skillThresholds.skill2 ? "opacity-100" : "opacity-30"}`}>
+                            <Description text={artifact.skill2} dbChoice={lang} />
+                        </div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 3</h3>
-                        <div className="text-md"><Description text={artifact.skill3} dbChoice={lang} /></div>
+                        <div className={`text-md ${level >= skillThresholds.skill3 ? "opacity-100" : "opacity-30"}`}>
+                            <Description text={artifact.skill3} dbChoice={lang} />
+                        </div>
                     </div>
 
-                    {/* Stats */}
+                    {/* Statistiques */}
                     <div className="bg-[#1d1b35] border border-white/10 rounded-lg p-4 text-sm flex flex-wrap gap-6 justify-center">
                         <div className="min-w-[120px]">
                             <ul className="text-xs text-white/80">
@@ -160,6 +162,24 @@ const ArtifactDetailPage = () => {
                             </ul>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Filtre mobile pour le niveau */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-4">
+                <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau</p>
+                <div className="flex justify-center gap-1">
+                    {[1, 2, 3, 4, 5].map((lvl) => (
+                        <button
+                            key={lvl}
+                            onClick={() => setLevel(lvl)}
+                            className={`px-3 py-2 text-sm rounded-md transition-all duration-150 ${
+                                level === lvl ? "bg-blue-600 text-white" : "bg-white/10 text-white/60 hover:bg-white/20"
+                            }`}
+                        >
+                            {lvl}
+                        </button>
+                    ))}
                 </div>
             </div>
 

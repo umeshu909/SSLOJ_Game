@@ -53,7 +53,7 @@ const VestigeDetailPage = () => {
     const params = useParams();
     const router = useRouter();
     const id = params?.id;
-    const [level, setLevel] = useState<number>(30);
+    const [level, setLevel] = useState<number>(5);
     const [quality, setQuality] = useState<number>(3);
 
     const prefix = "sactx-0-2048x4096-ASTC 6x6-shenghen-";
