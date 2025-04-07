@@ -15,6 +15,9 @@ interface Fish {
   iconid2: string;
   fishgrade: number;
   fishspecies: number;
+  fishsize: number;
+  fishprice : number;
+  weight: number;
   stat1: string;
   stat2: string;
   stat3: string;
@@ -215,6 +218,12 @@ const FishPage = () => {
                     </p>
                   </div>
 
+                  <div className="absolute top-1 left-1 z-10 bg-opacity-50 text-white text-xs font-bold px-1 py-0.5 rounded">
+                    <p>
+                      {speciesLabels[fish.fishspecies] || "Inconnue"}
+                    </p>
+                  </div>
+
                   <div className={`${backgroundClass} h-full flex flex-col pt-4 group transition-all duration-300`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 cursor-pointer">
                       <IconCanvas
@@ -234,11 +243,12 @@ const FishPage = () => {
                           {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}
                         </p>
                         <p>
-                          <span className="text-white/50">Espèces :</span> {speciesLabels[fish.fishgrade] || "Inconnue"}
-                        </p>
-                        <p>
                           <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}
                         </p>
+                        <p>
+                          <span className="text-white/50">Taille max :</span> {fish.fishsize}
+                        </p>
+
                       </div>
                       {fish.Appât && (
                         <div className="mt-auto pt-2 flex items-center text-sm justify-between text-white/60">
