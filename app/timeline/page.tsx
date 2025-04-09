@@ -136,28 +136,27 @@ const TimelinePage = () => {
                 contentStyle={{ background: "#2C2F58", color: "#fff" }}
                 contentArrowStyle={{ borderRight: "7px solid #2C2F58" }}
               >
+
+                {item.type && typeIconMapping[item.type] && (
+                  <div className="absolute top-2 right-2">
+                    <IconCanvas
+                      prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
+                      iconName={typeIconMapping[item.type]}
+                      jsonDir="/images/atlas/icon_daojv/"
+                      canvasId={`canvas-type-${item.id}`}
+                      imgHeight={4096}
+                      size={2}
+                    />
+                  </div>
+                )}
+
                 <h4 className="text-lg font-semibold mb-1">
                   {item.name || ""}
                 </h4>
                 <p className="text-xs text-white/80">
                   <b>Date ({item.version})</b> : {item.date}
                 </p>
-                <p className="text-xs text-white/80">
-                  {item.type && typeIconMapping[item.type] ? (
-                  <IconCanvas
-                    // Vous pouvez ajuster ce prefix selon vos besoins pour l'icône de summoning
-                    prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-" 
-                    iconName={typeIconMapping[item.type]}
-                    jsonDir="/images/atlas/icon_daojv/"
-                    canvasId={`canvas-type-${item.id}`}
-                    imgHeight={4096}
-                    size={2}
-                  />
-                ) : (
-                  <span>{item.type || "Inconnu"}</span>
-                )}
-
-                </p>
+  
               </VerticalTimelineElement>
             ))}
           </VerticalTimeline>
