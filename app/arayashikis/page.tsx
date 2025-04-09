@@ -179,6 +179,7 @@ const ArayashikisPage = () => {
       <div className={`lg:hidden fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
+          
           <div className="flex space-x-2">
             {/* Annulation filtres */}
             <button

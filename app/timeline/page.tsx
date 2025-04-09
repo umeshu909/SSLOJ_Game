@@ -13,6 +13,16 @@ type TimelineItem = {
   name: string | null;
   firstname: string | null;
   lastname: string | null;
+  type: string | null;
+};
+
+const typeIconMapping = {
+  Sablier: "sds_aodexiusi_shikongzhixi",
+  Petale: "sds_huaban_fen",
+  p2w: "sds_cishanmujuan_wp",
+  Stellaire: "sds_migongbi_icon",
+  Fleche: "sds_xindoushiup_wp",
+  Bouclier: "sds_xindoushiup_dun_wp"
 };
 
 const TimelinePage = () => {
@@ -23,6 +33,7 @@ const TimelinePage = () => {
   const fetchTimeline = async () => {
     const res = await fetch(`/api/timeline/${selectedVersion}`);
     const data = await res.json();
+    console.log(data)
     setItems(data);
   };
 
@@ -130,6 +141,22 @@ const TimelinePage = () => {
                 </h4>
                 <p className="text-xs text-white/80">
                   <b>Date ({item.version})</b> : {item.date}
+                </p>
+                <p className="text-xs text-white/80">
+                  {item.type && typeIconMapping[item.type] ? (
+                  <IconCanvas
+                    // Vous pouvez ajuster ce prefix selon vos besoins pour l'icône de summoning
+                    prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-" 
+                    iconName={typeIconMapping[item.type]}
+                    jsonDir="/images/atlas/icon_daojv/"
+                    canvasId={`canvas-type-${item.id}`}
+                    imgHeight={4096}
+                    size={2}
+                  />
+                ) : (
+                  <span>{item.type || "Inconnu"}</span>
+                )}
+
                 </p>
               </VerticalTimelineElement>
             ))}
