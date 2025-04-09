@@ -17,6 +17,7 @@ const qualityMapping: Record<number, string> = {
 const ArtifactsPage = () => {
     const [Artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [selectedQuality, setSelectedQuality] = useState<number | null>(null);
+    const [showMobileFilters, setShowMobileFilters] = useState(false);
 
     const fetchArtifacts = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
@@ -97,6 +98,64 @@ const ArtifactsPage = () => {
                         </div>
                     )}
                 </div>
+
+
+                {/* Bouton "Filtrer" mobile */}
+                <div className="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center z-40">
+                  <button
+                    onClick={() => setShowMobileFilters(true)}
+                    className="bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg"
+                  >
+                    Filtrer
+                  </button>
+                </div>
+
+                {/* Panneau de filtres mobile */}
+                <div
+                  className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${
+                    showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+                    <button
+                      onClick={() => setShowMobileFilters(false)}
+                      className="text-white text-sm border border-white/30 px-3 py-1 rounded"
+                    >
+                      Fermer
+                    </button>
+                  </div>
+                  <div className="mt-6">
+                    <h3 className="text-xs uppercase font-medium mb-3 text-white/80">
+                      Qualité
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(qualityMapping).map(([key, label]) => {
+                        const qualityId = Number(key);
+                        const isSelected = selectedQuality === qualityId;
+                        return (
+                          <button
+                            key={qualityId}
+                            onClick={() => {
+                                selectQuality(qualityId);
+                                setShowMobileFilters(false); // Ferme la fenêtre de filtre après la sélection
+                              }}
+                            className={`w-fit px-4 py-2 rounded text-sm text-left border rounded-full ${
+                              isSelected
+                                ? "text-white bg-purple-300/15 border-white/80"
+                                : "text-white/70 bg-transparent border-white/40"
+                            } hover:text-white hover:border-white transition-all`}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+
+
             </div>
         </div>
     );

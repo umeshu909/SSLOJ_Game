@@ -68,7 +68,21 @@ const ArayashikisPage = () => {
       <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pt-[12px]">
         {/* Filtres Desktop */}
         <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
-          <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Filtres</h2>
+            {/* Annulation des filtres */}
+            <button
+              onClick={() => {
+                setSelectedQuality(null);
+                setSelectedAttribute(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              ✕
+            </button>
+          </div>
 
           {/* Filtres qualité */}
           <div className="mb-6">
@@ -165,12 +179,27 @@ const ArayashikisPage = () => {
       <div className={`lg:hidden fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
-          <button
-            onClick={() => setShowMobileFilters(false)}
-            className="text-white text-sm border border-white/30 px-3 py-1 rounded"
-          >
-            Fermer
-          </button>
+          <div className="flex space-x-2">
+            {/* Annulation filtres */}
+            <button
+              onClick={() => {
+                setSelectedQuality(null);
+                setSelectedAttribute(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              ✕
+            </button>
+            {/* Bouton Fermer */}
+            <button
+              onClick={() => setShowMobileFilters(false)}
+              className="text-white text-sm border border-white/30 px-3 py-1 rounded"
+            >
+              Fermer
+            </button>
+          </div>
+
         </div>
 
         {/* Qualité mobile */}

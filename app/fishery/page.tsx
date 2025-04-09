@@ -183,7 +183,24 @@ const FishPage = () => {
 
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="hidden lg:block w-full lg:w-[320px] sticky top-[132px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] p-6 text-white custom-scrollbar">
-          <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+          
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Filtres</h2>
+            {/* Annulation des filtres */}
+            <button
+              onClick={() => {
+                setSelectedZone(null);
+                setSelectedGrade(null);
+                setSelectedSpecies(null);
+                setSelectedBonus(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              ✕
+            </button>
+          </div>
+
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
@@ -278,12 +295,30 @@ const FishPage = () => {
       <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
-          <button
-            onClick={() => setShowMobileFilters(false)}
-            className="text-white text-sm border border-white/30 px-3 py-1 rounded"
-          >
-            <X size={16} className="inline mr-1" /> Fermer
-          </button>
+
+          <div className="flex space-x-2">
+            {/* Annulation filtres */}
+            <button
+              onClick={() => {
+                setSelectedZone(null);
+                setSelectedGrade(null);
+                setSelectedSpecies(null);
+                setSelectedBonus(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              ✕
+            </button>
+            {/* Bouton Fermer */}
+            <button
+              onClick={() => setShowMobileFilters(false)}
+              className="text-white text-sm border border-white/30 px-3 py-1 rounded"
+            >
+              Fermer
+            </button>
+          </div>
+
         </div>
         {renderFilters()}
       </div>

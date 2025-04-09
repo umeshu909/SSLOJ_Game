@@ -134,7 +134,10 @@ const VestigesPage = () => {
                                 <button
                                     key={qualityId}
                                     className={`w-8 h-8 rounded-full border-2 ${selectedQuality === qualityId ? "border-[#82B0D6]" : "border-white/20"} ${qualityMapping[qualityId]} hover:border-[#82B0D6] transition-all`}
-                                    onClick={() => selectQuality(qualityId)}
+                                    onClick={() => {
+                                        selectQuality(qualityId);
+                                        setShowMobileFilters(false); // Ferme la fenêtre de filtre après la sélection
+                                      }}
                                     title={qualityMapping[qualityId].replace("bg-", "").replace("-500", "")}
                                 />
                             );

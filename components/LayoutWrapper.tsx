@@ -80,7 +80,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
           <div className="absolute right-4">
             <select
-              className="bg-transparent border border-white/30 text-white text-sm px-2 py-1 rounded"
+              className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
               value={language}
               onChange={(e) => {
                 setLanguage(e.target.value);
