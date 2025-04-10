@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import IconCanvas from "@/components/IconCanvas";
 import Description from "@/components/Description";
+import { ArrowLeft } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
 
 interface Skill {
   skillid: string;
@@ -36,6 +37,7 @@ const StatueDetailPage = () => {
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [multiplier, setMultiplier] = useState<number>(0);
+  const router = useRouter();
 
   const prefixCharacter = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const prefixSkill = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
@@ -91,10 +93,19 @@ const StatueDetailPage = () => {
 
   if (notFound) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-center text-white p-6">
-        <p className="text-lg">
-          Cette statue n’est pas disponible dans la base de données sélectionnée.
-        </p>
+      <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+          <div className="hidden md:block py-2 cursor-pointer">
+              <button
+                  onClick={() => router.push("/statues")}
+                  className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+              >
+                  <ArrowLeft size={16} />
+                  Retour aux Statues
+              </button>
+          </div>
+          <p className="text-lg mt-4">
+              Cette statue n’est pas disponible dans la base de données sélectionnée.
+          </p>
       </div>
     );
   }
@@ -105,8 +116,19 @@ const StatueDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6 pb-24">
-      <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 py-8 flex flex-col md:flex-row gap-8">
+      <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 py-8 flex flex-col md:flex-row gap-8">      
         <div className="w-full md:w-1/3 flex flex-col space-y-4">
+
+          <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
+              <button
+                  onClick={() => router.push("/statues")}
+                  className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
+              >
+                  <ArrowLeft size={16} />
+                  Retour aux statues
+              </button>
+          </div>
+
           {/* Sélecteur visible uniquement en mode desktop */}
           <div className="hidden md:block">
             <p className="mb-1 text-sm text-white/60">Multiplicateur :</p>

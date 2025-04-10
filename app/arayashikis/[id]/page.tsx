@@ -148,7 +148,7 @@ const ArayashikiDetailPage = () => {
                 <div className="hidden md:block py-2">
                     <button
                         onClick={() => router.push("/arayashikis")}
-                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
                         Retour aux arayashikis
@@ -181,7 +181,7 @@ const ArayashikiDetailPage = () => {
             <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
                 <button
                     onClick={() => router.push("/arayashikis")}
-                    className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                    className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                 >
                     <ArrowLeft size={16} />
                     Retour aux arayashikis

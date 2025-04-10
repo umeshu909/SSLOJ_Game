@@ -155,7 +155,7 @@ const VestigeDetailPage = () => {
                 <div className="hidden md:block py-2">
                     <button
                         onClick={() => router.push("/vestiges")}
-                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
                         Retour aux vestiges
@@ -186,7 +186,7 @@ const VestigeDetailPage = () => {
                 <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
                     <button
                         onClick={() => router.push("/vestiges")}
-                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                        className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
                         Retour aux vestiges

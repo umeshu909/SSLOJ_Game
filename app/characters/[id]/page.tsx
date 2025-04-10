@@ -96,6 +96,9 @@ export default function CharacterPage() {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
                 {/* TEXTE D'INFORMATION */}
+                <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
+                    <BackButton fallbackHref="/characters" label="Retour aux personnages"/>
+                </div>
                 <p className="text-lg mt-4">
                     Cet personnage’est pas disponible dans la base de données sélectionnée.
                 </p>
@@ -107,7 +110,7 @@ export default function CharacterPage() {
     return (
         <div className="min-h-screen text-white">
             <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
-                <BackButton fallbackHref="/characters" label="Retour aux personnages" />
+                <BackButton fallbackHref="/characters" label="Retour aux personnages"/>
             </div>
             <main className="py-4 px-4 lg:px-6 lg:py-0">
                 {/* Mobile top header */}

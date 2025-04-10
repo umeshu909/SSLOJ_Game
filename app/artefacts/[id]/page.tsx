@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Description from "@/components/Description";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { ArrowLeft } from "lucide-react";
 
 interface ArtifactDetail {
     id: number;
@@ -30,6 +31,7 @@ const ArtifactDetailPage = () => {
     const [quality, setQuality] = useState<number>(0);
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         const storedLang = localStorage.getItem("lang") || "FR";
@@ -83,11 +85,20 @@ const ArtifactDetailPage = () => {
 
     if (notFound) {
         return (
-            <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
-                <p className="text-lg mt-4">
-                    Cet artefact n’est pas disponible dans la base de données sélectionnée.
-                </p>
-            </div>
+          <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+              <div className="hidden md:block py-2 cursor-pointer">
+                  <button
+                      onClick={() => router.push("/artefacts")}
+                      className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+                  >
+                      <ArrowLeft size={16} />
+                      Retour aux Artefacts
+                  </button>
+              </div>
+              <p className="text-lg mt-4">
+                  Cet artefact n’est pas disponible dans la base de données sélectionnée.
+              </p>
+          </div>
         );
     }
 
@@ -105,8 +116,21 @@ const ArtifactDetailPage = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6">
             <div className="max-w-screen-lg mx-auto bg-[#14122a] rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-8">
-            {/* Image et nom */}
+
+            
             <div className="flex flex-col items-center gap-4">
+
+                  <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
+                      <button
+                          onClick={() => router.push("/artefacts")}
+                          className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
+                      >
+                          <ArrowLeft size={16} />
+                          Retour aux artefacts
+                      </button>
+                  </div>
+
+                {/* Image et nom */}
                 <div className="relative w-[220px] aspect-[3/4]">
                     <img
                         src={artifact.icon}

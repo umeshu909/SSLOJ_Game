@@ -26,7 +26,7 @@ const BackButton = ({ label = "Retour", fallbackHref }: BackButtonProps) => {
   return (
     <button
       onClick={handleClick}
-      className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
+      className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
     >
       <ArrowLeft className="w-4 h-4" /> {label}
     </button>
