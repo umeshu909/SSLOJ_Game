@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
 import { Filter, X, Search } from "lucide-react";
+import { XCircle } from "lucide-react";
 
 interface Fish {
   ZoneNom: string;
@@ -198,7 +199,9 @@ const FishPage = () => {
               className="text-white hover:text-red-500 text-xl"
               title="Réinitialiser les filtres"
             >
-              ✕
+              <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
+                Réinitialiser <XCircle size={14} className="text-red-500" />
+              </span>
             </button>
             )}
           </div>

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { XCircle } from "lucide-react";
 
 // Structure d'un Arayashiki retourné par l'API
 interface Arayashiki {
@@ -30,10 +31,12 @@ const ArayashikisPage = () => {
   const [selectedAttribute, setSelectedAttribute] = useState<string | null>(null);
   const [availableAttributes, setAvailableAttributes] = useState<string[]>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [lang, setLang] = useState<string | null>(null);
 
   // Récupération des données depuis l'API
   const fetchArayashikis = async () => {
-    const lang = localStorage.getItem("lang") || "FR";
+    if (!lang) return;
+
     const qualityToIndex = { Gris: 1, Bleu: 2, Violet: 3, Or: 4, Rouge: 5 };
     const qualityParam = selectedQuality ? `?quality=${qualityToIndex[selectedQuality]}` : "";
 
@@ -54,8 +57,13 @@ const ArayashikisPage = () => {
   };
 
   useEffect(() => {
-    fetchArayashikis();
-  }, [selectedQuality]);
+    const storedLang = localStorage.getItem("lang") || "FR";
+    setLang(storedLang);
+  }, []);
+
+  useEffect(() => {
+    if (lang !== null) fetchArayashikis();
+  }, [selectedQuality, lang]);
 
   // Application des filtres sélectionnés
   const filteredArayashikis = arayashikis.filter((a) => {
@@ -81,7 +89,9 @@ const ArayashikisPage = () => {
               className="text-white hover:text-red-500 text-xl"
               title="Réinitialiser les filtres"
             >
-              ✕
+              <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
+                Réinitialiser <XCircle size={14} className="text-red-500" />
+              </span>
             </button>
             )}
           </div>
@@ -192,7 +202,9 @@ const ArayashikisPage = () => {
               className="text-white hover:text-red-500 text-xl"
               title="Réinitialiser les filtres"
             >
-              ✕
+              <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
+                Réinitialiser <XCircle size={14} className="text-red-500" />
+              </span>
             </button>
             {/* Bouton Fermer */}
             <button
