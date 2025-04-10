@@ -187,6 +187,7 @@ const FishPage = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Filtres</h2>
             {/* Annulation des filtres */}
+            {(selectedZone || selectedGrade || selectedSpecies || selectedBonus) && (
             <button
               onClick={() => {
                 setSelectedZone(null);
@@ -199,6 +200,7 @@ const FishPage = () => {
             >
               ✕
             </button>
+            )}
           </div>
 
           <div className="mb-6 relative">

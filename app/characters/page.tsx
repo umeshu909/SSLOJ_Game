@@ -127,6 +127,7 @@ const CharactersPage = () => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Filtres</h2>
               {/* Annulation des filtres */}
+              {(selectedRoles.length > 0 || selectedTypes.length > 0 || onlyAvailable || onlyAstraux || searchQuery !== "") && (
               <button
                 onClick={() => {
                   setSelectedRoles([]);
@@ -140,6 +141,7 @@ const CharactersPage = () => {
               >
                 ✕
               </button>
+              )}
             </div>
 
           <div className="mb-6 relative">

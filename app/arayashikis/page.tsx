@@ -72,6 +72,7 @@ const ArayashikisPage = () => {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Filtres</h2>
             {/* Annulation des filtres */}
+            {(selectedQuality || selectedAttribute) && (
             <button
               onClick={() => {
                 setSelectedQuality(null);
@@ -82,6 +83,7 @@ const ArayashikisPage = () => {
             >
               ✕
             </button>
+            )}
           </div>
 
           {/* Filtres qualité */}
