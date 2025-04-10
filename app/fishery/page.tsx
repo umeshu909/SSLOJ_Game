@@ -37,12 +37,12 @@ const speciesLabels: Record<string, string> = {
 };
 
 const speciesTypePerso: Record<string, string> = {
-  "1": "Compétence",
-  "2": "Assassin",
-  "3": "Guerrier",
-  "4": "Assistant",
-  "5": "Tank",
-  "6": "N/A",
+  1: "Compétence",
+  2: "Assassin",
+  3: "Guerrier",
+  4: "Assistant",
+  5: "Tank",
+  6: "N/A",
 };
 
 const getStaticBorderColor = (grade: string) => {
@@ -265,7 +265,7 @@ const FishPage = () => {
                           {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}
                         </p>
                         <p>
-                          <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}
+                          <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishspecies] || "Inconnue"}
                         </p>
                         <p>
                           <span className="text-white/50">Taille max :</span> {fish.fishsize} cm
