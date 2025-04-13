@@ -35,8 +35,13 @@ export default function TimelineCalendar() {
   const [events, setEvents] = useState([])
   const [lang, setLang] = useState("FR")
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
-  const [enabledCategories, setEnabledCategories] = useState<string[]>(categories.map(c => c.id));
+  const [enabledCategories, setEnabledCategories] = useState<string[]>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [currentView, setCurrentView] = useState("dayGridMonth");
+
+  const handleViewChange = (view: any) => {
+    setCurrentView(view.view.type);
+  };
 
   useEffect(() => {
     const storedLang = localStorage.getItem("lang") || "FR"
@@ -50,13 +55,42 @@ export default function TimelineCalendar() {
       headers: { 'x-db-choice': lang }
     })
       .then(res => res.json())
-      .then(data => setEvents(data))
+      .then(data => {
+        const formatted = data.map((event: any) => ({
+          ...event,
+          start: event.start?.replace(' ', 'T'),
+          end: event.end?.replace(' ', 'T'),
+          allDay: false // très important !
+        }))
+        setEvents(formatted)
+      })
       .catch((err) => console.error("Erreur fetch calendar :", err))
   }, [lang])
 
   const filteredEvents = useMemo(() => {
-    return events.filter((e: any) => enabledCategories.includes(e.category))
-  }, [events, enabledCategories])
+    return events
+      .filter((e: any) => enabledCategories.includes(e.category))
+      .map((e: any) => {
+        if (currentView === "dayGridMonth" && e.category === "relics") {
+          const start = new Date(e.start);
+          const end = new Date(e.end);
+          const duration = end.getTime() - start.getTime();
+          const durationDays = duration / (1000 * 60 * 60 * 24);
+
+          if (durationDays >= 1) {
+            const adjustedEnd = new Date(end);
+            adjustedEnd.setDate(adjustedEnd.getDate() - 1);
+            return {
+              ...e,
+              end: adjustedEnd.toISOString()
+            };
+          }
+        }
+
+        return e;
+      });
+  }, [events, enabledCategories, currentView]);
+
 
   const toggleCategory = (categoryId: string) => {
     setEnabledCategories(prev =>
@@ -65,6 +99,23 @@ export default function TimelineCalendar() {
         : [...prev, categoryId]
     )
   }
+
+  const renderEventContent = (eventInfo: any) => {
+    const viewType = eventInfo.view.type;
+    const startTime = eventInfo.timeText;
+
+    // Vue mensuelle : pas d'heure
+    if (currentView === "dayGridMonth") {
+      return <div style={{ paddingLeft: "4px" }}>{eventInfo.event.title}</div>;
+    }
+
+    // Vues avec heure : on affiche l'heure + titre
+    return (
+      <div>
+        <b>{startTime}</b> <span>{eventInfo.event.title}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
@@ -104,10 +155,17 @@ export default function TimelineCalendar() {
           showNonCurrentDates={true}
           initialView="dayGridMonth"
           fixedWeekCount={true}
+          eventContent={renderEventContent}
           events={filteredEvents}
+          datesSet={handleViewChange}
           timeZone="local"
           height="auto"
-          eventTimeFormat={false}
+          eventTimeFormat={{
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // pour format 24h
+          }}
+
           allDaySlot={true}
           slotMinTime="00:00:00"
           slotMaxTime="24:00:00"
@@ -122,7 +180,7 @@ export default function TimelineCalendar() {
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth'
+            right: 'dayGridMonth, timeGridWeek'
           }}
         />
       </div>
@@ -137,46 +195,122 @@ export default function TimelineCalendar() {
             >
               ×
             </button>
+
             <h2 className="text-xl font-bold mb-4">{selectedEvent.title}</h2>
-            <div className="text-sm text-gray-400 mb-4">
-              Du{" "}
-              <span className="text-white">
-                {format(new Date(selectedEvent.start), "dd MMMM yyyy", { locale: fr })}
-              </span>{" "}
-              au{" "}
-              <span className="text-white">
-                {format(new Date(selectedEvent.end), "dd MMMM yyyy", { locale: fr })}
-              </span>
-            </div>
-            {selectedEvent.extendedProps?.buffs?.length > 0 && (
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold">Buffs :</h3>
-                <ul className="list-disc list-inside text-sm space-y-1 mt-1">
-                  {selectedEvent.extendedProps.buffs.map((buff: string, i: number) => (
-                    <li key={i} dangerouslySetInnerHTML={{ __html: buff }} />
-                  ))}
-                </ul>
-              </div>
+
+            {selectedEvent.extendedProps?.phase === "enrollday" && (
+              <>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Du</span>{" "}
+                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
+                  <span className="text-white font-medium">au</span>{" "}
+                  {format(new Date(selectedEvent.end), "dd/MM/yyyy HH:mm")}
+                </div>
+                <div className="text-sm text-gray-400 mb-2">
+                  <span className="text-white font-medium">Nb joueurs :</span> {selectedEvent.extendedProps?.players} joueurs 
+                </div>
+                <div className="text-sm text-gray-400 mb-2">
+                  <span className="text-white font-medium">Durée :</span> 2 jours 
+                </div>
+
+
+              </>
             )}
-            {(selectedEvent.extendedProps.enrollday ||
-              selectedEvent.extendedProps.stamina ||
-              selectedEvent.extendedProps.silence ||
-              selectedEvent.extendedProps.total ||
-              selectedEvent.extendedProps.players) && (
-              <div>
-                <h3 className="text-lg font-semibold mb-1">Infos Relique :</h3>
-                <ul className="text-sm space-y-1">
-                  {selectedEvent.extendedProps.players && <li>Joueurs : {selectedEvent.extendedProps.players}</li>}
-                  {selectedEvent.extendedProps.enrollday && <li>Pré-inscription : {selectedEvent.extendedProps.enrollday}</li>}
-                  {selectedEvent.extendedProps.stamina && <li>Stamina : {selectedEvent.extendedProps.stamina}</li>}
-                  {selectedEvent.extendedProps.silence && <li>Silence : {selectedEvent.extendedProps.silence}</li>}
-                  {selectedEvent.extendedProps.total && <li>Durée totale : {selectedEvent.extendedProps.total}</li>}
-                </ul>
-              </div>
+
+            {selectedEvent.extendedProps?.phase === "stamina" && (
+              <>
+                <div className="text-sm text-gray-400 mb-2">
+                  <span className="text-white font-medium">Du</span>{" "}
+                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
+                  <span className="text-white font-medium">au</span>{" "}
+                  {format(new Date(selectedEvent.end), "dd/MM/yyyy HH:mm")}
+                </div>
+                <br/>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Boss 1 :</span> Orphée 
+                  <span className="text-white font-medium"> (14/04/2025 a 14h)</span>
+                </div>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Boss 2 :</span> Radamanthis 
+                  <span className="text-white font-medium"> (16/04/2025 a 14h)</span>
+                </div>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Boss 3 :</span> Pandore 
+                  <span className="text-white font-medium"> (18/04/2025 a 14h)</span>
+                </div>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Boss 4 :</span> Hypnos et Thanatos 
+                  <span className="text-white font-medium"> (18/04/2025 a 14h après Pandore)</span>
+                </div>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Rerun Boss 4 :</span> Hypnos et Thanatos <br/>
+                  <span className="text-white font-medium">- 20/04/2025 a 14h</span><br/>
+                  <span className="text-white font-medium">- 22/04/2025 a 14h</span><br/>
+                  <span className="text-white font-medium">- 24/04/2025 a 14h</span><br/>
+                </div>
+
+                {selectedEvent.extendedProps?.buffs?.length > 0 && (
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Boss :</h3>
+                    <ul className="list-disc list-inside text-sm space-y-1 mt-1">
+                      {selectedEvent.extendedProps.buffs.map((b: string, i: number) => (
+                        <li key={i} dangerouslySetInnerHTML={{ __html: b }} />
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            )}
+
+            {selectedEvent.extendedProps?.phase === "silence" && (
+              <>
+                <div className="text-sm text-gray-400 mb-4">
+                  <span className="text-white font-medium">Du</span>{" "}
+                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
+                  <span className="text-white font-medium">au</span>{" "}
+                  {format(new Date(selectedEvent.end), "dd/MM/yyyy HH:mm")}
+                </div>
+                <div className="text-sm text-red-400 font-semibold mb-2">
+                  La stamina ne peut plus être récupérée pendant cette période.
+                </div>
+                <div className="text-sm text-gray-400 mb-2">
+                  <span className="text-white font-medium">Durée :</span> 1 jours 
+                </div>
+              </>
+            )}
+
+            {!selectedEvent.extendedProps?.phase && (
+              <>
+                <div className="text-sm text-gray-400 mb-4">
+                  Du{" "}
+                  <span className="text-white">
+                    {format(new Date(selectedEvent.start), "dd MMMM yyyy", { locale: fr })}
+                  </span>{" "}
+                  au{" "}
+                  <span className="text-white">
+                    {format(new Date(selectedEvent.end), "dd MMMM yyyy", { locale: fr })}
+                  </span>
+                </div>
+                {selectedEvent.extendedProps?.buffs?.length > 0 && (
+                  <div className="mb-4">
+                    <h3 className="text-lg font-semibold">Boss :</h3>
+                    <ul className="list-disc list-inside text-sm space-y-1 mt-1">
+                      {selectedEvent.extendedProps.buffs.map((b: string, i: number) => (
+                        <li key={i} dangerouslySetInnerHTML={{ __html: b }} />
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
       )}
+
+
+
+
+
 
       {/* Bouton mobile "Filtrer" */}
       <div className="lg:hidden fixed bottom-4 left-0 right-0 flex justify-center z-40">
