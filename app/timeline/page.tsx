@@ -33,7 +33,6 @@ const TimelinePage = () => {
   const fetchTimeline = async () => {
     const res = await fetch(`/api/timeline/${selectedVersion}`);
     const data = await res.json();
-    console.log(data)
     setItems(data);
   };
 
