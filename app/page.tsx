@@ -93,24 +93,7 @@ export default function Home() {
       </div>
 
 
-      {/* Discord Widget - en bas de page */}
-      <div className="mt-20 flex flex-col items-center justify-center">
-        <h2 className="text-xl font-semibold mb-4 text-white text-center">
-          Rejoignez-nous sur Discord
-        </h2>
-        <div className="rounded-xl overflow-hidden shadow-lg border border-white/10">
-        <iframe
-          src="https://discord.com/widget?id=1357290722302361651&theme=dark"
-          width="350"
-          height="500"
-          allowtransparency="true" // ✅ ici en minuscule
-          frameBorder="0"
-          sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-          className="rounded-xl"
-      />
 
-        </div>
-      </div>
 
       
     </div>
