@@ -3,6 +3,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import DropdownMenuPortal from "../components/DropdownMenuPortal";
+
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const headerRef = useRef<HTMLElement>(null);
@@ -15,7 +17,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     return "FR";
   });
 
+  const autresRef = useRef<HTMLDivElement>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const [isMounted, setIsMounted] = useState(false);
+
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleUrlChange = () => {
@@ -45,6 +56,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   useEffect(() => {
     localStorage.setItem("lang", language);
   }, [language]);
+
+  useEffect(() => {
+    if (showDropdown && autresRef.current) {
+      const rect = autresRef.current.getBoundingClientRect();
+      setDropdownPos({
+        top: rect.bottom + 4,
+        left: rect.left,
+      });
+    }
+  }, [showDropdown]);
 
   const handleBack = () => {
     if (document.referrer && window.history.length > 1) {
@@ -103,7 +124,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             md:justify-center md:flex-wrap md:overflow-visible
           "
         >
-          {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery", "timeline"].map((path) => {
+          {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery"].map((path) => {
             const href = `/${path}`;
             const label = path.charAt(0).toUpperCase() + path.slice(1);
             const isActive = activeLink !== "/" && activeLink.startsWith(href);
@@ -120,13 +141,44 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               </a>
             );
           })}
+
+          {/* Menu déroulant Autres */}
+          <div
+            ref={autresRef}
+            onClick={() => setShowDropdown((prev) => !prev)}
+            className="relative text-sm px-3 py-1 rounded text-white hover:text-yellow-400 transition-all whitespace-nowrap cursor-pointer"
+          >
+            Autres
+          </div>
+
+          {isMounted && showDropdown && (
+            <DropdownMenuPortal position={dropdownPos}>
+              <a
+                href="/timeline"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/timeline") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowDropdown(false)}
+              >
+                Timeline
+              </a>
+            </DropdownMenuPortal>
+          )}
+
+
+
+
+
         </nav>
+
+
       </header>
 
       <main
         style={{ paddingTop: offsetTop }}
-        className="bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] min-h-screen"
+        className="bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] min-h-screen overflow-visible"
       >
+
         {children}
       </main>
     </>
