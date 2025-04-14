@@ -67,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Récupère les infos du personnage pour déterminer si on doit afficher le switch
     const heroRow = await db.get(`SELECT party, showtp FROM HeroConfig WHERE id = ?`, [id]);
-    const canSwitch = heroRow && (heroRow.party === 5 || heroRow.party === 6 || heroRow.showtp === 7);
+    const canSwitch = heroRow && (heroRow.party === 5 || heroRow.party === 6 || heroRow.showtp == 7);
 
     // Sélectionner les stats en fonction du niveau demandé
     const stats = useLevel === 40 ? stats40 : stats30;
@@ -84,6 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       levelCap: armorData[0].armorType,
       level: useLevel,
       canSwitch,
+      showtp: heroRow?.showtp,
       skills: armorData.map((skill) => ({
         skillId: skill.skillid,
         skillDescription: skill.skilldescription,

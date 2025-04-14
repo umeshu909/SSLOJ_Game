@@ -24,6 +24,10 @@ SELECT
         WHEN 6 THEN 'Treasures'
     END AS 'Espece',
 
+    FishSpeciesConfig.fishsize,
+    FishSpeciesConfig.fishprice,
+    FishSpeciesConfig.weight,
+
     FishSpeciesConfig.iconid,
     ItemConfigBait.icon AS iconid2,
 

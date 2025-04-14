@@ -76,8 +76,8 @@ export default function CharacterSkills({ skills }: Props) {
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
   return (
-    <section className="lg:px-6 pb-6 lg:pt-4">
-      <h2 className="text-2xl font-semibold text-white mb-2">Compétences</h2>
+    <section className="lg:px-6 pb-6">
+      <h2 className="text-xl font-semibold text-white mb-2">Compétences</h2>
 
       <div className="flex flex-col gap-2">
         {extractedSkills.map((skill, index) => (
@@ -120,7 +120,7 @@ export default function CharacterSkills({ skills }: Props) {
                 <div className="text-sm font-semibold text-white flex flex-wrap gap-x-4 gap-y-1 border-t border-white/10 p-4">
                   {skill.start !== undefined && skill.start !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Début:</span> {(skill.start / 1000).toFixed(2)}s
+                      <span className="font-normal text-white/80">Début:</span> {(skill.start / 1000).toFixed(3)}s
                     </span>
                   )}
                   {skill.end !== undefined && skill.end !== 0 && (

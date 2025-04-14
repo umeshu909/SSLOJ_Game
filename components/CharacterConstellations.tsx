@@ -118,7 +118,7 @@ const ConstellationsPage = () => {
 
   return (
     <section className="lg:p-6">
-      <h2 className="text-2xl font-semibold text-white mb-2">Constellations</h2>
+      <h2 className="text-xl font-semibold text-white mb-2">Constellations</h2>
       <div className=" overflow-hidden">
         {/* Liste des compétences de constellation */}
         {constellationData?.skills && constellationData.skills.length > 0 ? (

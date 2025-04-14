@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
 import { Filter, X, Search } from "lucide-react";
+import { XCircle } from "lucide-react";
 
 interface Fish {
   ZoneNom: string;
@@ -15,6 +16,9 @@ interface Fish {
   iconid2: string;
   fishgrade: number;
   fishspecies: number;
+  fishsize: number;
+  fishprice : number;
+  weight: number;
   stat1: string;
   stat2: string;
   stat3: string;
@@ -33,12 +37,12 @@ const speciesLabels: Record<string, string> = {
 };
 
 const speciesTypePerso: Record<string, string> = {
-  "1": "Compétence",
-  "2": "Assassin",
-  "3": "Guerrier",
-  "4": "Assistant",
-  "5": "Tank",
-  "6": "N/A",
+  1: "Compétence",
+  2: "Assassin",
+  3: "Guerrier",
+  4: "Assistant",
+  5: "Tank",
+  6: "N/A",
 };
 
 const getStaticBorderColor = (grade: string) => {
@@ -157,7 +161,7 @@ const FishPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br text-white py-6 px-4 max-w-screen-xl mx-auto">
+    <div className="min-h-screen text-white px-4 py-[12px] max-w-screen-xl mx-auto">
       <div className="lg:hidden w-full mb-4 relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
         <input
@@ -179,8 +183,29 @@ const FishPage = () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
-        <div className="hidden lg:block w-full lg:w-[320px] sticky top-[98px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] rounded-xl p-6 text-white custom-scrollbar">
-          <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+        <div className="hidden lg:block w-full lg:w-[320px] sticky top-[132px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] p-6 text-white custom-scrollbar">
+          
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Filtres</h2>
+            {/* Annulation des filtres */}
+            {(selectedZone || selectedGrade || selectedSpecies || selectedBonus) && (
+            <button
+              onClick={() => {
+                setSelectedZone(null);
+                setSelectedGrade(null);
+                setSelectedSpecies(null);
+                setSelectedBonus(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
+                Réinitialiser <XCircle size={14} className="text-red-500" />
+              </span>
+            </button>
+            )}
+          </div>
+
           <div className="mb-6 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
@@ -205,7 +230,22 @@ const FishPage = () => {
               const borderClass = isPlatine ? "border-animated-gradient" : `border-2 ${getStaticBorderColor(fish.Grade)}`;
               const backgroundClass = isPlatine ? "bg-[#1c1b3a]/90" : getStaticBackgroundColor(fish.Grade);
               return (
-                <div key={i} className={`${borderClass} overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}>
+                <div
+                  key={i}
+                  className={`${borderClass} relative overflow-hidden h-[320px] lg:h-[300px] flex flex-col`}
+                >
+                  <div className="absolute top-1 right-1 z-10 bg-opacity-50 text-white text-xs font-bold px-1 py-0.5 rounded">
+                    <p>
+                      <span className="text-white/50">Zone :</span> {fish.Zone}
+                    </p>
+                  </div>
+
+                  <div className="absolute top-1 left-1 z-10 bg-opacity-50 text-white text-xs font-bold px-1 py-0.5 rounded">
+                    <p>
+                      {speciesLabels[fish.fishspecies] || "Inconnue"}
+                    </p>
+                  </div>
+
                   <div className={`${backgroundClass} h-full flex flex-col pt-4 group transition-all duration-300`}>
                     <div className="w-full aspect-[2/1] flex items-center justify-center transition-transform duration-300 group-hover:scale-105 cursor-pointer">
                       <IconCanvas
@@ -220,9 +260,17 @@ const FishPage = () => {
                     <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
-                        <p><span className="text-white/50">Bonus :</span> {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}</p>
-                        <p><span className="text-white/50">Espèces :</span> {speciesLabels[fish.fishgrade] || "Inconnue"}</p>
-                        <p><span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishgrade] || "Inconnue"}</p>
+                        <p>
+                          <span className="text-white/50">Bonus :</span>{" "}
+                          {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}
+                        </p>
+                        <p>
+                          <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishspecies] || "Inconnue"}
+                        </p>
+                        <p>
+                          <span className="text-white/50">Taille max :</span> {fish.fishsize} cm
+                        </p>
+
                       </div>
                       {fish.Appât && (
                         <div className="mt-auto pt-2 flex items-center text-sm justify-between text-white/60">
@@ -242,6 +290,7 @@ const FishPage = () => {
                     </div>
                   </div>
                 </div>
+
               );
             })
           )}
@@ -251,12 +300,30 @@ const FishPage = () => {
       <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-semibold">Filtres</h2>
-          <button
-            onClick={() => setShowMobileFilters(false)}
-            className="text-white text-sm border border-white/30 px-3 py-1 rounded"
-          >
-            <X size={16} className="inline mr-1" /> Fermer
-          </button>
+
+          <div className="flex space-x-2">
+            {/* Annulation filtres */}
+            <button
+              onClick={() => {
+                setSelectedZone(null);
+                setSelectedGrade(null);
+                setSelectedSpecies(null);
+                setSelectedBonus(null);
+              }}
+              className="text-white hover:text-red-500 text-xl"
+              title="Réinitialiser les filtres"
+            >
+              ✕
+            </button>
+            {/* Bouton Fermer */}
+            <button
+              onClick={() => setShowMobileFilters(false)}
+              className="text-white text-sm border border-white/30 px-3 py-1 rounded"
+            >
+              Fermer
+            </button>
+          </div>
+
         </div>
         {renderFilters()}
       </div>

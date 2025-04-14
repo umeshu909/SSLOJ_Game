@@ -16,22 +16,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         switch (type) {
             case "GLO":
-                query = `SELECT datefr AS date, id, 'GLO' AS version FROM releases WHERE datefr IS NOT NULL AND datefr <> '0000-00-00' AND datefr > '2022-07-12' ORDER BY date DESC`;
+                query = `SELECT datefr AS date, id, 'GLO' AS version, Type AS type FROM releases WHERE datefr IS NOT NULL AND datefr <> '0000-00-00' AND datefr > '2022-07-12' ORDER BY date DESC`;
                 break;
             case "CN":
-                query = `SELECT datecn AS date, id, 'CN' AS version FROM releases WHERE datecn IS NOT NULL AND datecn <> '0000-00-00' AND datecn > '2021-02-04' ORDER BY date DESC`;
+                query = `SELECT datecn AS date, id, 'CN' AS version, Type AS type FROM releases WHERE datecn IS NOT NULL AND datecn <> '0000-00-00' AND datecn > '2021-02-04' ORDER BY date DESC`;
                 break;
             case "JP":
-                query = `SELECT datejp AS date, id, 'JP' AS version FROM releases WHERE datejp IS NOT NULL AND datejp <> '0000-00-00' AND datejp > '2024-01-17' ORDER BY date DESC`;
+                query = `SELECT datejp AS date, id, 'JP' AS version, Type AS type FROM releases WHERE datejp IS NOT NULL AND datejp <> '0000-00-00' AND datejp > '2024-01-17' ORDER BY date DESC`;
                 break;
             case "ALL":
             default:
                 query = `
-                    SELECT datefr AS date, id, 'GLO' AS version FROM releases WHERE datefr IS NOT NULL AND datefr <> '0000-00-00' AND datefr > '2022-07-12'
+                    SELECT datefr AS date, id, 'GLO' AS version, Type AS type FROM releases WHERE datefr IS NOT NULL AND datefr <> '0000-00-00' AND datefr > '2022-07-12'
                     UNION ALL
-                    SELECT datecn AS date, id, 'CN' AS version FROM releases WHERE datecn IS NOT NULL AND datecn <> '0000-00-00' AND datecn > '2021-02-04'
+                    SELECT datecn AS date, id, 'CN' AS version, Type AS type FROM releases WHERE datecn IS NOT NULL AND datecn <> '0000-00-00' AND datecn > '2021-02-04'
                     UNION ALL
-                    SELECT datejp AS date, id, 'JP' AS version FROM releases WHERE datejp IS NOT NULL AND datejp <> '0000-00-00' AND datejp > '2024-01-17'
+                    SELECT datejp AS date, id, 'JP' AS version, Type AS type FROM releases WHERE datejp IS NOT NULL AND datejp <> '0000-00-00' AND datejp > '2024-01-17'
                     ORDER BY date DESC
                 `;
                 break;

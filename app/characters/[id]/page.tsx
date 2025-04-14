@@ -7,10 +7,11 @@ import CharacterLinks from "@/components/CharacterLinks";
 import CharacterSidebar from "@/components/CharacterSidebar";
 import CharacterHeaderInfo from "@/components/CharacterHeaderInfo";
 import CharacterStatsList from "@/components/CharacterStatsList";
+import BackButton from "@/components/BackButton";
+import { ArrowLeft } from "lucide-react";
 
 import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft } from "lucide-react";
+import { useParams } from 'next/navigation';
 
 import {
     Character,
@@ -24,7 +25,6 @@ export const dynamic = "force-dynamic";
 
 export default function CharacterPage() {
     const params = useParams();
-    const router = useRouter();
     const id = params?.id;
 
     const [skills, setSkills] = useState<Skill[]>([]);
@@ -32,8 +32,8 @@ export default function CharacterPage() {
     const [constellations, setConstellations] = useState<Constellation[]>([]);
     const [links, setLinks] = useState<Link[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         async function fetchCharacterData() {
@@ -48,7 +48,8 @@ export default function CharacterPage() {
                 });
 
                 if (!characterResponse.ok) {
-                    throw new Error(`Erreur lors de la récupération des données du personnage (code ${characterResponse.status})`);
+                    setNotFound(true);
+                    return;
                 }
 
                 const dataCharacter = await characterResponse.json();
@@ -63,17 +64,16 @@ export default function CharacterPage() {
                 });
 
                 if (!skillsResponse.ok) {
-                    throw new Error(`Erreur lors de la récupération des données du personnage (code ${skillsResponse})`);
+                    setNotFound(true);
+                    return;
                 }
 
                 const dataSkills = await skillsResponse.json();
-                const skills = dataSkills || [];
-                setSkills(skills || []);
-
-                setError(null);
+                setSkills(dataSkills || []);
+                setNotFound(false);
             } catch (error: any) {
                 console.error("Erreur lors du chargement des personnages:", error);
-                setError(error.message || "Erreur inconnue");
+                setNotFound(true);
             } finally {
                 setLoading(false);
             }
@@ -92,31 +92,25 @@ export default function CharacterPage() {
         );
     }
 
-    if (error) {
+    if (notFound) {
         return (
-            <div className="min-h-screen flex justify-center items-center">
-                <p className="text-red-500">{error}</p>
+            <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
+                {/* TEXTE D'INFORMATION */}
+                <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
+                    <BackButton fallbackHref="/characters" label="Retour aux personnages"/>
+                </div>
+                <p className="text-lg mt-4">
+                    Cet personnage’est pas disponible dans la base de données sélectionnée.
+                </p>
             </div>
+
         );
     }
 
-    const handleBack = () => {
-        if (document.referrer && window.history.length > 1) {
-            router.back();
-        } else {
-            router.push("/characters");
-        }
-    };
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white">
+        <div className="min-h-screen text-white">
             <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
-                <button
-                    onClick={handleBack}
-                    className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
-                >
-                    <ArrowLeft className="w-4 h-4" /> Retour aux personnages
-                </button>
+                <BackButton fallbackHref="/characters" label="Retour aux personnages"/>
             </div>
             <main className="py-4 px-4 lg:px-6 lg:py-0">
                 {/* Mobile top header */}
@@ -128,25 +122,25 @@ export default function CharacterPage() {
 
                 <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto">
                     {/* Sidebar à gauche (desktop uniquement) */}
-                    <aside className="hidden lg:block w-[320px] sticky top-[96px] self-start bg-[#14122a] text-white">
+                    <aside className="hidden lg:block w-[320px] sticky top-[132px] self-start bg-[#14122a] text-white">
                         {selectedCharacter && <CharacterSidebar character={selectedCharacter} />}
                     </aside>
 
                     {/* Contenu principal */}
                     <div className="flex-1">
-                        <section className="lg:px-6 pb-6">
+                        <section className="lg:px-6 pb-4">
                             <CharacterSkills skills={skills} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterArmor armor={armor} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterConstellations constellations={constellations} />
                         </section>
 
-                        <section className="lg:px-6 pb-6 pt-4">
+                        <section className="lg:px-6 pb-4">
                             <CharacterLinks links={links} />
                         </section>
 
