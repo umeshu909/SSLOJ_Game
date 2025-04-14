@@ -265,7 +265,10 @@ export default function TimelineCalendar() {
                   <span className="text-white font-medium">Du</span>{" "}
                   {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
                   <span className="text-white font-medium">au</span>{" "}
-                  {format(new Date(selectedEvent.extendedProps?.end2), "dd/MM/yyyy HH:mm")}
+                  {selectedEvent.extendedProps?.end2
+                  ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm")
+                  : format(selectedEvent.end, "dd/MM/yyyy HH:mm")}
+
                 </div>
                 <div className="text-sm text-gray-400 mb-2">
                   <span className="text-white font-medium">Nb joueurs :</span> {selectedEvent.extendedProps?.players} joueurs 
@@ -285,7 +288,10 @@ export default function TimelineCalendar() {
                     <span className="text-white font-medium">Du</span>{" "}
                     {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
                     <span className="text-white font-medium">au</span>{" "}
-                    {format(new Date(selectedEvent.extendedProps?.end2), "dd/MM/yyyy HH:mm")}
+                    {selectedEvent.extendedProps?.end2
+                    ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm")
+                    : format(selectedEvent.end, "dd/MM/yyyy HH:mm")}
+
                   </div>
 
                   {bossRows.length === 0 ? (

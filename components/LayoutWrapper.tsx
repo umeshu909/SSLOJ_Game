@@ -17,9 +17,12 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     return "FR";
   });
 
+  const fisheryRef = useRef<HTMLDivElement>(null);
   const autresRef = useRef<HTMLDivElement>(null);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const [showFisheryDropdown, setShowFisheryDropdown] = useState(false);
+  const [showAutresDropdown, setShowAutresDropdown] = useState(false);
+  const [fisheryPos, setFisheryPos] = useState({ top: 0, left: 0 });
+  const [autresPos, setAutresPos] = useState({ top: 0, left: 0 });
   const [isMounted, setIsMounted] = useState(false);
 
   const router = useRouter();
@@ -58,14 +61,19 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   }, [language]);
 
   useEffect(() => {
-    if (showDropdown && autresRef.current) {
-      const rect = autresRef.current.getBoundingClientRect();
-      setDropdownPos({
-        top: rect.bottom + 4,
-        left: rect.left,
-      });
+    if (showFisheryDropdown && fisheryRef.current) {
+      const rect = fisheryRef.current.getBoundingClientRect();
+      setFisheryPos({ top: rect.bottom + 4, left: rect.left });
     }
-  }, [showDropdown]);
+  }, [showFisheryDropdown]);
+
+  useEffect(() => {
+    if (showAutresDropdown && autresRef.current) {
+      const rect = autresRef.current.getBoundingClientRect();
+      setAutresPos({ top: rect.bottom + 4, left: rect.left });
+    }
+  }, [showAutresDropdown]);
+
 
   const handleBack = () => {
     if (document.referrer && window.history.length > 1) {
@@ -124,7 +132,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             md:justify-center md:flex-wrap md:overflow-visible
           "
         >
-          {["characters", "arayashikis", "artefacts", "vestiges", "statues", "fishery"].map((path) => {
+          {["characters", "arayashikis", "artefacts", "vestiges", "statues"].map((path) => {
             const href = `/${path}`;
             const label = path.charAt(0).toUpperCase() + path.slice(1);
             const isActive = activeLink !== "/" && activeLink.startsWith(href);
@@ -142,28 +150,80 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             );
           })}
 
+          {/* Menu déroulant Pecherie */}
+          {isMounted && (
+            <div
+              ref={fisheryRef}
+              onClick={() => {
+                setShowFisheryDropdown(!showFisheryDropdown);
+                setShowAutresDropdown(false);
+              }}
+              className="relative text-sm px-3 py-1 rounded text-white hover:text-yellow-400 transition-all whitespace-nowrap cursor-pointer"
+            >
+              Pêcherie
+            </div>
+            )}
+
+
+          {isMounted && showFisheryDropdown && (
+            <DropdownMenuPortal position={fisheryPos}>
+              <a
+                href="/fishery"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/fishery") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowFisheryDropdown(false)}
+              >
+                Poissons
+              </a>
+              <a
+                href="/fishery/tools"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/fishery/tools") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowFisheryDropdown(false)}
+              >
+                Matériel
+              </a>
+            </DropdownMenuPortal>
+          )}
+
+
           {/* Menu déroulant Autres */}
           <div
             ref={autresRef}
-            onClick={() => setShowDropdown((prev) => !prev)}
+            onClick={() => {
+              setShowAutresDropdown(!showAutresDropdown);
+              setShowFisheryDropdown(false); // fermer l'autre menu
+            }}
             className="relative text-sm px-3 py-1 rounded text-white hover:text-yellow-400 transition-all whitespace-nowrap cursor-pointer"
           >
             Autres
           </div>
 
-          {isMounted && showDropdown && (
-            <DropdownMenuPortal position={dropdownPos}>
+          {isMounted && showAutresDropdown && (
+            <DropdownMenuPortal position={autresPos}>
               <a
                 href="/timeline"
                 className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
                   activeLink.startsWith("/timeline") ? "text-yellow-400" : "text-white"
                 }`}
-                onClick={() => setShowDropdown(false)}
+                onClick={() => setShowAutresDropdown(false)}
               >
                 Timeline
               </a>
+              <a
+                href="/calendar"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/calendar") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowAutresDropdown(false)}
+              >
+                Planning
+              </a>
             </DropdownMenuPortal>
           )}
+
 
 
 
