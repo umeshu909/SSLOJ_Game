@@ -29,6 +29,7 @@ const Description = ({ text, dbChoice = "FR" }: Props) => {
           .replace(/(\d+(?:[.,]\d+)?)(?=\s*(secondes?|seconde|sec|couches?|points?|fois?)\b|s\b)/gi, '<span style="color: #82B0D6;">$1</span>')
           .replace(/\\n/g, '<br/>')
           .replace(/(^|<br\/?>)(\s*[A-Za-zÀ-ÿ\-]{4,15})\s*:/g, '$1<span class="text-purple-200">$2:</span>')
+          .replace(/(\d+)\.00\b/g, "$1")
           .replace(/\[(.*?)\]/g, '<span style="color: orange;">[$1]</span>');
 
         setParsed(parsedText);

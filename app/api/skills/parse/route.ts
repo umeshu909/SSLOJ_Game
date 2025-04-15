@@ -5,13 +5,22 @@ import { replacePlaceholders } from "@/utils/replacePlaceholders";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { text, dbChoice = "FR" } = body;
+    const { text, dbChoice } = body;
+
+    // Récupération depuis l’en-tête si non présent dans le body
+    const lang =
+      dbChoice ||
+      req.headers.get("x-db-choice")?.toUpperCase() || // en-tête HTTP
+      "FR"; // fallback par défaut
 
     if (!text) {
-      return NextResponse.json({ error: "Champ 'text' requis" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Champ 'text' requis" },
+        { status: 400 }
+      );
     }
 
-    const db = await openDb(dbChoice);
+    const db = await openDb(lang);
     const replaced = await replacePlaceholders(text, db);
 
     return NextResponse.json({ result: replaced });
