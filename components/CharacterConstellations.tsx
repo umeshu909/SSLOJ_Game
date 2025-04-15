@@ -4,7 +4,9 @@ import IconCanvas from "@/components/IconCanvas"; // Importation du composant Ic
 import Description from "@/components/Description";
 
 interface ConstellationSkill {
-  skillId: string;
+  skillName: string;
+  skillId: number;
+  level: number;
   skillDescription: string;
   suitNeed: number; // suitNeed représente le niveau de constellation (3, 9, etc.)
   icon: string; // Icon pour chaque niveau de constellation
@@ -137,7 +139,7 @@ const ConstellationsPage = () => {
                       size={1} // Taille réduite de l'image, ajustée pour un affichage plus petit
                     />
                   </div>
-                  <h3 className="text-white text-center text-m font-semibold">{skill.skillId}</h3>
+                  <h3 className="text-white text-center text-m font-semibold">{skill.skillName}</h3>
                 </div>
 
                 {/* Affichage des images de suitNeed */}
@@ -147,7 +149,7 @@ const ConstellationsPage = () => {
                 <div className="flex-1 flex flex-col justify-between text-center md:text-left">
                   {/* Description avec interprétation HTML */}
                   <div className="mt-2 text-sm text-white">
-                    <Description text={skill.skillDescription} dbChoice = {lang} />
+                    <Description skillId={skill.skillId} level={skill.level} dbChoice = {lang} />
                   </div>
                 </div>
               </div>

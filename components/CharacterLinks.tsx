@@ -104,6 +104,7 @@ export default function CharacterLinks() {
             };
           }
           grouped[entry.FetterID].skills.push({
+            skillid: entry.skillid,
             level: entry.skillLevel,
             description: entry.skillDescription,
           });
@@ -165,7 +166,7 @@ export default function CharacterLinks() {
                   {link.skills.map((skill, idx) => (
                     <div key={idx}>
                       <span className="font-semibold">Niv {skill.level} :</span>{" "}
-                      <Description text={skill.description} dbChoice = {lang} />
+                      <Description skillId={skill.skillid} level={skill.level} dbChoice = {lang} />
                     </div>
                   ))}
                 </div>

@@ -1,5 +1,10 @@
 SELECT 
 HeroConfig.id,
+HeroConfig.mainskill AS skillId1,
+HeroConfig.skill2 AS skillId2,
+HeroConfig.skill3 AS skillId3,
+HeroConfig.skill4 AS skillId4,
+
 HeroConfig.mainskill,
 MAX(CASE WHEN SkillTextConfig.skillid = HeroConfig.mainskill AND SkillTextConfig.level = 1 THEN SkillTextConfig.name END) AS nameSkill1,
 MAX(CASE WHEN SkillTextConfig.skillid = HeroConfig.mainskill AND SkillTextConfig.level = 1 THEN SkillTextConfig.desc END) AS Skill1Level1,

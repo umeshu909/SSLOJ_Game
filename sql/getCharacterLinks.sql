@@ -5,6 +5,7 @@ SELECT
   HeroConfig.handbookherores AS HeroHandbook,
   FetterPowerConfig.skillid,
   SkillTextConfig.desc AS skillDescription,   -- Vérifiez si la description existe ici
+  SkillTextConfig.skillid,    
   SkillTextConfig.level AS skillLevel,        -- Vérifiez si le niveau de compétence est présent
   SkillTextConfig.name AS skillName,
   HeroConfig.icon AS mainIcon,

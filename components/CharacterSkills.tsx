@@ -112,7 +112,7 @@ export default function CharacterSkills({ skills }: Props) {
                   {skill.levels.map((lvl) => (
                     <div key={lvl.level}>
                       <span className="font-semibold">Lv {lvl.level}:</span>{" "}
-                      <Description text={lvl.description} dbChoice = {lang} />
+                      <Description skillId={skill.id} level={lvl.level} dbChoice={lang} />
                     </div>
                   ))}
                 </div>
@@ -165,6 +165,9 @@ async function extractSkills(data: any, lang: string): Promise<Skill[]> {
     const nameKey = `nameSkill${i}`;
     const iconKey = `iconSkill${i}`;
     const levels: SkillLevel[] = [];
+    const idKey = `skillId${i}`; // i = 1 à 4
+    const skillId = data[idKey];
+
 
     for (let j = 1; j <= 4; j++) {
       const levelKey = `Skill${i}Level${j}`;
@@ -176,6 +179,7 @@ async function extractSkills(data: any, lang: string): Promise<Skill[]> {
 
     if (data[nameKey]) {
       skills.push({
+        id: skillId,
         name: data[nameKey],
         icon: data[iconKey],
         levels,
