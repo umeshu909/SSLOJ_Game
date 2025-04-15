@@ -46,7 +46,7 @@ export default function CharacterLinks() {
       setLang(storedLang);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function preloadAtlas() {
       try {
         const imageSrc = await getImageSrc(prefix);
@@ -72,7 +72,7 @@ export default function CharacterLinks() {
 
     preloadAtlas();
   }, []);
-
+*/
   useEffect(() => {
     async function fetchLinks() {
       try {
