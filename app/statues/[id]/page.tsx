@@ -224,7 +224,7 @@ const StatueDetailPage = () => {
                         <div key={j} className="text-sm leading-snug">
                           <span className="font-semibold inline">Niv {g.level} : </span>
                           <span className="text-md inline">
-                            <Description text={g.textSkill} dbChoice={lang} />
+                            <Description skillId={g.skillid} level={g.level} dbChoice = {lang} />
                           </span>
                         </div>
                       ))}

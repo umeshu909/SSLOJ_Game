@@ -251,7 +251,7 @@ const ArayashikiDetailPage = () => {
                         )}
 
                         <div className="leading-relaxed text-sm md:max-w-[50%]">
-                            <Description text={detail.desc} dbChoice={lang} />
+                            <Description skillId={detail.skillid} level={detail.level} dbChoice = {lang} />
                         </div>
                     </div>
 

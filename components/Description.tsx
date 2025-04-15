@@ -3,22 +3,24 @@ import { useEffect, useState } from "react";
 import DiffMatchPatch from "diff-match-patch";
 
 interface Props {
-  text?: string;         // mode texte direct
-  skillId?: number;      // mode dynamique
+  text?: string;         // Mode texte direct
+  skillId?: number;      // Mode dynamique (ID de skill)
   level?: number;
   dbChoice?: string;     // FR, EN, CN, etc.
 }
 
 const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
   const [parsed, setParsed] = useState<string>("Chargement...");
+  const [diffText, setDiffText] = useState<string | null>(null);
+  const [showOld, setShowOld] = useState<boolean>(false);
 
   useEffect(() => {
     const lang = dbChoice || localStorage.getItem("lang") || "FR";
 
-    // Si pas de texte direct mais skillId + level, on va chercher le texte
     const resolveParsedText = async (langChoice: string): Promise<string> => {
       let baseText = text;
 
+      // Si pas de texte fourni mais skillId + level présents
       if (!baseText && skillId && level !== undefined) {
         const res = await fetch("/api/skills/text", {
           method: "POST",
@@ -31,7 +33,7 @@ const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
 
       if (!baseText) return "";
 
-      // 🟡 Ici on parse le texte (avec #123-456#) via /skills/parse
+      // On parse les placeholders via l’API
       const resParsed = await fetch("/api/skills/parse", {
         method: "POST",
         headers: {
@@ -45,7 +47,6 @@ const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
       return jsonParsed.result || "";
     };
 
-
     const formatText = (raw: string): string => {
       return raw
         .replace(/\\n/g, "<br/>")
@@ -57,10 +58,11 @@ const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
     };
 
     const escapeHtml = (str: string): string =>
-      str.replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;");
+      str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
 
     const cleanPlainText = (str: string): string => {
       return str
@@ -71,66 +73,74 @@ const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
         .trim();
     };
 
-    const compareAndFormat = (current: string, old: string): string => {
+    const compareAndFormat = (current: string, old: string) => {
       const dmp = new DiffMatchPatch();
       const diffs = dmp.diff_main(old, current);
       dmp.diff_cleanupSemantic(diffs);
 
-      const hasDeletion = diffs.some(([op]) => op === -1);
+      const hasDiff = diffs.some(([op]) => op !== 0);
 
-      if (hasDeletion) {
-        const formatted = formatText(current);
-        const title = escapeHtml(cleanPlainText(old));
-        return `<span style="color:red;" title="${title}">${formatted}</span>`;
-      }
-
-      // Sinon, comportement normal
-      return diffs
-        .map(([op, data]) => {
-          if (op === 1) {
-            const formatted = formatText(data);
-            const title = escapeHtml(cleanPlainText(old));
-            return `<span style="color:red;" title="${title}">${formatted}</span>`;
-          } else if (op === 0) {
-            return formatText(data);
-          } else {
-            return ""; // on ignore les suppressions
-          }
-        })
-        .join("");
+      return {
+        formatted: formatText(current),
+        oldFormatted: hasDiff ? formatText(old) : null,
+        hasDiff,
+      };
     };
-
 
     const fetchAndCompare = async () => {
       try {
+        const current = await resolveParsedText(lang);
+
+        // Si pas FR, on ne compare pas : juste formattage
         if (lang !== "FR") {
-          // 🔹 Si pas FR : juste formattage sans comparaison
-          const raw = await resolveParsedText(lang);
-          const formatted = formatText(raw);
-          setParsed(formatted);
+          setParsed(formatText(current));
+          setDiffText(null);
           return;
         }
 
-        const rawCurrent = await resolveParsedText(lang);
-        const rawOld = await resolveParsedText("OLDFR");
+        const old = await resolveParsedText("OLDFR");
 
-        if (!rawCurrent) {
+        if (!current) {
           setParsed("Aucune description disponible");
+          setDiffText(null);
           return;
         }
 
-        const final = compareAndFormat(rawCurrent, rawOld);
-        setParsed(final);
+        const { formatted, oldFormatted, hasDiff } = compareAndFormat(current, old);
+        setParsed(formatted);
+        setDiffText(hasDiff ? oldFormatted : null);
       } catch (err) {
         console.error("Erreur parsing:", err);
         setParsed("Erreur lors du chargement de la description");
+        setDiffText(null);
       }
     };
 
     fetchAndCompare();
   }, [text, skillId, level, dbChoice]);
 
-  return <p className="inline" dangerouslySetInnerHTML={{ __html: parsed }} />;
+  return (
+    <div className="inline">
+      <span dangerouslySetInnerHTML={{ __html: parsed }} />
+
+      {diffText && (
+        <div className="mt-2">
+          <button
+            onClick={() => setShowOld(!showOld)}
+            className="text-sm text-blue-400 underline hover:text-blue-300"
+          >
+            {showOld ? "Masquer l’ancienne version" : "Voir l’ancienne version"}
+          </button>
+
+          {showOld && (
+            <div className="mt-2 p-2 border border-white/20 rounded bg-white/5 text-sm text-white space-y-1">
+              <div dangerouslySetInnerHTML={{ __html: diffText }} />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Description;

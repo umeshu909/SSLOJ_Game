@@ -17,8 +17,14 @@ interface ArtifactDetail {
     value2: string;
     Attrib3: string;
     value3: string;
+    skill1Id: number;
+    skill1Level: number;
     skill1: string;
+    skill2Id: number;
+    skill2Level: number;
     skill2: string;
+    skill3Id: number;
+    skill3Level: number;
     skill3: string;
     quality: number;
 }
@@ -164,15 +170,15 @@ const ArtifactDetailPage = () => {
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Compétence 1</h3>
                         <div className={`text-md ${level >= skillThresholds.skill1 ? "opacity-100" : "opacity-30"}`}>
-                            <Description text={artifact.skill1} dbChoice={lang} />
+                            <Description skillId={artifact.skill1Id} level={artifact.skill1Level} dbChoice = {lang} />
                         </div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 2</h3>
                         <div className={`text-md ${level >= skillThresholds.skill2 ? "opacity-100" : "opacity-30"}`}>
-                            <Description text={artifact.skill2} dbChoice={lang} />
+                            <Description skillId={artifact.skill2Id} level={artifact.skill2Level} dbChoice = {lang} />
                         </div>
                         <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 3</h3>
                         <div className={`text-md ${level >= skillThresholds.skill3 ? "opacity-100" : "opacity-30"}`}>
-                            <Description text={artifact.skill3} dbChoice={lang} />
+                            <Description skillId={artifact.skill3Id} level={artifact.skill3Level} dbChoice = {lang} />
                         </div>
                     </div>
 

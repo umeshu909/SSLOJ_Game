@@ -23,8 +23,14 @@ SELECT
     ELSE CAST(A.propsum3 * 100 AS TEXT) || '%'
   END AS value3,
 
+  STC1.skillid AS skill1Id,
+  STC1.level AS skill1Level,
   STC1.desc AS skill1,
+  STC2.skillid AS skill2Id,
+  STC2.level AS skill2Level,
   STC2.desc AS skill2,
+  STC3.skillid AS skill3Id,
+  STC3.level AS skill3Level,
   STC3.desc AS skill3,
 
   CASE ArtifactPointConfig.profession
