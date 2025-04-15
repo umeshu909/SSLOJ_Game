@@ -120,22 +120,22 @@ export default function CharacterSkills({ skills }: Props) {
                 <div className="text-sm font-semibold text-white flex flex-wrap gap-x-4 gap-y-1 border-t border-white/10 p-4">
                   {skill.start !== undefined && skill.start !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Début:</span> {(skill.start / 1000).toFixed(3)}s
+                      <span className="font-normal text-white/80">Début:</span> {(skill.start / 1000).toFixed(3)}
                     </span>
                   )}
                   {skill.end !== undefined && skill.end !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Fin:</span> {(skill.end / 1000).toFixed(2)}s
+                      <span className="font-normal text-white/80">Fin:</span> {(skill.end / 1000).toFixed(2)}
                     </span>
                   )}
                   {skill.delay !== undefined && skill.delay !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Délai:</span> {(skill.delay / 1000).toFixed(2)}s
+                      <span className="font-normal text-white/80">Délai:</span> {(skill.delay / 1000).toFixed(2)}
                     </span>
                   )}
                   {skill.cooldown !== undefined && skill.cooldown !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Cooldown:</span> {(skill.cooldown / 1000).toFixed(2)}s
+                      <span className="font-normal text-white/80">Cooldown:</span> {(skill.cooldown / 1000).toFixed(2)}
                     </span>
                   )}
                   {skill.regenAttack !== undefined && skill.regenAttack !== 0 && (

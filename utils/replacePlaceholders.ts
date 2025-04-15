@@ -59,7 +59,7 @@ export async function replacePlaceholders(
               formatted = `<span style="color: #82B0D6;">${clean(valueToUse * 100)}%</span>`; // On multiplie par 100 ici pour les pourcentages
             } else if (row.statetype === 3 && row.constval) {
               // Exception : Si tp == 1 et statetype == 3, la valeur de constval doit être divisée par 1000
-              formatted = `<span style="color: #82B0D6;">${clean(valueToUse / 1000)}s</span>`;  // Conversion en secondes
+              formatted = `<span style="color: #82B0D6;">${clean(valueToUse / 1000)}</span>`;  // Conversion en secondes
             } else {
               // Sinon, on affiche la valeur brute
               formatted = `<span style="color: #82B0D6;">${clean(valueToUse)}</span>`;
@@ -72,7 +72,7 @@ export async function replacePlaceholders(
               formatted = `<span style="color: #82B0D6;">${clean(valueToUse)}%</span>`;
             } else if (row.statetype === 3) {
               // Pour les statetype == 3 : convertir en secondes (divisé par 1000)
-              formatted = `<span style="color: #82B0D6;">${clean(valueToUse / 1000)}s</span>`;
+              formatted = `<span style="color: #82B0D6;">${clean(valueToUse / 1000)}</span>`;
             } else {
               // Autres types de statetype (par exemple : valeur brute)
               formatted = `<span style="color: #82B0D6;">${clean(valueToUse)}</span>`;
