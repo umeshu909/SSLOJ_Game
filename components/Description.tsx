@@ -124,12 +124,12 @@ const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
       <span dangerouslySetInnerHTML={{ __html: parsed }} />
 
       {diffText && (
-        <div className="mt-2">
+        <div className="mt-2 inline-block">
           <button
             onClick={() => setShowOld(!showOld)}
-            className="text-sm text-blue-400 underline hover:text-blue-300"
+            className="text-sm bg-red-500/30 rounded-full px-2 inline-block"
           >
-            {showOld ? "Masquer l’ancienne version" : "Voir l’ancienne version"}
+            {showOld ? "Fermer" : "Updated"}
           </button>
 
           {showOld && (
