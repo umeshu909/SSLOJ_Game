@@ -45,6 +45,14 @@ const speciesTypePerso: Record<string, string> = {
   6: "N/A",
 };
 
+const categoryImages = {
+  Compétence: "icon_12g_ji_attack.png",
+  Guerrier: "icon_12g_gong_attack.png",
+  Assistant: "icon_12g_fu_attack.png",
+  Assassin: "icon_12g_ci_attack.png",
+  Tank: "icon_12g_fang_attack.png",
+};
+
 const getStaticBorderColor = (grade: string) => {
   switch (grade) {
     case "Bleu": return "border-blue-500/65 hover:border-blue-500/85 transition-all duration-300 ease-in-out";
@@ -260,13 +268,52 @@ const FishPage = () => {
                     <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
-                        <p>
-                          <span className="text-white/50">Bonus :</span>{" "}
-                          {[fish.stat1, fish.stat2, fish.stat3].filter(Boolean).join(" / ") || "N/A"}
-                        </p>
-                        <p>
-                          <span className="text-white/50">Perso :</span> {speciesTypePerso[fish.fishspecies] || "Inconnue"}
-                        </p>
+<p>
+  <span className="text-white/50">Bonus :</span>{" "}
+  {[
+    fish.stat1 ? (
+      <span className="inline-flex items-center gap-1">
+        {fish.stat1}{" "}
+        <img
+          src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
+          alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
+          className="inline-block w-4 h-4 align-middle"
+        />
+      </span>
+    ) : null,
+    fish.stat2,
+    fish.stat3,
+  ]
+    .filter(Boolean)
+    .map((stat, index) => <span key={index}>{stat}</span>)
+    .reduce((prev, curr) => [prev, " / ", curr], []) // ← Ajoute [] comme valeur initiale ici
+    .length > 0 ? (
+      <>
+        {[
+          fish.stat1 ? (
+            <span className="inline-flex items-center gap-1">
+              {fish.stat1}{" "}
+              <img
+                src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
+                alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
+                className="inline-block w-4 h-4 align-middle"
+              />
+            </span>
+          ) : null,
+          fish.stat2,
+          fish.stat3,
+        ]
+          .filter(Boolean)
+          .map((stat, index) => <span key={index}>{stat}</span>)
+          .reduce((prev, curr) => [prev, " / ", curr])}
+      </>
+    ) : (
+      "N/A"
+    )}
+</p>
+
+
+
                         <p>
                           <span className="text-white/50">Taille max :</span> {fish.fishsize} cm
                         </p>

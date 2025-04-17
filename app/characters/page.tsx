@@ -396,7 +396,7 @@ const CharactersPage = () => {
         </div>
         <div className="flex items-center mt-6 gap-4">
           <div className="flex-1 text-sm text-white/70 leading-snug">
-            Afficher uniquement les persos disponibles sur la glo
+            Afficher uniquement les persos disponibles
           </div>
           <div
             onClick={handleOnlyAvailableToggle}
