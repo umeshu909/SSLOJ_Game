@@ -35,8 +35,7 @@
     "Author": {
       "type": "relation",
       "relation": "oneToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "article"
+      "target": "plugin::users-permissions.user"
     },
     "publicationDate": {
       "type": "date"
