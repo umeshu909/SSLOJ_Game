@@ -30,7 +30,7 @@ export default function Home() {
             </h3>
             <button onClick={() => setDbChoice("CN", 55311, "stats")}>
               <img
-                src="/images/actual/483866251_1568376057443274_1363687941621132760_n.jpg"
+                src="/images/actual/CN.jpg"
                 alt="CN"
                 className="rounded-lg mt-2 mb-2"
               />
@@ -48,7 +48,7 @@ export default function Home() {
                 className="rounded-lg mt-2 mb-2"
               />
             </button>
-            <p>03.04.2025</p>
+            <p>17.04.2025</p>
           </div>
           <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center">
             <h3 className="text-xl font-semibold text-yellow-400">
@@ -56,12 +56,12 @@ export default function Home() {
             </h3>
             <button onClick={() => setDbChoice("JP", 55305, "stats")}>
               <img
-                src="/images/actual/484951514_122228135144028168_4459275125812890120_n.jpg"
+                src="/images/actual/JP.jpg"
                 alt="JP"
                 className="rounded-lg mt-2 mb-2"
               />
             </button>
-            <p>20.03.2025</p>
+            <p>09.04.2025</p>
           </div>
         </div>
 
@@ -70,10 +70,10 @@ export default function Home() {
           <div className="flex justify-center gap-6">
             <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
               <h3 className="text-lg font-semibold text-yellow-400 mb-2">
-                Young Athena
+                Pandore ND
               </h3>
               <img
-                src="/images/actual/K_yadianna_you.png"
+                src="/images/actual/K_panduola_nd.png"
                 alt="Preview"
                 className="rounded-lg"
               />
