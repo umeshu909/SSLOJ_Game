@@ -1,84 +1,68 @@
-// app/articles/[slug]/page.tsx
-export const dynamic = "force-dynamic"
-
-type ImageFormat = {
-  url: string
-}
-
-type ImageData = {
-  id: number
-  url: string
-  formats?: {
-    small?: ImageFormat
-    medium?: ImageFormat
-    large?: ImageFormat
-    thumbnail?: ImageFormat
-  }
-}
+import React from "react"
+import { getMediaUrl } from "@/lib/media" // ✅ On ajoute l'import
 
 type Article = {
-  id: number
-  documentId: string
+  id: string
   title: string
-  content: string
   slug: string
-  publicationDate?: string
-  image?: ImageData[]
-  Author?: {
-    username: string
+  publishedDate?: string
+  content: string
+  thumbnail?: {
+    url?: string
   }
 }
 
-async function getArticle(documentId: string): Promise<Article | null> {
-  const res = await fetch(`http://localhost:1337/api/articles?filters[documentId][$eq]=${documentId}&populate[Author]=*&populate[image]=*`, {
-    cache: "no-store",
-  })
+async function getArticle(slug: string): Promise<Article | null> {
+  const CMS_URL = process.env.CMS_URL || "http://localhost:3000"
 
-  const json = await res.json()
-  return json.data?.[0] || null
+  const res = await fetch(
+    `${CMS_URL}/api/articles?where[slug][equals]=${slug}&depth=2`,
+    { cache: "no-store" }
+  )
+
+  if (!res.ok) return null
+
+  const data = await res.json()
+  return data.docs?.[0] || null
 }
 
-function formatDate(dateStr?: string): string {
-  if (!dateStr) return "Date inconnue"
-  return new Date(dateStr).toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
-}
-
-export default async function ArticleDetail({ params }: { params: { slug: string } }) {
+export default async function ArticleDetail({
+  params,
+}: {
+  params: { slug: string }
+}) {
   const article = await getArticle(params.slug)
 
   if (!article) {
-    return <div className="text-center text-white mt-20">Article introuvable</div>
+    return (
+      <div className="text-center text-white mt-20">
+        Article introuvable.
+      </div>
+    )
   }
 
-  const { title, content, image, Author, publicationDate } = article
-  const authorName = Author?.username || "Inconnu"
-
-  // Récupérer la première image si disponible
-  const firstImage = image && image.length > 0 ? image[0] : null
-  const imageUrl = firstImage?.url ? `http://localhost:1337${firstImage.url}` : null
-
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10 text-white space-y-6">
-      <h1 className="text-3xl font-bold text-blue-200">{title}</h1>
+    <div className="max-w-3xl mx-auto px-4 py-12 text-white">
+      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
 
-      <div className="text-sm text-blue-300 flex justify-between">
-        <span>Par {authorName}</span>
-        <span>{formatDate(publicationDate)}</span>
-      </div>
+      {article.publishedDate && (
+        <p className="text-sm text-gray-400 mb-4">
+          Publié le {new Date(article.publishedDate).toLocaleDateString("fr-FR")}
+        </p>
+      )}
 
-      {imageUrl && (
+      {article.thumbnail?.url && (
         <img
-          src={imageUrl}
-          alt={title}
-          className="w-full h-72 object-cover rounded-xl"
+          src={getMediaUrl(article.thumbnail.url)} // ✅ Ici on utilise la fonction
+          alt={article.title}
+          className="rounded-lg mb-6"
         />
       )}
 
-      <p className="whitespace-pre-line text-gray-100 mt-4">{content}</p>
+      <div
+        className="prose prose-invert max-w-none"
+        dangerouslySetInnerHTML={{ __html: article.content }}
+      />
     </div>
   )
 }
