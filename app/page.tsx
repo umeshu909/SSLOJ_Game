@@ -53,12 +53,16 @@ export default function Home() {
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
 
-  useEffect(() => {
-    fetch("/api/articles/latest")
-      .then((res) => res.json())
-      .then(setArticles)
-      .catch((err) => console.error("Erreur chargement articles :", err));
-  }, []);
+useEffect(() => {
+  fetch("/api/articles/latest")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Articles reçus :", data);
+      setArticles(data.data); // ← assume que la structure est { data: [...] }
+    })
+    .catch((err) => console.error("Erreur chargement articles :", err));
+}, []);
+
 
   useEffect(() => {
     fetch("/api/characters/latest", {
@@ -130,7 +134,7 @@ export default function Home() {
         <div className="mt-20">
           <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {articles.map((article) => (
+            {Array.isArray(articles) && articles.map((article) => (
               <a
                 key={article.id}
                 href={`/articles/${article.slug}`}
