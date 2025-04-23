@@ -77,7 +77,7 @@ export default function Home() {
         {/* Dernier personnage */}
         {latestCharacter && (
           <div className="mb-20">
-            <h1 className="text-3xl font-bold mb-8 text-center">Dernier personnage</h1>
+            <h1 className="text-xs uppercase font-medium mb-3 text-white/80r">Dernier personnage</h1>
             <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
               <img
                 src={latestCharacter.image}
@@ -113,7 +113,7 @@ export default function Home() {
 
         {/* Preview CN */}
         <div className="mt-16">
-          <h2 className="text-2xl font-bold text-center mb-6">Preview CN</h2>
+          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
           <div className="flex justify-center gap-6 flex-wrap">
             <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
               <h3 className="text-lg font-semibold text-yellow-400 mb-2">Pandore ND</h3>
@@ -128,7 +128,7 @@ export default function Home() {
 
         {/* Derniers articles */}
         <div className="mt-20">
-          <h2 className="text-2xl font-bold text-center mb-6">Derniers articles</h2>
+          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
             {articles.map((article) => (
               <a
