@@ -8,16 +8,21 @@ import "swiper/css";
 import Description from "@/components/Description";
 
 interface VestigeDetail {
-    id: number;
-    name: string;
-    pic: string;
-    skillid: string;
-    skillname: string;
-    level: number;
-    icon: string;
-    desc: string;
-    quality: number;
+  id: number;
+  name: string;
+  pic: string;
+  skillid: string;
+  skillname: string;
+  level: number;
+  icon: string;
+  desc: string;
+  quality: number;
+  starttm: number;
+  skillendtm: number;
+  precd: number;
+  cd: number;
 }
+
 
 interface CareerValue {
     metier: number;
@@ -260,6 +265,31 @@ const VestigeDetailPage = () => {
                                                         );
                                                     })}
                                                 </div>
+
+                                                <div className="text-sm font-semibold text-white flex flex-wrap gap-x-4 gap-y-1 border-t border-white/10 p-4">
+                                                    {skill.starttm !== undefined && skill.starttm !== 0 && (
+                                                        <span>
+                                                            <span className="font-normal text-white/80">Début:</span> {(skill.starttm / 1000).toFixed(2)}s
+                                                        </span>
+                                                    )}
+                                                    {skill.skillendtm !== undefined && skill.skillendtm !== 0 && (
+                                                        <span>
+                                                            <span className="font-normal text-white/80">Fin:</span> {(skill.skillendtm / 1000).toFixed(2)}s
+                                                        </span>
+                                                    )}
+                                                    {skill.precd !== undefined && skill.precd !== 0 && (
+                                                        <span>
+                                                            <span className="font-normal text-white/80">Délai:</span> {(skill.precd / 1000).toFixed(2)}s
+                                                        </span>
+                                                    )}
+                                                    {skill.cd !== undefined && skill.cd !== 0 && (
+                                                        <span>
+                                                            <span className="font-normal text-white/80">Cooldown:</span> {(skill.cd / 1000).toFixed(2)}s
+                                                        </span>
+                                                    )}
+                                                </div>
+
+
                                             </div>
                                         </div>
                                     </div>
