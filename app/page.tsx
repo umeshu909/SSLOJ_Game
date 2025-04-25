@@ -81,54 +81,79 @@ useEffect(() => {
         {/* Dernier personnage */}
         {latestCharacter && (
           <div className="mb-20">
-            <h1 className="text-xs uppercase font-medium mb-3 text-white/80r">Dernier personnage</h1>
-            <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
-              <img
-                src={latestCharacter.image}
-                alt={latestCharacter.name}
-                className="w-40 h-auto rounded"
-              />
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Colonne gauche : dernier perso */}
               <div className="flex-1">
-                <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
-                <p className="text-white/90 mb-1">
-                  {roleMapping[latestCharacter.role]} / {typeMapping[latestCharacter.type]}
-                </p>
-                <p className="text-sm text-white/60 mb-4">
-                  Sortie : {latestCharacter.releaseDate}
-                </p>
-                {latestCharacter.stats && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
-                    {Object.entries(latestCharacter.stats)
-                      .filter(([_, value]) => {
-                        if (typeof value === "string") return value !== "0%" && value !== "0";
-                        return Number(value) > 0;
-                      })
-                      .map(([key, value]) => (
-                        <div key={key} className="bg-[#29264a] p-2 rounded">
-                          {formatStatLabel(key)} : {String(value)}
-                        </div>
-                      ))}
+                <h1 className="text-xs uppercase font-medium mb-3 text-white/80">Dernier personnage</h1>
+                <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
+                  <img
+                    src={latestCharacter.image}
+                    alt={latestCharacter.name}
+                    className="w-40 h-auto rounded"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
+                    <p className="text-white/90 mb-1">
+                      {roleMapping[latestCharacter.role]} / {typeMapping[latestCharacter.type]}
+                    </p>
+                    <p className="text-sm text-white/60 mb-4">
+                      Sortie : {latestCharacter.releaseDate}
+                    </p>
+                    {latestCharacter.stats && (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
+                        {Object.entries(latestCharacter.stats)
+                          .filter(([_, value]) => {
+                            if (typeof value === "string") return value !== "0%" && value !== "0";
+                            return Number(value) > 0;
+                          })
+                          .map(([key, value]) => (
+                            <div key={key} className="bg-[#29264a] p-2 rounded">
+                              {formatStatLabel(key)} : {String(value)}
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
+
+              {/* Colonne droite : previews CN */}
+              <div className="flex-1 flex flex-col">
+                <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
+
+                {/* On force la même hauteur que le bloc à gauche */}
+                <div className="bg-[#1f1d3a] rounded-lg shadow-lg p-6 flex justify-center items-center gap-6 h-full md:min-h-[240px]">
+
+                  <div className="relative w-40 h-fit">
+                    <img
+                      src="/images/actual/K_panduola_nd.png"
+                      className="rounded-lg w-full h-auto"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
+                      Pandore ND
+                    </div>
+                  </div>
+
+                  <div className="relative w-40 h-fit">
+                    <img
+                      src="/images/actual/K_zilong_chuancheng.png"
+                      className="rounded-lg w-full h-auto"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
+                      Shiryu semi-naked
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
             </div>
           </div>
         )}
 
-        {/* Preview CN */}
-        <div className="mt-16">
-          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
-          <div className="flex justify-center gap-6 flex-wrap">
-            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Pandore ND</h3>
-              <img src="/images/actual/K_panduola_nd.png" alt="Preview" className="rounded-lg" />
-            </div>
-            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Shiryu semi-naked</h3>
-              <img src="/images/actual/K_zilong_chuancheng.png" alt="Preview" className="rounded-lg" />
-            </div>
-          </div>
-        </div>
+
 
         {/* Derniers articles */}
         <div className="mt-20">

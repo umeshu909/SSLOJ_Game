@@ -179,11 +179,16 @@ const VestigeDetailPage = () => {
 
     const main = details[0];
     const getLevelThreshold = (skillIndex: number, skillLevelIndex: number): number => {
-        if ([...new Set(details.map((d) => d.skillid))].length === 1) {
-            return (skillLevelIndex + 1) * 10;
-        }
-        return (skillLevelIndex + 1) * 10 - (skillIndex === 0 ? 5 : 0);
+      const uniqueSkills = [...new Set(details.map((d) => d.skillid))];
+      const isSingleSkill = uniqueSkills.length === 1;
+
+      if (isSingleSkill) {
+        return [5, 15, 30][skillLevelIndex] || 999;
+      }
+
+      return (skillLevelIndex + 1) * 10 - (skillIndex === 0 ? 5 : 0);
     };
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white pb-24">
