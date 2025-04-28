@@ -1,6 +1,8 @@
 // app/articles/page.tsx
 export const dynamic = "force-dynamic";
 
+const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:8055';
+
 type Article = {
   id: number;
   title: string;
@@ -65,7 +67,7 @@ export default async function ArticlesPage() {
 
       <div className="space-y-6">
         {articles.map((article) => {
-          const imageUrl = article.images ? `http://localhost:8055/assets/${article.images}` : null;
+          const imageUrl = article.images ? `${PUBLIC_URL}/assets/${article.images}` : null;
 
           return (
               <a

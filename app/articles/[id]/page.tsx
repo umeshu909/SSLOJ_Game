@@ -1,6 +1,8 @@
 // app/articles/[id]/page.tsx
 export const dynamic = "force-dynamic";
 
+const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:8055';
+
 type Article = {
   id: number;
   user_created: string;
@@ -77,7 +79,7 @@ export default async function ArticlePage({ params }: PageProps) {
         {article.images && (
           <div className="flex-shrink-0">
             <img
-              src={`http://localhost:8055/assets/${article.images}`}
+              src={`${PUBLIC_URL}/assets/${article.images}`}
               alt={article.title}
               className="rounded-lg shadow"
               style={{ maxHeight: "300px", width: "auto" }}

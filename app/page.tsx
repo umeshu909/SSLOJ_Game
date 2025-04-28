@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getMediaUrl } from "@/lib/media";
 
+const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:8055';
+
 const roleMapping: Record<number, string> = {
   1: "Tank",
   2: "Guerrier",
@@ -157,7 +159,7 @@ export default function Home() {
                 >
                   {article.images && (
                     <img
-                      src={`http://localhost:8055/assets/${article.images}`}
+                      src={`${PUBLIC_URL}/assets/${article.images}`}
                       alt={article.title}
                       className="rounded-lg mb-3 w-full"
                     />
