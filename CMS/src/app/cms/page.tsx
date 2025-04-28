@@ -1,6 +1,4 @@
-'use client';
-
-import { getPayloadClient } from '@/payload/payloadClient'; // À adapter selon ton chemin exact
+import { getPayloadClient } from '@/payload/payloadClient';
 
 export default async function CMSPage() {
   const payload = await getPayloadClient();
