@@ -15,6 +15,12 @@ type Article = {
   images?: string; // ton champ images est juste un ID d'asset
 };
 
+function cleanHTML(html: string): string {
+  // Supprimer tous les attributs class="..." sans toucher aux autres attributs (src, alt, etc.)
+  return html.replace(/ class="[^"]*"/g, '');
+}
+
+
 async function getArticle(id: string): Promise<Article | null> {
   const res = await fetch(`${API_URL}/items/Articles/${id}?fields=*,user_created.first_name`, {
     cache: "no-store",
@@ -55,40 +61,38 @@ export default async function ArticlePage({ params }: PageProps) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 text-white">
-      {/* Titre */}
-      <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+      <div className="max-w-4xl mx-auto px-4 py-8 text-white">
+        {/* Titre */}
+        <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
 
-      {/* Date + Auteur */}
-      <div className="flex justify-between items-center text-sm text-white/60 mb-8">
-        <span>Publié le {formatDate(article.date_created)}</span>
-        <span>Par : {article.user_created?.first_name || "Inconnu"}</span>
+        {/* Date + Auteur */}
+        <div className="flex justify-between items-center text-sm text-white/60 mb-8">
+          <span>Publié le {formatDate(article.date_created)}</span>
+          <span>Par : {article.user_created?.first_name || "Inconnu"}</span>
+        </div>
+
+        {/* Contenu avec image alignée */}
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Texte */}
+          {article.text && (
+            <div className="prose prose-invert max-w-none flex-1">
+              <div dangerouslySetInnerHTML={{ __html: cleanHTML(article.text) }} />
+            </div>
+
+          )}
+
+          {/* Image */}
+          {article.images && (
+            <div className="flex-shrink-0">
+              <img
+                src={`${PUBLIC_URL}/assets/${article.images}`}
+                alt={article.title}
+                className="rounded-lg shadow"
+                style={{ maxHeight: "300px", width: "auto" }}
+              />
+            </div>
+          )}
+        </div>
       </div>
-
-
-      {/* Contenu avec image alignée */}
-      <div className="prose prose-invert max-w-none flex flex-col md:flex-row gap-6">
-        {/* Texte */}
-        {article.text && (
-          <div
-            className="prose prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: article.text.replace(/\n/g, "<br />") }}
-          ></div>
-        )}
-
-
-        {/* Image */}
-        {article.images && (
-          <div className="flex-shrink-0">
-            <img
-              src={`${PUBLIC_URL}/assets/${article.images}`}
-              alt={article.title}
-              className="rounded-lg shadow"
-              style={{ maxHeight: "300px", width: "auto" }}
-            />
-          </div>
-        )}
-      </div>
-    </div>
   );
 }
