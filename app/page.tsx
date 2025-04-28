@@ -58,10 +58,10 @@ export default function Home() {
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
 
   useEffect(() => {
-    fetch("/api/articles/latest")
+    fetch(`${API_URL}/items/Articles?sort=-date_created&limit=3`)
       .then((res) => res.json())
       .then((data) => {
-        setArticles(data); // ← assume que la structure est { data: [...] }
+        setArticles(data.data); // attention, avec Directus il faut aller dans `data.data`
       })
       .catch((err) => console.error("Erreur chargement articles :", err));
   }, []);

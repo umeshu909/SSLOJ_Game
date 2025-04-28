@@ -101,20 +101,97 @@ html {
   background: transparent !important;
 }
 
+.prose h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.prose h6,
+.prose blockquote h6 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose strong {
+  font-weight: 700;
+}
+
+.prose a {
+  text-decoration: underline;
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .prose ul {
-  list-style-type: disc; /* Puces normales */
-  padding-left: 1.5rem;  /* Indentation correcte */
+  list-style-type: disc;
 }
 
 .prose ol {
-  list-style-type: decimal; /* Numérotation pour les listes ordonnées */
-  padding-left: 1.5rem;
+  list-style-type: decimal;
 }
 
 .prose li {
-  margin-bottom: 0.5rem; /* Un petit espace entre les éléments */
+  margin-bottom: 0.5rem;
 }
 
-.prose p {
-  margin-top: 0.75rem; /* ou 1rem si tu veux plus d'espace */
+.prose blockquote {
+  font-style: italic;
+  border-left: 4px solid #6b7280; /* une bordure discrète */
+  padding-left: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
+
+.prose img {
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose hr {
+  margin: 2rem 0;
+  border-color: #4b5563;
+}
+
