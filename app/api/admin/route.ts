@@ -1,3 +1,11 @@
-import { payload } from '@/payload/payloadClient'
+import { getPayload } from '@/payload/payloadClient'
 
-export { payload as GET, payload as POST }
+export async function GET(request: Request) {
+  const payload = await getPayload()
+  return payload.handleRequest(request)
+}
+
+export async function POST(request: Request) {
+  const payload = await getPayload()
+  return payload.handleRequest(request)
+}
