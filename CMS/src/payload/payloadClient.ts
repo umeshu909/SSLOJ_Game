@@ -1,4 +1,5 @@
-import payload from 'payload';
+import { getPayload } from '@payloadcms/next';
+
 
 export async function getPayloadClient() {
   if (!payload.__isInitialized) {
