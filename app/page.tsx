@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getMediaUrl } from "@/lib/media";
 
-const PUBLIC_URL = process.env.PUBLIC_URL || 'http://localhost:8055';
+const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
 
 const roleMapping: Record<number, string> = {
   1: "Tank",
