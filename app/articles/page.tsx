@@ -1,7 +1,9 @@
 // app/articles/page.tsx
 export const dynamic = "force-dynamic";
 
+const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
+
 
 type Article = {
   id: number;
@@ -36,7 +38,7 @@ function cleanText(html: string): string {
 }
 
 async function getArticles(): Promise<Article[]> {
-  const res = await fetch("${PUBLIC_URL}/items/Articles?fields=id,title,text,date_created,images", {
+  const res = await fetch("${API_URL}/items/Articles?fields=id,title,text,date_created,images", {
     cache: "no-store",
   });
 
