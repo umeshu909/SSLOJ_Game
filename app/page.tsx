@@ -159,13 +159,15 @@ export default function Home() {
                   href={`/articles/${article.id}`}
                   className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
                 >
-                  {article.images && (
+                  <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '300px' }}>
                     <img
                       src={`${PUBLIC_URL}/assets/${article.images}`}
                       alt={article.title}
-                      className="rounded-lg mb-3 w-full"
+                      className="w-full object-cover object-top"
+                      style={{ height: '300px' }}
                     />
-                  )}
+                  </div>
+
                   <h3 className="text-lg font-semibold text-yellow-400 mb-1">
                     {article.title}
                   </h3>
