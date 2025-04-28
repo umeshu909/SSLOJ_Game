@@ -53,15 +53,14 @@ export default function Home() {
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
 
-useEffect(() => {
-  fetch("/api/articles/latest")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Articles reçus :", data);
-      setArticles(data.data); // ← assume que la structure est { data: [...] }
-    })
-    .catch((err) => console.error("Erreur chargement articles :", err));
-}, []);
+  useEffect(() => {
+    fetch("/api/articles/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(data); // ← assume que la structure est { data: [...] }
+      })
+      .catch((err) => console.error("Erreur chargement articles :", err));
+  }, []);
 
 
   useEffect(() => {
@@ -78,6 +77,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white py-12 px-4 sm:px-10">
       <div className="max-w-6xl mx-auto">
+
         {/* Dernier personnage */}
         {latestCharacter && (
           <div className="mb-20">
@@ -138,9 +138,6 @@ useEffect(() => {
                 </div>
               </div>
 
-
-
-
             </div>
           </div>
         )}
@@ -151,27 +148,31 @@ useEffect(() => {
         <div className="mt-20">
           <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {Array.isArray(articles) && articles.map((article) => (
-              <a
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
-              >
-                {article.thumbnail?.url && (
-                  <img
-                    src={getMediaUrl(article.thumbnail.url)}
-                    alt={article.title}
-                    className="rounded-lg mb-3 w-full"
-                  />
-                )}
-                <h3 className="text-lg font-semibold text-yellow-400 mb-1">
-                  {article.title}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Publié le {new Date(article.publishedDate).toLocaleDateString("fr-FR")}
-                </p>
-              </a>
-            ))}
+            {Array.isArray(articles) && articles.length > 0 ? (
+              articles.slice(0, 3).map((article) => (
+                <a
+                  key={article.id}
+                  href={`/articles/${article.id}`}
+                  className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
+                >
+                  {article.images && (
+                    <img
+                      src={`http://localhost:8055/assets/${article.images}`}
+                      alt={article.title}
+                      className="rounded-lg mb-3 w-full"
+                    />
+                  )}
+                  <h3 className="text-lg font-semibold text-yellow-400 mb-1">
+                    {article.title}
+                  </h3>
+                  <p className="text-sm text-gray-300">
+                    Publié le {new Date(article.date_created).toLocaleDateString("fr-FR")}
+                  </p>
+                </a>
+              ))
+            ) : (
+              <p className="text-white/60">Aucun article disponible.</p>
+            )}
           </div>
         </div>
 
