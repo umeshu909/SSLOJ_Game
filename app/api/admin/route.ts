@@ -1,4 +1,5 @@
-import { getPayload } from '@/payload/payloadClient'
+import { getPayload } from '../../../src/payload/payloadClient'
+
 
 export async function GET(request: Request) {
   const payload = await getPayload()
