@@ -19,5 +19,5 @@ LEFT JOIN DreamlandBuffConfig b2
 ON b2.id = buffid2
 LEFT JOIN DreamlandBuffConfig b3 
 ON b3.id = buffid3
-WHERE d.opentime >= datetime('now', '-14 days')
+WHERE d.opentime >= datetime('now', '-40 days')
 ORDER BY d.opentime ASC;

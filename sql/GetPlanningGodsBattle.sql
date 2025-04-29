@@ -14,5 +14,5 @@ LEFT JOIN GodsBuffConfig b2
 ON b2.id = buffid2
 LEFT JOIN GodsBuffConfig b3 
 ON b3.id = buffid3
-WHERE opentime >= datetime('now', '-14 days')
+WHERE opentime >= datetime('now', '-40 days')
 ORDER BY opentime ASC;

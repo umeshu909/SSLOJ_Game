@@ -25,7 +25,7 @@ interface Fish {
 }
 
 const availableGrades = ["Bleu", "Violet", "Or", "Rouge", "Platine"];
-const availableZones = ["1", "2", "3", "4", "5"];
+const availableZones = ["1", "2", "3", "4", "5", "6"];
 
 const speciesLabels: Record<string, string> = {
   "1": "Petit",

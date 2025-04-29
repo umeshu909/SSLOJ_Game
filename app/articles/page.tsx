@@ -1,90 +1,114 @@
 // app/articles/page.tsx
-export const dynamic = "force-dynamic"
+export const dynamic = "force-dynamic";
 
-type ImageFormat = {
-  url: string
-  width: number
-  height: number
-}
+const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
+const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
 
-type Image = {
-  url: string
-  formats?: {
-    medium?: ImageFormat
-    large?: ImageFormat
-    small?: ImageFormat
-    thumbnail?: ImageFormat
-  }
-}
 
 type Article = {
-  id: number
-  documentId: string
-  title: string
-  content: string
-  slug: string | null
-  publicationDate?: string
-  image?: Image[]
+  id: number;
+  title: string;
+  text: string;
+  date_created: string;
+  images?: string;
+};
+
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&eacute;/g, "é")
+    .replace(/&egrave;/g, "è")
+    .replace(/&ecirc;/g, "ê")
+    .replace(/&agrave;/g, "à")
+    .replace(/&acirc;/g, "â")
+    .replace(/&ocirc;/g, "ô")
+    .replace(/&ucirc;/g, "û")
+    .replace(/&ccedil;/g, "ç")
+    .replace(/&aacute;/g, "á")
+    .replace(/&iacute;/g, "í")
+    .replace(/&oacute;/g, "ó")
+    .replace(/&uacute;/g, "ú")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&");
+}
+
+function cleanText(html: string): string {
+  const noHtml = html.replace(/<[^>]*>/g, '');
+  return decodeHtmlEntities(noHtml);
 }
 
 async function getArticles(): Promise<Article[]> {
-  const res = await fetch("http://localhost:1337/api/articles?populate=image", {
+  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,images`, {
     cache: "no-store",
-  })
+  });
 
-  const json = await res.json()
-  return json.data || []
+  const json = await res.json();
+  return json.data || [];
 }
 
 function getExcerpt(text: string, wordLimit = 50): string {
-  const words = text.split(/\s+/)
-  return words.slice(0, wordLimit).join(" ") + (words.length > wordLimit ? "..." : "")
+  const words = text.split(/\s+/);
+  return words.slice(0, wordLimit).join(" ") + (words.length > wordLimit ? "..." : "");
 }
 
 function formatDate(dateStr?: string): string {
-  if (!dateStr) return "Date inconnue"
+  if (!dateStr) return "Date inconnue";
   return new Date(dateStr).toLocaleDateString("fr-FR", {
     day: "numeric",
     month: "long",
     year: "numeric",
-  })
+  });
 }
 
 export default async function ArticlesPage() {
-  const articles = await getArticles()
+  const articles = await getArticles();
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      <h1 className="text-3xl font-bold text-white">Articles</h1>
+      <h1 className="text-3xl font-bold text-white mb-8">Articles</h1>
 
-      {articles.map((article) => {
-        const { documentId, title, content, publicationDate, image } = article
-        const imageUrl = image && image.length > 0 ? image[0].url : null
+      <div className="space-y-6">
+        {articles.map((article) => {
+          const imageUrl = article.images ? `${PUBLIC_URL}/assets/${article.images}` : null;
 
-        return (
-          <a
-            key={documentId}
-            href={`/articles/${documentId}`}
-            className="block border border-blue-700 rounded-xl p-4 bg-blue-800/60 shadow hover:bg-blue-700 transition-colors space-y-4 text-white"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-blue-200">{title}</h2>
-              <span className="text-sm text-blue-300">{formatDate(publicationDate)}</span>
-            </div>
+          return (
+              <a
+                key={article.id}
+                href={`/articles/${article.id}`}
+                className="block border border-blue-700 rounded-xl p-4 bg-blue-800/60 shadow hover:bg-blue-700 transition-colors text-white space-y-4"
+              >
+                {/* Titre + Date (au-dessus) */}
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold text-blue-200">{article.title}</h2>
+                  <span className="text-sm text-blue-300">{formatDate(article.date_created)}</span>
+                </div>
 
-            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-              <p className="text-gray-100 flex-1">{getExcerpt(content)}</p>
-              {imageUrl && (
-                <img
-                  src={`http://localhost:1337${imageUrl}`}
-                  alt={title}
-                  className="w-full md:w-48 h-auto object-cover rounded-lg"
-                />
-              )}
-            </div>
-          </a>
-        )
-      })}
+                {/* Texte + Image (en flex uniquement ici) */}
+                <div className="flex flex-col md:flex-row items-start gap-4">
+                  {/* Texte */}
+                  {article.text && (
+                    <p className="text-gray-100">
+                      {getExcerpt(cleanText(article.text), 50)}
+                    </p>
+                  )}
+
+
+
+                  {/* Image */}
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={article.title}
+                      className="w-24 max-h-24 object-cover rounded-lg flex-shrink-0"
+                    />
+                  )}
+                </div>
+              </a>
+
+
+          );
+        })}
+      </div>
     </div>
-  )
+  );
 }

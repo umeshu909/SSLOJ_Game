@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getMediaUrl } from "@/lib/media";
 
+const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
+const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
+
+
 const roleMapping: Record<number, string> = {
   1: "Tank",
   2: "Guerrier",
@@ -53,15 +57,14 @@ export default function Home() {
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
 
-useEffect(() => {
-  fetch("/api/articles/latest")
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("Articles reçus :", data);
-      setArticles(data.data); // ← assume que la structure est { data: [...] }
-    })
-    .catch((err) => console.error("Erreur chargement articles :", err));
-}, []);
+  useEffect(() => {
+    fetch("/api/articles/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(data.data); // attention, avec Directus il faut aller dans `data.data`
+      })
+      .catch((err) => console.error("Erreur chargement articles :", err));
+  }, []);
 
 
   useEffect(() => {
@@ -78,83 +81,104 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white py-12 px-4 sm:px-10">
       <div className="max-w-6xl mx-auto">
+
         {/* Dernier personnage */}
         {latestCharacter && (
           <div className="mb-20">
-            <h1 className="text-xs uppercase font-medium mb-3 text-white/80r">Dernier personnage</h1>
-            <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
-              <img
-                src={latestCharacter.image}
-                alt={latestCharacter.name}
-                className="w-40 h-auto rounded"
-              />
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Colonne gauche : dernier perso */}
               <div className="flex-1">
-                <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
-                <p className="text-white/90 mb-1">
-                  {roleMapping[latestCharacter.role]} / {typeMapping[latestCharacter.type]}
-                </p>
-                <p className="text-sm text-white/60 mb-4">
-                  Sortie : {latestCharacter.releaseDate}
-                </p>
-                {latestCharacter.stats && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
-                    {Object.entries(latestCharacter.stats)
-                      .filter(([_, value]) => {
-                        if (typeof value === "string") return value !== "0%" && value !== "0";
-                        return Number(value) > 0;
-                      })
-                      .map(([key, value]) => (
-                        <div key={key} className="bg-[#29264a] p-2 rounded">
-                          {formatStatLabel(key)} : {String(value)}
-                        </div>
-                      ))}
+                <h1 className="text-xs uppercase font-medium mb-3 text-white/80">Dernier personnage</h1>
+                <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
+                  <img
+                    src={latestCharacter.image}
+                    alt={latestCharacter.name}
+                    className="w-40 h-auto rounded"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
+                    <p className="text-white/90 mb-1">
+                      {roleMapping[latestCharacter.role]} / {typeMapping[latestCharacter.type]}
+                    </p>
+                    <p className="text-sm text-white/60 mb-4">
+                      Sortie : {latestCharacter.releaseDate}
+                    </p>
+                    {latestCharacter.stats && (
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
+                        {Object.entries(latestCharacter.stats)
+                          .filter(([_, value]) => {
+                            if (typeof value === "string") return value !== "0%" && value !== "0";
+                            return Number(value) > 0;
+                          })
+                          .map(([key, value]) => (
+                            <div key={key} className="bg-[#29264a] p-2 rounded">
+                              {formatStatLabel(key)} : {String(value)}
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
+
+              {/* Colonne droite : previews CN */}
+              <div className="flex-1 flex flex-col">
+                <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
+
+                {/* On force la même hauteur que le bloc à gauche */}
+                <div className="bg-[#1f1d3a] rounded-lg shadow-lg p-6 flex justify-center items-center gap-6 h-full md:min-h-[240px]">
+
+                  <div className="relative w-40 h-fit">
+                    <img
+                      src="/images/actual/K_panduola_nd.png"
+                      className="rounded-lg w-full h-auto"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
+                      Pandore ND
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
             </div>
           </div>
         )}
 
-        {/* Preview CN */}
-        <div className="mt-16">
-          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
-          <div className="flex justify-center gap-6 flex-wrap">
-            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Pandore ND</h3>
-              <img src="/images/actual/K_panduola_nd.png" alt="Preview" className="rounded-lg" />
-            </div>
-            <div className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg text-center w-fit">
-              <h3 className="text-lg font-semibold text-yellow-400 mb-2">Shiryu semi-naked</h3>
-              <img src="/images/actual/K_zilong_chuancheng.png" alt="Preview" className="rounded-lg" />
-            </div>
-          </div>
-        </div>
+
 
         {/* Derniers articles */}
         <div className="mt-20">
           <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            {Array.isArray(articles) && articles.map((article) => (
-              <a
-                key={article.id}
-                href={`/articles/${article.slug}`}
-                className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
-              >
-                {article.thumbnail?.url && (
-                  <img
-                    src={getMediaUrl(article.thumbnail.url)}
-                    alt={article.title}
-                    className="rounded-lg mb-3 w-full"
-                  />
-                )}
-                <h3 className="text-lg font-semibold text-yellow-400 mb-1">
-                  {article.title}
-                </h3>
-                <p className="text-sm text-gray-300">
-                  Publié le {new Date(article.publishedDate).toLocaleDateString("fr-FR")}
-                </p>
-              </a>
-            ))}
+            {Array.isArray(articles) && articles.length > 0 ? (
+              articles.slice(0, 3).map((article) => (
+                <a
+                  key={article.id}
+                  href={`/articles/${article.id}`}
+                  className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
+                >
+                  <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '300px' }}>
+                    <img
+                      src={`${PUBLIC_URL}/assets/${article.images}`}
+                      alt={article.title}
+                      className="w-full object-cover object-top"
+                      style={{ height: '300px' }}
+                    />
+                  </div>
+
+                  <h3 className="text-lg font-semibold text-yellow-400 mb-1">
+                    {article.title}
+                  </h3>
+                  <p className="text-sm text-gray-300">
+                    Publié le {new Date(article.date_created).toLocaleDateString("fr-FR")}
+                  </p>
+                </a>
+              ))
+            ) : (
+              <p className="text-white/60">Aucun article disponible.</p>
+            )}
           </div>
         </div>
 
