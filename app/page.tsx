@@ -58,7 +58,7 @@ export default function Home() {
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/articles/latest`)
+    fetch("/api/articles/latest")
       .then((res) => res.json())
       .then((data) => {
         setArticles(data.data); // attention, avec Directus il faut aller dans `data.data`
