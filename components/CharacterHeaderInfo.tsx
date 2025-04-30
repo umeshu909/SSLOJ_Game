@@ -24,34 +24,38 @@ const typesImages = {
 
 const CharacterHeaderInfo: React.FC<Props> = ({ character }) => {
   return (
-    <div className="flex items-center gap-4 mb-4">
-      <img
-        src={character.image}
-        alt={character.name}
-        className="w-24 h-32 rounded-lg object-cover border border-white/10"
-      />
-      <div>
+    <div className="flex items-start gap-4 mb-4">
+      {/* Colonne image + icônes */}
+      <div className="flex flex-col items-center">
+        <img
+          src={character.image}
+          alt={character.name}
+          className="w-24 h-32 rounded-lg object-cover object-top border border-white/10"
+        />
+        <div className="flex items-center gap-2 mt-2">
+          <img
+            src={`/images/icons/${typesImages[character.element]}`}
+            width="32"
+            alt={character.element}
+          />
+          <img
+            src={`/images/icons/${categoryImages[character.role]}`}
+            width="42"
+            alt={character.role}
+          />
+        </div>
+      </div>
+
+      {/* Nom à droite */}
+      <div className="flex items-start">
         <h1 className="text-xl font-bold leading-tight">
           {character.name} [{character.firstname}]
         </h1>
-        <p className="text-cosmosCrystal text-sm">
-          {/*character.element} • {character.role*/}
-          <span className="flex items-center gap-3 ml-2">
-            <img
-              src={`/images/icons/${typesImages[character.element]}`}
-              width="32"
-              alt={character.element}
-            />
-            <img
-              src={`/images/icons/${categoryImages[character.role]}`}
-              width="42"
-              alt={character.role}
-            />
-          </span>
-        </p>
       </div>
     </div>
   );
 };
+
+
 
 export default CharacterHeaderInfo;

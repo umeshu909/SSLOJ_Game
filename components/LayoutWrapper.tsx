@@ -204,6 +204,15 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           {isMounted && showAutresDropdown && (
             <DropdownMenuPortal position={autresPos}>
               <a
+                href="/articles"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/articles") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowAutresDropdown(false)}
+              >
+                Articles
+              </a>
+              <a
                 href="/timeline"
                 className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
                   activeLink.startsWith("/timeline") ? "text-yellow-400" : "text-white"
