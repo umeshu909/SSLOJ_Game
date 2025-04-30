@@ -128,21 +128,23 @@ export default function CharacterPage() {
 
                     {/* Contenu principal */}
                     <div className="flex-1">
-                        <section className="lg:px-6 pb-4">
-                            <CharacterSkills skills={skills} />
+                        <section id="skills" className="lg:px-6 pb-4 scroll-mt-24">
+                          <CharacterSkills skills={skills} />
                         </section>
 
-                        <section className="lg:px-6 pb-4">
-                            <CharacterArmor armor={armor} />
+                        <section id="armor" className="lg:px-6 pb-4 scroll-mt-24">
+                          <CharacterArmor armor={armor} />
                         </section>
 
-                        <section className="lg:px-6 pb-4">
-                            <CharacterConstellations constellations={constellations} />
+                        <section id="constellation" className="lg:px-6 pb-4 scroll-mt-24">
+                          <CharacterConstellations constellations={constellations} />
                         </section>
 
-                        <section className="lg:px-6 pb-4">
-                            <CharacterLinks links={links} />
+                        <section id="links" className="lg:px-6 pb-4 scroll-mt-24">
+                          <CharacterLinks links={links} />
                         </section>
+
+
 
                         {/* Mobile stats list en bas */}
                         <div className="block lg:hidden mt-6 px-4">

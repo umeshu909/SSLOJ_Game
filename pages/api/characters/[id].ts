@@ -33,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             [data.id]: {
                 "id": data.id,
                 "image": [`/images/atlas/icon_tujian/${data.handbookherores}.png`],
+                "image2": [`/images/atlas/lihui/${data.herodrawing}.png`],
                 "name": data.name,
                 "firstname": data.firstname,
                 "rarity": "SSR",
