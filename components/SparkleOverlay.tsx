@@ -24,8 +24,8 @@ const SparkleOverlay = ({ color = "#FFD700" }: SparkleOverlayProps) => {
       const sparkleCount = Math.floor(Math.random() * 15) + 2; // 2 à 5
       const newSparkles: Sparkle[] = Array.from({ length: sparkleCount }).map((_, i) => ({
         id: Date.now() + i,
-        top: Math.random() * 100,
-        left: 20 + Math.random() * 70, // limité entre 10% et 90%
+        top: 10 + Math.random() * 80, // limité entre 10% et 90%
+        left: 10 + Math.random() * 80, // limité entre 10% et 90%
         size: Math.random() * 2 + 7,
         duration: Math.random() * 0.2 + 3,
         char: sparkleChars[Math.floor(Math.random() * sparkleChars.length)],
