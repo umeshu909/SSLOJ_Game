@@ -10,9 +10,13 @@ interface LinkEntry {
   FetterID: number;
   HeroName: string;
   mainIcon: string;
+  Hero1Id: number | null;
   Hero1Icon: string | null;
+  Hero2Id: number | null;
   Hero2Icon: string | null;
+  Hero3Id: number | null;
   Hero3Icon: string | null;
+  Hero4Id: number | null;
   Hero4Icon: string | null;
   skillLevel: number;
   skillDescription: string;
@@ -22,12 +26,14 @@ interface LinkGroup {
   fetterId: number;
   heroName: string;
   mainIcon: string;
-  companions: string[];
+  companions: { id: number; icon: string }[];
   skills: {
     level: number;
     description: string;
+    skillid: number;
   }[];
 }
+
 
 export default function CharacterLinks() {
   const params = useParams();
@@ -46,33 +52,6 @@ export default function CharacterLinks() {
       setLang(storedLang);
   }, []);
 
-  /*useEffect(() => {
-    async function preloadAtlas() {
-      try {
-        const imageSrc = await getImageSrc(prefix);
-        if (!imageSrc) return;
-
-        const imageName = imageSrc.split("/").pop() || "";
-        const baseName = imageName.replace(".png", "");
-        const jsonPath = `${jsonDir}${baseName}.json`;
-
-        const res = await fetch(jsonPath);
-        const contentType = res.headers.get("Content-Type");
-        if (!res.ok || !contentType?.includes("application/json")) {
-          console.warn("❌ JSON introuvable ou invalide:", jsonPath);
-          return;
-        }
-
-        const atlasJson = await res.json();
-        await loadIcons(imageSrc, jsonDir, 2, imgHeight);
-      } catch (error) {
-        console.error("Erreur lors du chargement de l’atlas:", error);
-      }
-    }
-
-    preloadAtlas();
-  }, []);
-*/
   useEffect(() => {
     async function fetchLinks() {
       try {
@@ -95,11 +74,12 @@ export default function CharacterLinks() {
               heroName: entry.HeroName,
               mainIcon: entry.mainIcon,
               companions: [
-                entry.Hero1Icon,
-                entry.Hero2Icon,
-                entry.Hero3Icon,
-                entry.Hero4Icon,
-              ].filter(Boolean) as string[],
+                { id: entry.Hero1Id, icon: entry.Hero1Icon },
+                { id: entry.Hero2Id, icon: entry.Hero2Icon },
+                { id: entry.Hero3Id, icon: entry.Hero3Icon },
+                { id: entry.Hero4Id, icon: entry.Hero4Icon },
+              ].filter(c => c.id && c.icon) as { id: number; icon: string }[],
+
               skills: [],
             };
           }
@@ -146,17 +126,19 @@ export default function CharacterLinks() {
                   />
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
-                  {link.companions.map((icon, idx) => (
-                    <IconCanvas
-                      key={idx}
-                      prefix={prefix}
-                      iconName={icon}
-                      jsonDir={jsonDir}
-                      canvasId={`companion-${index}-${idx}`}
-                      imgHeight={imgHeight}
-                      size={2}
-                    />
+                  {link.companions.map((companion, idx) => (
+                    <a href={`/characters/${companion.id}`} key={idx}>
+                      <IconCanvas
+                        prefix={prefix}
+                        iconName={companion.icon}
+                        jsonDir={jsonDir}
+                        canvasId={`companion-${index}-${idx}`}
+                        imgHeight={imgHeight}
+                        size={2}
+                      />
+                    </a>
                   ))}
+
                 </div>
               </div>
 

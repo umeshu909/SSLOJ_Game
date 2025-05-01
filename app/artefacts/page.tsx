@@ -76,18 +76,19 @@ const ArtifactsPage = () => {
                     {Artifacts.length === 0 ? (
                         <p className="text-center text-lg mt-4">Aucun artefact trouvé</p>
                     ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 ">
+
                             {Artifacts.map((artifact) => (
                                 <a
                                     key={artifact.id}
                                     href={`/artefacts/${artifact.id}`}
                                     className="group bg-[#1e1c3a] border border-white/10 hover:border-white/30 rounded p-3 flex flex-col items-center text-center transition duration-200 hover:scale-[1.01]"
                                 >
-                                    <div className="relative w-full aspect-[3/4] flex items-center justify-center">
+                                    <div className="relative w-full aspect-[3/4] flex items-center justify-center ">
                                         <img
                                             src={artifact.icon}
                                             alt={artifact.name}
-                                            className="w-full h-auto object-contain z-10"
+                                            className="w-full h-auto object-contain z-10 "
                                         />
                                     </div>
                                     <h3 className="mt-3 text-sm font-semibold text-white leading-tight">

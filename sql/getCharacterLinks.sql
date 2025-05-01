@@ -9,9 +9,13 @@ SELECT
   SkillTextConfig.level AS skillLevel,        -- Vérifiez si le niveau de compétence est présent
   SkillTextConfig.name AS skillName,
   HeroConfig.icon AS mainIcon,
+  HeroConfigHero1.id AS Hero1Id,
   HeroConfigHero1.icon AS Hero1Icon,
+  HeroConfigHero2.id AS Hero2Id,
   HeroConfigHero2.icon AS Hero2Icon,
+  HeroConfigHero3.id AS Hero3Id,
   HeroConfigHero3.icon AS Hero3Icon,
+  HeroConfigHero4.id AS Hero4Id,
   HeroConfigHero4.icon AS Hero4Icon
 FROM FetterBaseConfig
 INNER JOIN HeroConfig ON FetterBaseConfig.heroid = HeroConfig.id
