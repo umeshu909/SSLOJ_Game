@@ -1,5 +1,6 @@
 // app/articles/[id]/page.tsx
 export const dynamic = "force-dynamic";
+import LikeButton from '@/components/LikeButton'; // adapte le chemin si besoin
 
 const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
@@ -22,7 +23,7 @@ function cleanHTML(html: string): string {
 
 
 async function getArticle(id: string): Promise<Article | null> {
-  const res = await fetch(`${API_URL}/items/Articles/${id}?fields=*,user_created.first_name`, {
+  const res = await fetch(`${API_URL}/items/Articles/${id}?fields=*,user_created.first_name,likes`, {
     cache: "no-store",
   });
 
@@ -92,6 +93,11 @@ export default async function ArticlePage({ params }: PageProps) {
               />
             </div>
           )}
+        </div>
+
+        {/* Bouton Like */}
+        <div className="mb-8 cursor-pointer">
+          <LikeButton articleId={params.id} initialLikes={article.likes || 0} />
         </div>
       </div>
   );
