@@ -15,23 +15,28 @@ export default function LikeButton({ articleId, initialLikes }: { articleId: str
 
   async function handleLike() {
     setLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055'}/items/Articles/${articleId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        likes: likes + 1,
-      }),
-    });
+    try {
+      const res = await fetch('/api/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: articleId, likes: likes + 1 }),
+      });
 
-    const data = await res.json();
-    if (res.ok) {
-      setLikes(data.likes ?? likes + 1);
+
+      const data = await res.json();
+
+      if (res.ok && data?.data?.likes !== undefined) {
+        setLikes(data.data.likes);
+      } else {
+        console.error("Erreur mise à jour :", res.status, data);
+      }
+    } catch (err) {
+      console.error("Erreur réseau :", err);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
+
 
   return (
     <button
