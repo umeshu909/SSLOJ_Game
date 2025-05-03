@@ -96,7 +96,7 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
 
         {/* Bouton Like */}
-        <div className="mb-8 cursor-pointer">
+        <div className="mb-8">
           <LikeButton articleId={params.id} initialLikes={article.likes || 0} />
         </div>
       </div>
