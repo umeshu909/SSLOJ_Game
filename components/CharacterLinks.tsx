@@ -8,6 +8,7 @@ import Description from "@/components/Description";
 
 interface LinkEntry {
   FetterID: number;
+  HeroID: number;
   HeroName: string;
   mainIcon: string;
   Hero1Id: number | null;
@@ -24,6 +25,7 @@ interface LinkEntry {
 
 interface LinkGroup {
   fetterId: number;
+  HeroID: number;
   heroName: string;
   mainIcon: string;
   companions: { id: number; icon: string }[];
@@ -71,6 +73,7 @@ export default function CharacterLinks() {
           if (!grouped[entry.FetterID]) {
             grouped[entry.FetterID] = {
               fetterId: entry.FetterID,
+              HeroID: entry.HeroID,
               heroName: entry.HeroName,
               mainIcon: entry.mainIcon,
               companions: [
@@ -116,14 +119,16 @@ export default function CharacterLinks() {
               {/* Colonne de gauche avec icônes */}
               <div className="p-4 bg-white/5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col items-center justify-center w-full md:w-[160px] gap-2">
                 <div className="p-[2px] rounded-full border-2 border-yellow-400 ">
-                  <IconCanvas
-                    prefix={prefix}
-                    iconName={link.mainIcon}
-                    jsonDir={jsonDir}
-                    canvasId={`main-canvas-${index}`}
-                    imgHeight={imgHeight}
-                    size={1.5}
-                  />
+                  <a href={`/characters/${link.HeroID}`} key={index}>
+                    <IconCanvas
+                      prefix={prefix}
+                      iconName={link.mainIcon}
+                      jsonDir={jsonDir}
+                      canvasId={`main-canvas-${index}`}
+                      imgHeight={imgHeight}
+                      size={1.5}
+                    />
+                  </a>
                 </div>
                 <div className="flex flex-wrap justify-center gap-2 mt-2">
                   {link.companions.map((companion, idx) => (

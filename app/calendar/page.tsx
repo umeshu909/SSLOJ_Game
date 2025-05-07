@@ -18,7 +18,8 @@ const categories = [
   { id: 'glory', label: 'Tournoi des points de Gloire' },
   { id: 'gods', label: 'Champ de bataille des Dieux' },
   { id: 'relics', label: 'Reliques des Dieux' },
-  { id: 'arena', label: 'Arène Mondiale' }
+  { id: 'arena', label: 'Arène Mondiale' },
+  { id: 'tournois', label: 'Tournois du Sanctuaire' }
 ]
 
 const typeColors: Record<string, string> = {
@@ -29,6 +30,7 @@ const typeColors: Record<string, string> = {
   gods: "#8b5cf6",
   relics: "#ea580c",
   arena: "#0ea5e9",
+  tournois: "#9ea5e9",
 };
 
 

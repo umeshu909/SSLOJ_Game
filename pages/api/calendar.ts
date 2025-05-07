@@ -19,7 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     { file: "getPlanningGloryPointsTournament.sql", type: "glory", title: "Tournoi de Gloire" },
     { file: "GetPlanningGodsBattle.sql", type: "gods", title: "Champs de Bataille des Dieux" },
     { file: "getPlanningRelics.sql", type: "relics", title: "Reliques des Dieux" },
-    { file: "getPlanningWorldArena.sql", type: "arena", title: "Arène Mondiale" }
+    { file: "getPlanningWorldArena.sql", type: "arena", title: "Arène Mondiale" },
+    { file: "getPlanningTournoisSanctaire.sql", type: "tournois", title: "Tournois du Sanctuaire" }
   ];
 
   const finalEvents: any[] = [];
@@ -32,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     gods: "#8b5cf6",
     relics: "#ea580c",
     arena: "#0ea5e9",
+    tournois: "#9ea5e9",
   };
 
   for (const f of files) {
@@ -109,8 +111,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (f.type === "dreamland") {
         const duration = parseInt(row.duration || "4");
         const startObj = new Date(startDate);
+        // Réinitialiser l'heure à minuit (00:00:00)
+        startObj.setHours(0, 0, 0, 0);
         const endObj = addDays(startObj, duration);
-        endDate = endObj.toISOString();
+        // Garder uniquement la date sans l'heure (format YYYY-MM-DD)
+        endDate = endObj.toISOString().split('T')[0];
       } else {
         if (row.End) {
           endDate = row.End.toString().replace(' ', 'T');
@@ -119,6 +124,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           endDate = fallback.toISOString();
         }
       }
+
 
       const event: any = {
         title: f.type === "dreamland" && row.Map ? `${f.title} - ${row.Map}` : f.title,
