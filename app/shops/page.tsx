@@ -87,12 +87,13 @@ export default function ShopItemsPage() {
           ) : items.length === 0 ? (
             <p className="text-center">Aucun item trouvé pour cette boutique.</p>
           ) : (
-            <table className="w-full table-auto border-separate border-spacing-y-4">
-              <tbody>
-                {items.map((item, index) => (
-                  <tr key={index} className="bg-[#1f1d3a] rounded-lg">
-                    <td className="p-4">
-                      {item.icon && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {items.map((item, index) => (
+                <div key={index} className="relative bg-[#1f1d3a] rounded-xl p-4 text-center shadow-md">
+                  {/* Icône de l’item */}
+                  <div className="relative flex items-start">
+                    {/* Image item avec cadre doré à gauche */}
+                    {item.icon && (
                         <IconCanvas
                           prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
                           iconName={item.icon}
@@ -101,28 +102,34 @@ export default function ShopItemsPage() {
                           imgHeight={4096}
                           size={2}
                         />
-                      )}
-                    </td>
-                    <td className="p-4 align-middle text-yellow-300 font-semibold">{item.name}</td>
-                    <td className="p-4 text-sm text-white/80">Prix : {item.moneyprice}</td>
-                    <td className="p-4">
-                      {item.iconMoney && (
+                    )}
+
+                    {/* Overlay prix + icône monnaie aligné à droite */}
+                    {item.iconMoney && (
+                      <div className="absolute top-0 right-0 flex items-center gap-1 px-2 py-1 rounded-bl-lg text-xs text-white">
+                        <span>{item.moneyprice}</span>
                         <IconCanvas
                           prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
                           iconName={item.iconMoney}
                           jsonDir="/images/atlas/icon_daojv/"
                           canvasId={`canvas-money-${item.id}-${index}`}
                           imgHeight={4096}
-                          size={2}
+                          size={3}
                         />
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </div>
+                    )}
+                  </div>
+
+
+                  {/* Nom de l’item */}
+                  <div className="mt-3 text-yellow-300 font-semibold text-sm">{item.name}</div>
+                </div>
+              ))}
+            </div>
           )}
         </div>
+
+
       </div>
     </div>
   );
