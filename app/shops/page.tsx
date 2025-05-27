@@ -89,24 +89,29 @@ export default function ShopItemsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item, index) => (
-                <div key={index} className="relative bg-[#1f1d3a] rounded-xl p-4 text-center shadow-md">
-                  {/* Icône de l’item */}
-                  <div className="relative flex items-start">
-                    {/* Image item avec cadre doré à gauche */}
+                <div
+                  key={index}
+                  className="group relative bg-[#1f1d3a] hover:bg-[#2a2750] rounded-2xl p-4 text-center shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  {/* Nom de l’item en haut */}
+                  <div className="text-gray-300 text-xs font-medium mb-2">{item.name}</div>
+
+                  {/* Bloc image */}
+                  <div className="relative flex justify-center items-center flex-col">
                     {item.icon && (
-                        <IconCanvas
-                          prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
-                          iconName={item.icon}
-                          jsonDir="/images/atlas/icon_daojv/"
-                          canvasId={`canvas-item-${item.id}-${index}`}
-                          imgHeight={4096}
-                          size={2}
-                        />
+                      <IconCanvas
+                        prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
+                        iconName={item.icon}
+                        jsonDir="/images/atlas/icon_daojv/"
+                        canvasId={`canvas-item-${item.id}-${index}`}
+                        imgHeight={4096}
+                        size={2}
+                      />
                     )}
 
-                    {/* Overlay prix + icône monnaie aligné à droite */}
+                    {/* Prix centré juste en dessous de l’image */}
                     {item.iconMoney && (
-                      <div className="absolute top-0 right-0 flex items-center gap-1 px-2 py-1 rounded-bl-lg text-xs text-white">
+                      <div className="mt-2 text-[12px] text-gray-200 flex items-center justify-center gap-1">
                         <span>{item.moneyprice}</span>
                         <IconCanvas
                           prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
@@ -114,18 +119,19 @@ export default function ShopItemsPage() {
                           jsonDir="/images/atlas/icon_daojv/"
                           canvasId={`canvas-money-${item.id}-${index}`}
                           imgHeight={4096}
-                          size={3}
+                          size={4}
                         />
                       </div>
                     )}
                   </div>
-
-
-                  {/* Nom de l’item */}
-                  <div className="mt-3 text-yellow-300 font-semibold text-sm">{item.name}</div>
                 </div>
               ))}
             </div>
+
+
+
+
+
           )}
         </div>
 
