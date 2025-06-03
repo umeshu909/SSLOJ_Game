@@ -271,8 +271,8 @@
 	"m_RD": {
 		"m_AlphaTexture": { "m_Collection": "cab-1b85a72b50a80c186f27862e6da97345", "m_PathID": 0 },
 		"m_AtlasRectOffset": {
-			"m_X": 2243,
-			"m_Y": 3189
+			"m_X": 907,
+			"m_Y": 3716
 		},
 		"m_Bindpose": [
 			
@@ -305,21 +305,21 @@
 				"m_VertexCount": 8
 			}
 		],
-		"m_Texture": { "m_Collection": "cab-1b85a72b50a80c186f27862e6da97345", "m_PathID": -7411212563710672623 },
+		"m_Texture": { "m_Collection": "cab-1b85a72b50a80c186f27862e6da97345", "m_PathID": -2334397275798238868 },
 		"m_TextureRect": {
 			"m_Height": 85.84776,
 			"m_Width": 83.89713,
-			"m_X": 2246.0269,
-			"m_Y": 3193.0762
+			"m_X": 910.02673,
+			"m_Y": 3720.0762
 		},
 		"m_TextureRectOffset": {
 			"m_X": 0,
 			"m_Y": 0
 		},
 		"m_UvTransform": {
-			"m_W": 3234,
+			"m_W": 3761,
 			"m_X": 100,
-			"m_Y": 2288,
+			"m_Y": 952,
 			"m_Z": 100
 		},
 		"m_VertexData": {
@@ -416,8 +416,8 @@
 	"m_Rect": {
 		"m_Height": 85.84776,
 		"m_Width": 83.89713,
-		"m_X": 2246.0269,
-		"m_Y": 3193.0762
+		"m_X": 910.02673,
+		"m_Y": 3720.0762
 	},
 	"m_RenderDataKey": {
 		"Key": {

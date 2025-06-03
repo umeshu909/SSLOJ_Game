@@ -130,11 +130,11 @@ export default function Home() {
 
                   <div className="relative w-40 h-fit">
                     <img
-                      src="/images/actual/K_aboluo_taiyangshen.png"
+                      src="/images/actual/K_binghe_ndbainiao.png"
                       className="rounded-lg w-full h-auto"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
-                      Apollon
+                      Hyôga ND
                     </div>
                   </div>
 
