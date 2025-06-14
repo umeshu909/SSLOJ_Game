@@ -49,6 +49,27 @@ const ArayashikiDetailPage = () => {
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
 
+
+    const xpByRange = [
+        { from: 0, to: 10, xp: 810 },
+        { from: 11, to: 20, xp: 1850 },
+        { from: 21, to: 30, xp: 3400 },
+        { from: 31, to: 40, xp: 5400 },
+        { from: 41, to: 50, xp: 8500 },
+        { from: 51, to: 60, xp: 12500 },
+    ];
+
+    const books = [
+        { icon: "📙", xp: 1000 },
+        { icon: "📘", xp: 250 },
+        { icon: "📗", xp: 50 },
+        { icon: "📕", xp: 10 },
+    ];
+
+
+    const [startLevel, setStartLevel] = useState<number | null>(null);
+    const [endLevel, setEndLevel] = useState<number | null>(null);
+
     const calculateValue = (base: number, gwnum: number, percent: number | null, level: number): string => {
         const levelTmp = level / 10;
         let constantValue = percent === 1
@@ -128,6 +149,63 @@ const ArayashikiDetailPage = () => {
 
     const fetchDetailLevel = (level: number) => fetchDetail(level);
 
+    const computeTotalXP = (start: number, end: number): number => {
+        return xpByRange.reduce((acc, range) => {
+            if (end <= range.from || start > range.to) return acc;
+            const overlapStart = Math.max(start, range.from);
+            const overlapEnd = Math.min(end, range.to);
+            if (overlapStart <= overlapEnd) {
+                acc += range.xp;
+            }
+            return acc;
+        }, 0);
+    };
+
+    const getLevelOptions = (maxLevel: number) => {
+        const levels: number[] = [];
+        for (let i = 0; i <= maxLevel * 10; i += 10) {
+            levels.push(i);
+        }
+        return levels;
+    };
+
+
+const getBookDistribution = (xp: number) => {
+    const books = [
+        { color: "bg-white", xp: 10, maxPercent: 0.3 },     // jusqu'à 30 % de l'XP en livres blancs
+        { color: "bg-blue-500", xp: 50, maxPercent: 0.4 },  // jusqu'à 40 % en livres bleus
+        { color: "bg-purple-500", xp: 250, maxPercent: 0.2 }, // 20 % violets
+        { color: "bg-yellow-400", xp: 1000, maxPercent: 0.1 }, // 10 % jaunes
+    ];
+
+    const result: { color: string; border?: string; count: number }[] = [];
+    let remaining = xp;
+
+    for (const book of books) {
+        const maxFromPercent = Math.floor((xp * book.maxPercent) / book.xp);
+        const count = Math.min(Math.floor(remaining / book.xp), maxFromPercent);
+        if (count > 0) {
+            result.push({ color: book.color, border: book.color === "bg-white" ? "border border-gray-300" : undefined, count });
+            remaining -= count * book.xp;
+        }
+    }
+
+    // Si il reste encore un peu de XP, on complète uniquement avec des livres blancs
+    if (remaining > 0) {
+        const book = books[0]; // livre blanc
+        const extra = Math.ceil(remaining / book.xp);
+        const existing = result.find(r => r.color === book.color);
+        if (existing) {
+            existing.count += extra;
+        } else {
+            result.push({ color: book.color, border: "border border-gray-300", count: extra });
+        }
+    }
+
+    return result;
+};
+
+
     useEffect(() => {
         const storedLang = localStorage.getItem("lang") || "FR";
         setLang(storedLang);
@@ -140,6 +218,15 @@ const ArayashikiDetailPage = () => {
     useEffect(() => {
         if (detail) fetchOthers();
     }, [detail]);
+
+    useEffect(() => {
+        if (detail) {
+            const max = detail.levelMax * 10;
+            setStartLevel(0);
+            setEndLevel(Math.min(10, max));
+        }
+    }, [detail]);
+
 
     if (notFound) {
         return (
@@ -168,12 +255,15 @@ const ArayashikiDetailPage = () => {
         return <p className="text-white">Chargement...</p>;
     }
 
+
     const stats = [
         detail.Attrib1 && { label: detail.Attrib1, value: detail.value1 },
         detail.Attrib2 && { label: detail.Attrib2, value: detail.value2 },
         detail.Attrib3 && { label: detail.Attrib3, value: detail.value3 },
         detail.Attrib4 && { label: detail.Attrib4, value: detail.value4 }
     ].filter(Boolean) as { label: string; value: string }[];
+
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white pt-[12px] pb-24">
@@ -266,7 +356,71 @@ const ArayashikiDetailPage = () => {
                             ))}
                         </div>
                     )}
+
+
+
+                    {startLevel !== null && endLevel !== null && (
+                    <div className="bg-[#1d1b35] border border-white/10 rounded-lg p-4 text-sm mt-4 space-y-4">
+                        <h3 className="text-base font-semibold text-white">XP nécessaire pour monter de niveau</h3>
+                        <div className="flex flex-wrap items-center gap-4">
+                            <div className="flex items-center gap-2">
+                                <label htmlFor="start-level" className="text-white/70">Niveau de départ</label>
+                                <select
+                                    id="start-level"
+                                    value={startLevel}
+                                    onChange={(e) => setStartLevel(Number(e.target.value))}
+                                    className="bg-[#2a2749] text-white px-2 py-1 rounded"
+                                >
+                                    {getLevelOptions(detail.levelMax)
+                                        .filter(v => endLevel !== null && v < endLevel)
+                                        .map(v => (
+                                            <option key={v} value={v}>{v}</option>
+                                        ))}
+
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <label htmlFor="end-level" className="text-white/70">Niveau final</label>
+                                <select
+                                    id="end-level"
+                                    value={endLevel}
+                                    onChange={(e) => setEndLevel(Number(e.target.value))}
+                                    className="bg-[#2a2749] text-white px-2 py-1 rounded"
+                                >
+                                    {getLevelOptions(detail.levelMax)
+                                        .filter(v => startLevel !== null && v > startLevel)
+                                        .map(v => (
+                                            <option key={v} value={v}>{v}</option>
+                                        ))}
+
+                                </select>
+                            </div>
+                        </div>
+                        <p className="text-white">
+                            XP totale requise : <strong>{computeTotalXP(startLevel + 1, endLevel)}</strong>
+                        </p>
+
+
+                        <div className="flex items-center gap-4 flex-wrap">
+                            {getBookDistribution(computeTotalXP(startLevel + 1, endLevel)).map((book, idx) => (
+                                <div key={idx} className="flex items-center gap-1">
+                                    <div className={`w-5 h-5 rounded-sm ${book.color} ${book.border || ""}`} />
+                                    <span className="text-white">{book.count}</span>
+                                </div>
+                            ))}
+                        </div>
+
+
+
+                    </div>
+                    )}
+
+
                 </div>
+
+
+
+
             </div>
 
             {/* SWIPER AUTRES */}
