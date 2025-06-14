@@ -54,7 +54,6 @@ export default function FishingToolsPage() {
               <thead>
                 <tr className="text-left text-gray-400 border-b border-white/10">
                   <th className="py-2 px-3">Icône</th>
-                  <th className="py-2 px-3">Grade</th>
                   <th className="py-2 px-3">Niveaux</th>
                   <th className="py-2 px-3">Coût</th>
                   <th className="py-2 px-3">Conditions</th>
@@ -77,7 +76,6 @@ export default function FishingToolsPage() {
                           />
                         )}
                       </td>
-                      <td className={`py-2 px-3 ${gradeColors[tool.Grade] || ""}`}>{tool.Grade}</td>
                       <td className="py-2 px-3">{tool.Niveaux}</td>
                       <td className="py-2 px-3">{tool.Coût}</td>
                       <td className="py-2 px-3">{tool.condition || "-"}</td>

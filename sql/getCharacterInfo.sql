@@ -11,6 +11,8 @@ HeroConfig.attackspeed AS IntervalAttack,
 (HeroConfig.pcritlv / 10) AS TauxCrit,
 (HeroConfig.rcritlv / 10) AS Tenacite,
 HeroConfig.hit AS Frappe,
+HeroConfig.angerattack AS angerattack,
+HeroConfig.angerbeattack AS angerbeattack,
 CASE HeroConfig.profession
     WHEN 1 THEN 'Tank'
     WHEN 2 THEN 'Guerrier'

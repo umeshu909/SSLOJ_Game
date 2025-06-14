@@ -59,14 +59,6 @@ const ArayashikiDetailPage = () => {
         { from: 51, to: 60, xp: 12500 },
     ];
 
-    const books = [
-        { icon: "📙", xp: 1000 },
-        { icon: "📘", xp: 250 },
-        { icon: "📗", xp: 50 },
-        { icon: "📕", xp: 10 },
-    ];
-
-
     const [startLevel, setStartLevel] = useState<number | null>(null);
     const [endLevel, setEndLevel] = useState<number | null>(null);
 
@@ -172,38 +164,71 @@ const ArayashikiDetailPage = () => {
 
 const getBookDistribution = (xp: number) => {
     const books = [
-        { color: "bg-white", xp: 10, maxPercent: 0.3 },     // jusqu'à 30 % de l'XP en livres blancs
-        { color: "bg-blue-500", xp: 50, maxPercent: 0.4 },  // jusqu'à 40 % en livres bleus
-        { color: "bg-purple-500", xp: 250, maxPercent: 0.2 }, // 20 % violets
-        { color: "bg-yellow-400", xp: 1000, maxPercent: 0.1 }, // 10 % jaunes
+        { color: "bg-white", xp: 10, targetPercent: 0.3 },
+        { color: "bg-blue-500", xp: 50, targetPercent: 0.25 },
+        { color: "bg-purple-500", xp: 250, targetPercent: 0.25 },
+        { color: "bg-yellow-400", xp: 1000, targetPercent: 0.2 },
     ];
 
     const result: { color: string; border?: string; count: number }[] = [];
-    let remaining = xp;
+
+    let totalAllocated = 0;
+
+    // 1. Calcul de base en respectant les pourcentages
+    const provisional: { color: string; border?: string; xp: number; count: number }[] = [];
 
     for (const book of books) {
-        const maxFromPercent = Math.floor((xp * book.maxPercent) / book.xp);
-        const count = Math.min(Math.floor(remaining / book.xp), maxFromPercent);
-        if (count > 0) {
-            result.push({ color: book.color, border: book.color === "bg-white" ? "border border-gray-300" : undefined, count });
-            remaining -= count * book.xp;
+        if (book.xp > xp) continue; // Trop gros pour ce besoin
+        const targetXP = Math.floor(xp * book.targetPercent);
+        const count = Math.max(1, Math.floor(targetXP / book.xp)); // Au moins 1
+        provisional.push({
+            color: book.color,
+            border: book.color === "bg-white" ? "border border-gray-300" : undefined,
+            xp: book.xp,
+            count,
+        });
+        totalAllocated += count * book.xp;
+    }
+
+    // 2. Ajustement si trop d'XP alloué : on réduit les plus petits d’abord
+    let remaining = xp - totalAllocated;
+    if (remaining < 0) {
+        for (let i = provisional.length - 1; i >= 0; i--) {
+            const book = provisional[i];
+            while (book.count > 1 && remaining < 0) {
+                book.count--;
+                remaining += book.xp;
+            }
         }
     }
 
-    // Si il reste encore un peu de XP, on complète uniquement avec des livres blancs
+    // 3. Ajustement si pas assez : on comble avec des livres blancs
     if (remaining > 0) {
-        const book = books[0]; // livre blanc
-        const extra = Math.ceil(remaining / book.xp);
-        const existing = result.find(r => r.color === book.color);
-        if (existing) {
-            existing.count += extra;
+        const white = provisional.find(b => b.xp === 10);
+        if (white) {
+            white.count += Math.ceil(remaining / 10);
         } else {
-            result.push({ color: book.color, border: "border border-gray-300", count: extra });
+            provisional.push({
+                color: "bg-white",
+                border: "border border-gray-300",
+                xp: 10,
+                count: Math.ceil(remaining / 10),
+            });
         }
+    }
+
+    // 4. Finalisation
+    for (const book of provisional) {
+        result.push({
+            color: book.color,
+            border: book.border,
+            count: book.count,
+        });
     }
 
     return result;
 };
+
 
 
     useEffect(() => {

@@ -218,15 +218,19 @@ html {
 
 @keyframes imagePulse {
   0%, 100% {
-    filter: brightness(1);
+    filter: brightness(0.8);
   }
   50% {
-    filter: brightness(1.3); /* Plus marqué */
+    filter: brightness(1.3); 
   }
 }
 
 .animate-imagePulse {
   animation: imagePulse 3s ease-in-out infinite;
+  will-change: filter;
+  isolation: isolate;
+  backface-visibility: hidden;
 }
+
 
 

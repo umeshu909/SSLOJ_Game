@@ -52,18 +52,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "Vitesse ATQ": `${data.VitesseAttaque}%`,
                     "Taux Crit.": `${data.TauxCrit}%`,
                     "Taux Tenacité": `${data.Tenacite}%`,
-                    "GT Crit.": "0%",
-                    "RÉS DGT CC": "0%",
-                    "Frappe": `${data.Frappe}`,
-                    "Esquive": 0,
-                    "Vol Vie": "0%",
-                    "Effet Soin": "0%",
-                    "Soin Reçu": "0%",
-                    "Accélération": 0,
-                    "Dégâts Infligés": "0%",
-                    "Degats Reduits": "0%",
-                    "Régénération sur les Attaques": "0%",
-                    "Régénération sur les Dégâts": "0%"
+                    "Gain Cosmos ATK": `${data.angerattack}`,
+                    "Gain Cosmos DEF": `${data.angerbeattack}`
                 }
             }
         };

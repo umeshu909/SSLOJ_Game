@@ -130,11 +130,11 @@ const CharacterHeaderInfo: React.FC<Props> = ({ character }) => {
         {/* Modale image agrandie */}
         {showModal && (
           <div
-            className="fixed inset-0 z-50 bg-black/90 pt-[172px] pb-6 px-4 flex items-center justify-center"
+            className="fixed inset-0 z-[99] bg-black pt-[172px] pb-6 px-4 flex items-center justify-center"
             onClick={() => setShowModal(false)}
           >
             <div
-              className="relative max-h-[calc(100vh-172px-24px)] max-w-screen overflow-hidden rounded-lg border border-white/20"
+              className="relative z-[110] max-h-[calc(100vh-172px-24px)] max-w-screen overflow-hidden rounded-lg border border-white/20"
               onClick={(e) => e.stopPropagation()}
             >
               <button
