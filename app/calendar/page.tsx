@@ -60,15 +60,36 @@ export default function TimelineCalendar() {
     })
       .then(res => res.json())
       .then(data => {
-        const formatted = data.map((event: any) => ({
-          ...event,
-          start: event.start?.replace(' ', 'T'),
-          end: event.end?.replace(' ', 'T'),
-          end2: event.end2?.replace(' ', 'T'),
-          allDay: false // très important !
-        }))
-        setEvents(formatted)
+        const formatted = data.map((event: any) => {
+          let start = event.start?.replace(' ', 'T');
+          let end = event.end?.replace(' ', 'T');
+          let end2 = event.end2?.replace(' ', 'T');
+
+          // Si l'événement est de type relics, on enlève 2 heures
+          if (event.category === "relics") {
+            const adjust = (dateStr: string) => {
+              const d = new Date(dateStr);
+              d.setHours(d.getHours() - 2);
+              return d.toISOString();
+            };
+
+            if (start) start = adjust(start);
+            if (end) end = adjust(end);
+            if (end2) end2 = adjust(end2);
+          }
+
+          return {
+            ...event,
+            start,
+            end,
+            end2,
+            allDay: false
+          };
+        });
+
+        setEvents(formatted);
       })
+
       .catch((err) => console.error("Erreur fetch calendar :", err))
     }, [lang])
 
