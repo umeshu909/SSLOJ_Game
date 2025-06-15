@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Filter, X, Search } from "lucide-react";
 import { XCircle } from "lucide-react";
+import IconCanvas from "@/components/IconCanvas";
 
 interface Character {
   id: number;
@@ -46,6 +47,25 @@ const typeIconMapping: Record<number, string> = {
 };
 
 
+const invocationTypeMapping: Record<string, string> = {
+  Sablier: "sds_aodexiusi_shikongzhixi",
+  Petale: "sds_huaban_fen",
+  p2w: "sds_cishanmujuan_wp",
+  Stellaire: "sds_migongbi_icon",
+  Fleche: "sds_xindoushiup_wp",
+  Bouclier: "sds_xindoushiup_dun_wp",
+};
+
+const invocationLabelMapping: Record<string, string> = {
+  p2w: "Kraken",
+  Stellaire: "Astraux",
+  Sablier: "Sablier",
+  Petale: "Pétale",
+  Fleche: "Flèche",
+  Bouclier: "Bouclier",
+};
+
+
 // Fonction pour retirer les accents des lettres
 const normalizeString = (str: string) =>
   str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
@@ -56,19 +76,21 @@ const CharactersPage = () => {
   const [selectedTypes, setSelectedTypes] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
-  const [onlyAstraux, setOnlyAstraux] = useState<boolean>(false);
   const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
+  const [selectedInvocation, setSelectedInvocation] = useState<string>("");
 
   const fetchCharacters = async () => {
     const lang = localStorage.getItem("lang") || "FR";
     const res = await fetch(
-      `/api/characters?role=${selectedRoles.join(",")}&type=${selectedTypes.join(",")}&searchQuery=${searchQuery}&onlyAvailable=${onlyAvailable}&onlyAstraux=${onlyAstraux}`,
+      `/api/characters?role=${selectedRoles.join(",")}&type=${selectedTypes.join(",")}&searchQuery=${searchQuery}&onlyAvailable=${onlyAvailable}&invocation=${selectedInvocation}`,
       {
         headers: {
           "x-db-choice": lang,
         },
       }
     );
+
+
     const data = await res.json();
     if (Array.isArray(data)) {
       setCharacters(data.reverse());
@@ -79,7 +101,8 @@ const CharactersPage = () => {
 
   useEffect(() => {
     fetchCharacters();
-  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, onlyAstraux]);
+  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, selectedInvocation]);
+
 
   const toggleRole = (roleId: number) => {
     setSelectedRoles((prev) =>
@@ -103,10 +126,6 @@ const CharactersPage = () => {
     setOnlyAvailable((prev) => !prev);
   };
 
-  const handleOnlyAstrauxToggle = () => {
-    setOnlyAstraux((prev) => !prev);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white relative pb-20">
       {/* Recherche mobile */}
@@ -128,14 +147,14 @@ const CharactersPage = () => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Filtres</h2>
               {/* Annulation des filtres */}
-              {(selectedRoles.length > 0 || selectedTypes.length > 0 || onlyAvailable || onlyAstraux || searchQuery !== "") && (
+              {(selectedRoles.length > 0 || selectedTypes.length > 0 || onlyAvailable || searchQuery !== "" || selectedInvocation !== "") && (
               <button
                 onClick={() => {
                   setSelectedRoles([]);
                   setSelectedTypes([]);
                   setSearchQuery("");
                   setOnlyAvailable(false);
-                  setOnlyAstraux(false);
+                  setSelectedInvocation(""); 
                 }}
                 className="text-white hover:text-red-500 text-xl"
                 title="Réinitialiser les filtres"
@@ -170,22 +189,53 @@ const CharactersPage = () => {
                   <button
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
-                    className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-          ${selectedRoles.includes(roleId)
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all
+                      ${selectedRoles.includes(roleId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                  >
+                    >
                     <img
                       src={roleIconMapping[roleId]}
                       alt={roleMapping[roleId]}
                       className="w-6 h-6"
                     />
-                    <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
+                    <span className="whitespace-nowrap text-xs">{roleMapping[roleId]}</span>
                   </button>
                 );
               })}
             </div>
           </div>
+
+          <div className="mt-6">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(invocationTypeMapping).map(([key, icon]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedInvocation(selectedInvocation === key ? "" : key)}
+                  className={`flex items-center gap-2 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all ${
+                    selectedInvocation === key
+                      ? "text-white bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"
+                  }`}
+                >
+                  <IconCanvas
+                    prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
+                    iconName={icon}
+                    jsonDir="/images/atlas/icon_daojv/"
+                    canvasId={`canvas-filter-${key}`}
+                    imgHeight={4096}
+                    size={3}
+                  />
+
+                  <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+
+
 
           <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
@@ -196,38 +246,23 @@ const CharactersPage = () => {
                   <button
                     key={typeId}
                     onClick={() => toggleType(typeId)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-          ${selectedTypes.includes(typeId)
+                    className={`flex items-center gap-2 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all
+                      ${selectedTypes.includes(typeId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                  >
+                    >
                     <img
                       src={typeIconMapping[typeId]}
                       alt={typeMapping[typeId]}
                       className="w-6 h-6"
                     />
-                    <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
+                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          <div className="flex items-center mt-6 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les Astraux
-            </div>
-            <div
-              onClick={handleOnlyAstrauxToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
-                }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
-                  }`}
-              />
-            </div>
-          </div>
           <div className="flex items-center mt-6 gap-4">
             <div className="flex-1 text-sm text-white/70 leading-snug">
               Afficher uniquement les persos disponibles
@@ -309,7 +344,7 @@ const CharactersPage = () => {
                   setSelectedTypes([]);
                   setSearchQuery("");
                   setOnlyAvailable(false);
-                  setOnlyAstraux(false);
+                  setSelectedInvocation("");
               }}
               className="text-white hover:text-red-500 text-xl"
               title="Réinitialiser les filtres"
@@ -338,21 +373,50 @@ const CharactersPage = () => {
                     key={roleId}
                     onClick={() => toggleRole(roleId)}
                     className={`flex items-center gap-1 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-          ${selectedRoles.includes(roleId)
+                      ${selectedRoles.includes(roleId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                  >
+                    >
                     <img
                       src={roleIconMapping[roleId]}
                       alt={roleMapping[roleId]}
                       className="w-6 h-6"
                     />
-                    <span className="whitespace-nowrap">{roleMapping[roleId]}</span>
-                  </button>
+                    <span className="whitespace-nowrap text-xs">{roleMapping[roleId]}</span>
+                  </button> 
                 );
               })}
             </div>
           </div>
+
+          <div className="mt-6">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(invocationTypeMapping).map(([key, icon]) => (
+                <button
+                  key={key}
+                  onClick={() => setSelectedInvocation(selectedInvocation === key ? "" : key)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all ${
+                    selectedInvocation === key
+                      ? "text-white bg-purple-300/15 border-white/80"
+                      : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"
+                  }`}
+                >
+                  <IconCanvas
+                    prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
+                    iconName={icon}
+                    jsonDir="/images/atlas/icon_daojv/"
+                    canvasId={`canvas-filter-mobile-${key}`}
+                    imgHeight={4096}
+                    size={3}
+                  />
+
+                  <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
 
           <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
@@ -364,52 +428,39 @@ const CharactersPage = () => {
                     key={typeId}
                     onClick={() => toggleType(typeId)}
                     className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-          ${selectedTypes.includes(typeId)
+                      ${selectedTypes.includes(typeId)
                         ? "text-white bg-purple-300/15 border-white/80"
                         : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                  >
+                      >
                     <img
                       src={typeIconMapping[typeId]}
                       alt={typeMapping[typeId]}
                       className="w-6 h-6"
                     />
-                    <span className="whitespace-nowrap">{typeMapping[typeId]}</span>
+                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
                   </button>
                 );
               })}
             </div>
           </div>
-        <div className="flex items-center mt-12 gap-4">
-          <div className="flex-1 text-sm text-white/70 leading-snug">
-            Afficher uniquement les Astraux
-          </div>
-          <div
-            onClick={handleOnlyAstrauxToggle}
-            className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAstraux ? "bg-green-500" : "bg-gray-500"
-              }`}
-          >
+
+          <div className="flex items-center mt-6 gap-4">
+            <div className="flex-1 text-sm text-white/70 leading-snug">
+              Afficher uniquement les persos disponibles
+            </div>
             <div
-              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAstraux ? "translate-x-[16px]" : ""
+              onClick={handleOnlyAvailableToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
                 }`}
-            />
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
+                  }`}
+              />
+            </div>
           </div>
         </div>
-        <div className="flex items-center mt-6 gap-4">
-          <div className="flex-1 text-sm text-white/70 leading-snug">
-            Afficher uniquement les persos disponibles
-          </div>
-          <div
-            onClick={handleOnlyAvailableToggle}
-            className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
-              }`}
-          >
-            <div
-              className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
-                }`}
-            />
-          </div>
-        </div>
-      </div>
+
     </div>
   );
 };

@@ -27,6 +27,7 @@ interface ArtifactDetail {
     skill3Level: number;
     skill3: string;
     quality: number;
+    profession: number;
 }
 
 const ArtifactDetailPage = () => {
@@ -38,6 +39,26 @@ const ArtifactDetailPage = () => {
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
     const router = useRouter();
+
+    const professionImages = {
+      Compétence: "icon_12g_ji_attack.png",
+      Guerrier: "icon_12g_gong_attack.png",
+      Support: "icon_12g_fu_attack.png",
+      Assassin: "icon_12g_ci_attack.png",
+      Tank: "icon_12g_fang_attack.png"
+    };
+
+    const getProfessionLabel = (profession: number): string => {
+      switch (profession) {
+        case 1: return "Tank";
+        case 2: return "Guerrier";
+        case 3: return "Compétence";
+        case 4: return "Assassin";
+        case 5: return "Support";
+        default: return null;
+      }
+    };
+
 
     useEffect(() => {
         const storedLang = localStorage.getItem("lang") || "FR";
@@ -137,13 +158,29 @@ const ArtifactDetailPage = () => {
                   </div>
 
                 {/* Image et nom */}
-                <div className="relative w-[220px] aspect-[3/4]">
-                    <img
-                        src={artifact.icon}
-                        alt={artifact.name}
-                        className="relative z-10 w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102"
-                    />
+                <div className="relative w-[220px] aspect-[3/4] flex flex-col items-center">
+                  <img
+                    src={artifact.icon}
+                    alt={artifact.name}
+                    className="relative z-10 w-full h-auto object-contain transition-transform duration-500 group-hover:scale-102"
+                  />
+
+                  {(() => {
+                    const label = getProfessionLabel(artifact.profession);
+                    return label && professionImages[label] ? (
+                      <div className="mt-2 flex justify-center">
+                        <img
+                          src={`/images/icons/${professionImages[label]}`}
+                          alt={`Icône ${label}`}
+                          className="w-10 h-10"
+                        />
+                      </div>
+                    ) : null;
+                  })()}
                 </div>
+
+
+
                 <h2 className="text-xl font-semibold text-center">{artifact.name}</h2>
                 {/* Cette sélection est visible uniquement en mode desktop */}
                 <div className="hidden md:block">

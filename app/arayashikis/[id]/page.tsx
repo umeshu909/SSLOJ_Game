@@ -164,10 +164,10 @@ const ArayashikiDetailPage = () => {
 
 const getBookDistribution = (xp: number) => {
     const books = [
-        { color: "bg-white", xp: 10, targetPercent: 0.3 },
-        { color: "bg-blue-500", xp: 50, targetPercent: 0.25 },
-        { color: "bg-purple-500", xp: 250, targetPercent: 0.25 },
-        { color: "bg-yellow-400", xp: 1000, targetPercent: 0.2 },
+        { color: "bg-white", xp: 10, targetPercent: 0.2 },
+        { color: "bg-blue-500", xp: 50, targetPercent: 0.2 },
+        { color: "bg-purple-500", xp: 250, targetPercent: 0.3 },
+        { color: "bg-yellow-400", xp: 1000, targetPercent: 0.3 },
     ];
 
     const result: { color: string; border?: string; count: number }[] = [];

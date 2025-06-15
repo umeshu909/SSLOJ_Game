@@ -32,7 +32,7 @@ SELECT
   STC3.skillid AS skill3Id,
   STC3.level AS skill3Level,
   STC3.desc AS skill3,
-
+  ArtifactPointConfig.profession,
   CASE ArtifactPointConfig.profession
     WHEN 0 THEN 0
     ELSE 1

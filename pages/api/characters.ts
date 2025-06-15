@@ -3,17 +3,17 @@ import { openDb } from "@/utils/database";
 import fs from "fs";
 import path from "path";
 
-// Fonction pour supprimer les accents et normaliser la casse
 function normalizeString(str: string): string {
   return str.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { role, type, language, searchQuery, onlyAvailable, onlyAstraux } = req.query;
+  const { role, type, language, searchQuery, onlyAvailable, onlyAstraux, invocation } = req.query;
   const dbChoice = req.headers["x-db-choice"] || "FR";
 
   try {
     const db = await openDb(dbChoice as string);
+    const dbCommon = await openDb("common"); // 👈 Ajout ouverture DB_COMMON
 
     const queryParams: any[] = [];
 
@@ -37,8 +37,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       query += " AND HeroConfig.showtp = 7";
     }
 
-    // Ne pas inclure searchQuery directement ici, on filtrera après
-
     if (role) {
       const roles = Array.isArray(role) ? role : role.split(',');
       query += " AND HeroConfig.profession IN (" + roles.map(() => "?").join(",") + ")";
@@ -59,35 +57,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const characters = await db.all(query, queryParams);
 
     if (!characters || characters.length === 0) {
-      return res.status(200).json([]); // Ne pas envoyer d'erreur, juste une liste vide
+      return res.status(200).json([]);
     }
 
     const normalizedSearch = searchQuery
       ? normalizeString(searchQuery as string)
       : null;
 
-    const filteredCharacters = characters.filter((character: any) => {
-      if (!character.id || !character.name) return false;
-      if (normalizedSearch) {
-        return normalizeString(character.name).includes(normalizedSearch);
+    const filteredCharacters = [];
+
+    for (const character of characters) {
+      if (!character.id || !character.name) continue;
+
+      // Filtrage par recherche
+      if (normalizedSearch && !normalizeString(character.name).includes(normalizedSearch)) {
+        continue;
       }
-      return true;
-    });
 
-    const uniqueCharacters = Array.from(new Set(filteredCharacters.map((c: any) => c.id)))
-      .map(id => filteredCharacters.find((c: any) => c.id === id));
+      // 🔍 Récupération du type d'invocation
+      const invocationInfo = await dbCommon.get(
+        "SELECT Type FROM releases WHERE id = ?",
+        [character.id]
+      );
+      const invocationType = invocationInfo?.Type || "";
 
-    const formattedCharacters = uniqueCharacters.map((character: any) => ({
-      id: character.id,
-      image: `/images/atlas/icon_tujian/${character.handbookherores}.png`,
-      name: character.name,
-      role: character.profession,
-      type: character.party,
-      description: character.herodesc,
-      link: `/characters/${character.id}`,
-    }));
+      // Filtrage si paramètre invocation fourni
+      if (invocation && invocationType !== invocation) {
+        continue;
+      }
 
-    res.status(200).json(formattedCharacters);
+      filteredCharacters.push({
+        id: character.id,
+        image: `/images/atlas/icon_tujian/${character.handbookherores}.png`,
+        name: character.name,
+        role: character.profession,
+        type: character.party,
+        description: character.herodesc,
+        link: `/characters/${character.id}`,
+        invocationType, // Tu peux l'utiliser pour affichage aussi
+      });
+    }
+
+    res.status(200).json(filteredCharacters);
   } catch (error) {
     console.error("Erreur lors de la récupération des personnages:", error);
     res.status(500).json({ error: "Erreur interne du serveur" });
