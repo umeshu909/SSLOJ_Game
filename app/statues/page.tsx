@@ -16,6 +16,7 @@ interface Statues {
 
 const StatuessPage = () => {
     const [Statuess, setStatuess] = useState<Statues[]>([]);
+    const [isMobile, setIsMobile] = useState(false);
 
     const fetchStatuess = async () => {
         const lang = localStorage.getItem("lang") || "FR";
@@ -27,6 +28,13 @@ const StatuessPage = () => {
         const data = await res.json();
         setStatuess(data);
     };
+
+    useEffect(() => {
+      const checkMobile = () => setIsMobile(window.innerWidth < 840);
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+      return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     useEffect(() => {
         fetchStatuess();
@@ -84,7 +92,7 @@ const StatuessPage = () => {
                                         jsonDir="/images/atlas/icon_touxiang/"
                                         canvasId={`canvas-statue-hero-${Statues.id}-${i}`}
                                         imgHeight={2048}
-                                        size={3}
+                                        size={isMobile ? 5 : 3}
                                       />
                                     ))}
                                 </div>
