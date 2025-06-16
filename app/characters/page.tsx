@@ -207,6 +207,32 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.keys(typeMapping).map((key) => {
+                const typeId = Number(key);
+                return (
+                  <button
+                    key={typeId}
+                    onClick={() => toggleType(typeId)}
+                    className={`flex items-center gap-2 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all
+                      ${selectedTypes.includes(typeId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                    >
+                    <img
+                      src={typeIconMapping[typeId]}
+                      alt={typeMapping[typeId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(invocationTypeMapping).map(([key, icon]) => (
@@ -231,35 +257,6 @@ const CharactersPage = () => {
                   <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
                 </button>
               ))}
-            </div>
-          </div>
-
-
-
-
-          <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(typeMapping).map((key) => {
-                const typeId = Number(key);
-                return (
-                  <button
-                    key={typeId}
-                    onClick={() => toggleType(typeId)}
-                    className={`flex items-center gap-2 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all
-                      ${selectedTypes.includes(typeId)
-                        ? "text-white bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                    >
-                    <img
-                      src={typeIconMapping[typeId]}
-                      alt={typeMapping[typeId]}
-                      className="w-6 h-6"
-                    />
-                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
-                  </button>
-                );
-              })}
             </div>
           </div>
 
@@ -390,6 +387,32 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.keys(typeMapping).map((key) => {
+                const typeId = Number(key);
+                return (
+                  <button
+                    key={typeId}
+                    onClick={() => toggleType(typeId)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
+                      ${selectedTypes.includes(typeId)
+                        ? "text-white bg-purple-300/15 border-white/80"
+                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
+                      >
+                    <img
+                      src={typeIconMapping[typeId]}
+                      alt={typeMapping[typeId]}
+                      className="w-6 h-6"
+                    />
+                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mt-6">
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(invocationTypeMapping).map(([key, icon]) => (
@@ -414,33 +437,6 @@ const CharactersPage = () => {
                   <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
                 </button>
               ))}
-            </div>
-          </div>
-
-
-          <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(typeMapping).map((key) => {
-                const typeId = Number(key);
-                return (
-                  <button
-                    key={typeId}
-                    onClick={() => toggleType(typeId)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm border transition-all
-                      ${selectedTypes.includes(typeId)
-                        ? "text-white bg-purple-300/15 border-white/80"
-                        : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"}`}
-                      >
-                    <img
-                      src={typeIconMapping[typeId]}
-                      alt={typeMapping[typeId]}
-                      className="w-6 h-6"
-                    />
-                    <span className="whitespace-nowrap text-xs">{typeMapping[typeId]}</span>
-                  </button>
-                );
-              })}
             </div>
           </div>
 
