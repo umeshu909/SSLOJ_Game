@@ -230,6 +230,15 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               >
                 Planning
               </a>
+              <a
+                href="/shops"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/shops") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowAutresDropdown(false)}
+              >
+                Boutiques
+              </a>
             </DropdownMenuPortal>
           )}
 

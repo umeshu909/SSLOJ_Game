@@ -12,6 +12,17 @@ export default function ShopItemsPage() {
 
   const dbChoice = typeof window !== "undefined" ? localStorage.getItem("lang") || "FR" : "FR";
 
+  const getTranslatedShopLabel = (label: string) => {
+    if (label === "遺跡商店") return "Reliques 1";
+    if (label === "秘寶商店") return "Reliques 2";
+    if (label === "对决之战") return null;
+    return label;
+  };
+
+  const currentShopLabel = getTranslatedShopLabel(
+    shops.find((s) => s.currencyid === selectedShopId)?.label || ""
+  );
+
   useEffect(() => {
     fetch("/api/shop/list", {
       headers: { "x-db-choice": dbChoice },
@@ -46,7 +57,10 @@ export default function ShopItemsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
-      <h1 className="text-2xl font-bold mb-6 text-center">Boutique</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">
+        Boutique{currentShopLabel ? ` : ${currentShopLabel}` : ""}
+      </h1>
+
 
       {/* Bouton filtre mobile centré */}
       <div className="md:hidden fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50">
@@ -63,20 +77,28 @@ export default function ShopItemsPage() {
         {/* Filtre latéral ou modal mobile */}
         <div className={`md:w-1/4 ${showMobileFilter ? "block" : "hidden md:block"}`}>
           <div className="flex flex-col gap-3 bg-[#1f1d3a] p-4 rounded-lg">
-            {shops.map((shop) => (
-              <button
-                key={shop.id}
-                onClick={() => {
-                  setSelectedShopId(shop.currencyid);
-                  setShowMobileFilter(false);
-                }}
-                className={`p-3 rounded-lg transition border text-left hover:bg-[#2a2750] ${
-                  selectedShopId === shop.currencyid ? "bg-[#2a2750] border-yellow-400 text-yellow-300" : "bg-[#1f1d3a] border-transparent"
-                }`}
-              >
-                {shop.label}
-              </button>
-            ))}
+          {shops
+            .filter((shop) => getTranslatedShopLabel(shop.label) !== null)
+            .map((shop) => {
+              const translatedLabel = getTranslatedShopLabel(shop.label);
+              return (
+                <button
+                  key={shop.id}
+                  onClick={() => {
+                    setSelectedShopId(shop.currencyid);
+                    setShowMobileFilter(false);
+                  }}
+                  className={`p-3 rounded-lg transition border text-left hover:bg-[#2a2750] ${
+                    selectedShopId === shop.currencyid
+                      ? "bg-[#2a2750] border-yellow-400 text-yellow-300"
+                      : "bg-[#1f1d3a] border-transparent"
+                  }`}
+                >
+                  {translatedLabel}
+                </button>
+              );
+            })}
+
           </div>
         </div>
 

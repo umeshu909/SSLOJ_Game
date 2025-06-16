@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getMediaUrl } from "@/lib/media";
+import sqlite3 from 'sqlite3';
+import { open } from 'sqlite';
 
 const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
@@ -56,6 +58,49 @@ export default function Home() {
 
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
+  const [patchNote, setPatchNote] = useState<any | null>(null);
+
+  function formatPatchNoteContent(patchNote: any): string {
+    if (!patchNote?.content) return "";
+
+    let content = patchNote.content;
+
+    // 1. Met en jaune les textes entre crochets [ ... ]
+    content = content.replace(
+      /\[(.*?)\]/g,
+      (_, inside) => `<strong><font color="yellow">[${inside}]</font></strong>`
+    );
+
+    // 2. Met en jaune aussi les titres de type =Titre=
+    content = content
+      .split(/<br\s*\/?>/)
+      .map((line) => {
+        const clean = line.trim();
+        if (/^=(.+)=$/.test(clean)) {
+          const inner = clean.replace(/^=(.+)=$/, "$1").trim();
+          return `<strong><font color="yellow">${inner}</font></strong>`;
+        }
+        return line;
+      })
+      .join('<br/>');
+
+    return content;
+  }
+
+  useEffect(() => {
+    fetch("/api/patchnote/latest")
+      .then(async (res) => {
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`Erreur HTTP ${res.status} : ${text}`);
+        }
+        return res.json();
+      })
+      .then(setPatchNote)
+      .catch((err) => console.error("Erreur patchnote :", err));
+  }, []);
+
+
 
   useEffect(() => {
     fetch("/api/articles/latest")
@@ -190,6 +235,23 @@ export default function Home() {
             )}
           </div>
         </div>
+
+        {/* PatchNote */}
+        {patchNote?.content && (
+          <div className="mt-20 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
+            <h1 className="text-sm uppercase font-bold mb-3 text-[#80cfff]">📅 {patchNote.date_patch}</h1>
+            <h1 className="text-sm uppercase font-bold mb-3 text-white/80">
+              {patchNote.title}
+            </h1>
+            <div
+              className="text-sm text-white/90 leading-relaxed max-h-[300px] overflow-y-auto pr-2"
+              dangerouslySetInnerHTML={{ __html: formatPatchNoteContent(patchNote) }}
+            />
+          </div>
+        )}
+
+
+
 
         {/* Discord */}
         <div className="flex flex-col items-center justify-center rounded-lg shadow-lg p-6 text-center mt-20">
