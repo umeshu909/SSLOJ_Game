@@ -78,6 +78,20 @@ const CharactersPage = () => {
   const [onlyAvailable, setOnlyAvailable] = useState<boolean>(false);
   const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
   const [selectedInvocation, setSelectedInvocation] = useState<string>("");
+  const [lang, setLang] = useState("FR");
+
+  useEffect(() => {
+    const storedLang = localStorage.getItem("lang");
+    if (storedLang) {
+      setLang(storedLang);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!lang) return; // attend que lang soit défini
+    fetchCharacters();
+  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, selectedInvocation, lang]);
+
 
   const fetchCharacters = async () => {
     const lang = localStorage.getItem("lang") || "FR";
@@ -100,8 +114,10 @@ const CharactersPage = () => {
   };
 
   useEffect(() => {
+    if (!lang) return; // attend que lang soit défini
     fetchCharacters();
-  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, selectedInvocation]);
+  }, [selectedRoles, selectedTypes, searchQuery, onlyAvailable, selectedInvocation, lang]);
+
 
 
   const toggleRole = (roleId: number) => {
@@ -251,22 +267,20 @@ const CharactersPage = () => {
                 <button
                   key={key}
                   onClick={() => setSelectedInvocation(selectedInvocation === key ? "" : key)}
-                  className={`flex items-center gap-2 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all ${
+                  className={`flex items-center gap-1 px-2 py-1 rounded-full cursor-pointer text-sm border transition-all ${
                     selectedInvocation === key
                       ? "text-white bg-purple-300/15 border-white/80"
                       : "text-white/70 bg-transparent border-white/40 hover:border-white hover:text-white"
                   }`}
                 >
-                  <IconCanvas
-                    prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
-                    iconName={icon}
-                    jsonDir="/images/atlas/icon_daojv/"
-                    canvasId={`canvas-filter-${key}`}
-                    imgHeight={4096}
-                    size={3}
-                  />
+                <img
+                  src={`/images/icons/${key.toLowerCase()}.png`}
+                  alt={invocationLabelMapping[key] ?? key}
+                  className="w-8 h-8"
+                />
 
-                  <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
+
+                  <span className="whitespace-nowrap text-xs -ml-1">{invocationLabelMapping[key] ?? key}</span>
                 </button>
               ))}
             </div>

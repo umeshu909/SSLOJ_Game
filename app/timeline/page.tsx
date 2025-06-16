@@ -16,13 +16,13 @@ type TimelineItem = {
   type: string | null;
 };
 
-const typeIconMapping = {
-  Sablier: "sds_aodexiusi_shikongzhixi",
-  Petale: "sds_huaban_fen",
-  p2w: "sds_cishanmujuan_wp",
-  Stellaire: "sds_migongbi_icon",
-  Fleche: "sds_xindoushiup_wp",
-  Bouclier: "sds_xindoushiup_dun_wp"
+const invocationImageMap: Record<string, string> = {
+  Sablier: "/images/icons/sablier.png",
+  Petale: "/images/icons/petale.png",
+  p2w: "/images/icons/p2w.png",
+  Stellaire: "/images/icons/stellaire.png",
+  Fleche: "/images/icons/fleche.png",
+  Bouclier: "/images/icons/bouclier.png",
 };
 
 const TimelinePage = () => {
@@ -136,18 +136,16 @@ const TimelinePage = () => {
                 contentArrowStyle={{ borderRight: "7px solid #2C2F58" }}
               >
 
-                {item.type && typeIconMapping[item.type] && (
+                {item.type && invocationImageMap[item.type] && (
                   <div className="absolute top-2 right-2">
-                    <IconCanvas
-                      prefix="sactx-0-4096x4096-ASTC 6x6-icon_daojv-"
-                      iconName={typeIconMapping[item.type]}
-                      jsonDir="/images/atlas/icon_daojv/"
-                      canvasId={`canvas-type-${item.id}`}
-                      imgHeight={4096}
-                      size={2}
+                    <img
+                      src={invocationImageMap[item.type]}
+                      alt={item.type}
+                      className="w-12 h-12"
                     />
                   </div>
                 )}
+
 
                 <h4 className="text-lg font-semibold mb-1">
                   {item.name || ""}
