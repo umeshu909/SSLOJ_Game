@@ -178,7 +178,19 @@ const CharactersPage = () => {
             />
           </div>
 
-
+          <div className="flex items-center mb-6 gap-4">
+            <div className="flex-1 text-xs text-white/70 leading-snug">
+              Uniquement les persos disponibles
+            </div>
+            <div
+              onClick={handleOnlyAvailableToggle}
+              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"}`}
+            >
+              <div
+                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""}`}
+              />
+            </div>
+          </div>
 
           <div>
             <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
@@ -257,22 +269,6 @@ const CharactersPage = () => {
                   <span className="whitespace-nowrap text-xs">{invocationLabelMapping[key] ?? key}</span>
                 </button>
               ))}
-            </div>
-          </div>
-
-          <div className="flex items-center mt-6 gap-4">
-            <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les persos disponibles
-            </div>
-            <div
-              onClick={handleOnlyAvailableToggle}
-              className={`w-[40px] h-6 flex-shrink-0 relative rounded-full transition-all cursor-pointer ${onlyAvailable ? "bg-green-500" : "bg-gray-500"
-                }`}
-            >
-              <div
-                className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${onlyAvailable ? "translate-x-[16px]" : ""
-                  }`}
-              />
             </div>
           </div>
 
