@@ -5,12 +5,14 @@ import { open } from 'sqlite';
 const DB_PATH = '/SSLOJ_GAME/databases/DB_COMMON.sqlite';
 const PATCH_URL = 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=fr';
 
-function extractDateFromContent(content: string): string | null {
+function extractDateFromContent(content) {
   const match = content.match(/(\d{1,2})\/(\d{1,2})/);
   if (!match) return null;
 
-  const [_, day, month] = match;
+  const day = match[1];
+  const month = match[2];
   const year = new Date().getFullYear();
+
   return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
 }
 
