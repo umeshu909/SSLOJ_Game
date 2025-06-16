@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3';
 import fetch from 'node-fetch';
 import { open } from 'sqlite';
 
-const DB_PATH = '/SSLOJ_Games/databases/DB_COMMON.sqlite';
+const DB_PATH = '/SSLOJ_Game/databases/DB_COMMON.sqlite';
 const PATCH_URL = 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=fr';
 
 function extractDateFromContent(content) {
