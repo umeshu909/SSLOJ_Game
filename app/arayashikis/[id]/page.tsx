@@ -16,6 +16,7 @@ interface ArayashikiDetail {
     skillid: number;
     skillid_id: number;
     level: number;
+    coeff: number;
     constval: string | null;
     desc: string;
     Attrib1: string | null;
@@ -62,18 +63,44 @@ const ArayashikiDetailPage = () => {
     const [startLevel, setStartLevel] = useState<number | null>(null);
     const [endLevel, setEndLevel] = useState<number | null>(null);
 
-    const calculateValue = (base: number, gwnum: number, percent: number | null, level: number): string => {
-        const levelTmp = level / 10;
-        let constantValue = percent === 1
-            ? (gwnum * 100) + ((levelTmp - 1) * ((gwnum * 100) / 10))
-            : gwnum + ((levelTmp - 1) * (gwnum / 10));
+    const calculateValue = (
+      base: number,
+      gwnum: number,
+      percent: number | null,
+      level: number,
+      applyMultiplier = true // ← nouveau paramètre par défaut à true
+    ): string => {
+      const levelTmp = level / 10;
 
-        const adjustedValue = percent === 1
-            ? (base * 100) + ((level - 1) * constantValue)
-            : (base + ((level - 1) * constantValue));
+      const constantValue = percent === 1
+        ? (gwnum * 100) + ((levelTmp - 1) * ((gwnum * 100) / 10))
+        : gwnum + ((levelTmp - 1) * (gwnum / 10));
 
-        return percent === 1 ? adjustedValue.toFixed(2) + "%" : adjustedValue.toFixed(2);
+      let adjustedValue = percent === 1
+        ? (base * 100) + ((level - 1) * constantValue)
+        : (base + ((level - 1) * constantValue));
+
+      if (applyMultiplier) {
+        const correctionMultipliers: Record<number, number> = {
+          10: 1,
+          20: 1.123,
+          30: 1.26,
+          40: 1.4497,
+          50: 1.99752,
+          60: 2.4975,
+        };
+
+        const levelKey = Math.min(60, Math.ceil(level / 10) * 10);
+        const multiplier = correctionMultipliers[levelKey] ?? 1;
+        adjustedValue *= multiplier;
+      }
+
+      return percent === 1
+        ? adjustedValue.toFixed(2) + "%"
+        : adjustedValue.toFixed(2);
     };
+
+
 
     const fetchDetail = async (level = 1) => {
         try {
@@ -90,8 +117,8 @@ const ArayashikiDetailPage = () => {
 
             data.value1 = calculateValue(data.value1, data.gwnum1, data.Percent1, levelNiv);
             data.value2 = calculateValue(data.value2, data.gwnum2, data.Percent2, levelNiv);
-            data.value3 = calculateValue(data.value3, data.gwnum3, data.Percent3, levelNiv);
-            data.value4 = calculateValue(data.value4, data.gwnum4, data.Percent4, levelNiv);
+            data.value3 = calculateValue(data.value3, data.gwnum3, data.Percent3, levelNiv, false);
+            data.value4 = calculateValue(data.value4, data.gwnum4, data.Percent4, levelNiv, false);
 
             const translations: Record<string, string> = {
                 "虚拟施法者 ": "Protectors knights",

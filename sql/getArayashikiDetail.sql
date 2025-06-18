@@ -33,6 +33,7 @@ ep.level AS levelMax,
 ep.skillid, 
 stc.id as skillid_id,
 stc.level AS level,
+suc.growupval AS coeff,
 SkillValueConfig.constval,
 stc.desc, 
 ac1.name AS Attrib1, 
@@ -73,6 +74,8 @@ LEFT JOIN
 split_param sp ON sp.endless_id = ep.id
 LEFT JOIN 
 HeroConfig hc ON hc.id = sp.hero_id
+LEFT JOIN
+StarUpConfig suc ON stc.level = suc.skill
 WHERE 
 ep.id = ?
 AND stc.level = ?
