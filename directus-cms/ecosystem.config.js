@@ -2,6 +2,7 @@ module.exports = {
   apps: [
     {
       name: "directus",
+      exec_mode: "fork",
       script: "npx",
       args: "directus start",
       cwd: "/home/ubuntu/SSLOJ_Game/directus-cms",
