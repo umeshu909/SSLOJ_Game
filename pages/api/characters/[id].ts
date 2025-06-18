@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "Taux Crit.": `${data.TauxCrit}%`,
                     "Taux Tenacité": `${data.Tenacite}%`,
                     "Gain Cosmos ATK": `${data.angerattack}`,
-                    "Gain Cosmos DEF": `${data.angerbeattack}`
+                    "Gain Cosmos DMG": `${data.angerbeattack}`
                 }
             }
         };

@@ -140,12 +140,12 @@ export default function CharacterSkills({ skills }: Props) {
                   )}
                   {skill.regenAttack !== undefined && skill.regenAttack !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Regen (Attack):</span> {(skill.regenAttack / 1000).toFixed(2)}%
+                      <span className="font-normal text-white/80">Gain Cosmos (ATK):</span> {skill.regenAttack}
                     </span>
                   )}
                   {skill.regenDamage !== undefined && skill.regenDamage !== 0 && (
                     <span>
-                      <span className="font-normal text-white/80">Regen (Damage):</span> {(skill.regenDamage / 1000).toFixed(2)}%
+                      <span className="font-normal text-white/80">Gain Cosmos (DMG):</span> {skill.regenDamage}
                     </span>
                   )}
                 </div>

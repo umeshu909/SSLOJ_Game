@@ -65,13 +65,25 @@ export default function Home() {
 
     let content = patchNote.content;
 
-    // 1. Met en jaune les textes entre crochets [ ... ]
+    // Déséchapper le HTML (lt, gt, nbsp...)
+    content = content
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&nbsp;/g, " ");
+
+    // Corriger </br> → <br>
+    content = content.replace(/<\/br>/gi, "<br>").replace(/<br\/?>/gi, "<br>");
+
+    // Supprimer les balises <color=...> (non HTML standard)
+    content = content.replace(/<color=#[0-9A-Fa-f]+>/g, "").replace(/<\/color>/g, "");
+
+    // Mise en forme personnalisée
     content = content.replace(
       /\[(.*?)\]/g,
       (_, inside) => `<strong><font color="yellow">[${inside}]</font></strong>`
     );
 
-    // 2. Met en jaune aussi les titres de type =Titre=
     content = content
       .split(/<br\s*\/?>/)
       .map((line) => {
@@ -82,10 +94,12 @@ export default function Home() {
         }
         return line;
       })
-      .join('<br/>');
+      .join("<br>");
 
     return content;
   }
+
+
 
   useEffect(() => {
     fetch("/api/patchnote/latest")
@@ -205,6 +219,7 @@ export default function Home() {
         {/* Derniers articles */}
         <div className="mt-20">
           <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
+
           <div className="grid gap-6 md:grid-cols-3">
             {Array.isArray(articles) && articles.length > 0 ? (
               articles.slice(0, 3).map((article) => (
@@ -233,25 +248,26 @@ export default function Home() {
             ) : (
               <p className="text-white/60">Aucun article disponible.</p>
             )}
+
+
+            {/* PatchNote */}
+            {patchNote?.content && (
+              <div className="mt-0 bg-[#1f1d3a] p-6 rounded-lg shadow-lg min-h-[450px] flex flex-col">
+                <h1 className="text-sm uppercase font-bold mb-3 text-[#80cfff]">📅 {patchNote.date_patch}</h1>
+                <h1 className="text-sm uppercase font-bold mb-3 text-white/80">
+                  {patchNote.title}
+                </h1>
+                <div
+                  className="text-sm text-white/90 leading-relaxed max-h-[300px] overflow-y-auto pr-2"
+                  dangerouslySetInnerHTML={{ __html: formatPatchNoteContent(patchNote) }}
+                />
+              </div>
+            )}
+
+
+
           </div>
         </div>
-
-        {/* PatchNote */}
-        {patchNote?.content && (
-          <div className="mt-20 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
-            <h1 className="text-sm uppercase font-bold mb-3 text-[#80cfff]">📅 {patchNote.date_patch}</h1>
-            <h1 className="text-sm uppercase font-bold mb-3 text-white/80">
-              {patchNote.title}
-            </h1>
-            <div
-              className="text-sm text-white/90 leading-relaxed max-h-[300px] overflow-y-auto pr-2"
-              dangerouslySetInnerHTML={{ __html: formatPatchNoteContent(patchNote) }}
-            />
-          </div>
-        )}
-
-
-
 
         {/* Discord */}
         <div className="flex flex-col items-center justify-center rounded-lg shadow-lg p-6 text-center mt-20">
