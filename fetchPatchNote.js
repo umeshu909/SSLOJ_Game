@@ -6,7 +6,7 @@ const DB_PATH = '/home/ubuntu/SSLOJ_Game/databases/DB_COMMON.sqlite';
 
 const LANGUAGES = ['fr', 'en'];
 
-function extractDateFromContent(content: string): string | null {
+function extractDateFromContent(content) {
   const match = content.match(/(\d{1,2})\/(\d{1,2})/);
   if (!match) return null;
 
@@ -16,6 +16,7 @@ function extractDateFromContent(content: string): string | null {
 
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
+
 
 async function main() {
   const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
