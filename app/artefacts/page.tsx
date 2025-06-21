@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
 interface Artifact {
     id: number;
@@ -9,15 +10,18 @@ interface Artifact {
     quality: string;
 }
 
-const qualityMapping: Record<number, string> = {
-    0: "Normaux",
-    1: "Pros",
-};
 
 const ArtifactsPage = () => {
     const [Artifacts, setArtifacts] = useState<Artifact[]>([]);
     const [selectedQuality, setSelectedQuality] = useState<number | null>(null);
     const [showMobileFilters, setShowMobileFilters] = useState(false);
+    const { t } = useTranslation("common");
+
+
+    const qualityMapping: Record<number, string> = {
+        0: t("interface.normal"),
+        1: t("interface.pros")
+    };
 
     const fetchArtifacts = async () => {
         const qualityParam = selectedQuality !== null ? `?quality=${selectedQuality}` : "";
@@ -46,10 +50,10 @@ const ArtifactsPage = () => {
             <div className="flex flex-col lg:flex-row max-w-screen-xl mx-auto px-4 pb-6 pt-[12px]">
                 {/* Sidebar des filtres */}
                 <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] rounded p-6 text-white">
-                    <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+                    <h2 className="text-xl font-semibold mb-4">{t("interface.filters")}</h2>
 
                     <div className="mt-6">
-                        <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Qualité</h3>
+                        <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.quality")}</h3>
                         <div className="flex flex-wrap gap-2">
                             {Object.entries(qualityMapping).map(([key, label]) => {
                                 const qualityId = Number(key);
@@ -74,7 +78,7 @@ const ArtifactsPage = () => {
                 {/* Grille des artefacts */}
                 <div className="w-full lg:w-3/4 px-6">
                     {Artifacts.length === 0 ? (
-                        <p className="text-center text-lg mt-4">Aucun artefact trouvé</p>
+                        <p className="text-center text-lg mt-4">{t("errors.noArtifactsFound")}</p>
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 ">
 
@@ -107,7 +111,7 @@ const ArtifactsPage = () => {
                     onClick={() => setShowMobileFilters(true)}
                     className="bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg"
                   >
-                    Filtrer
+                    {t("interface.filter")}
                   </button>
                 </div>
 
@@ -118,17 +122,17 @@ const ArtifactsPage = () => {
                   }`}
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold mb-4">Filtres</h2>
+                    <h2 className="text-xl font-semibold mb-4">{t("interface.filters")}</h2>
                     <button
                       onClick={() => setShowMobileFilters(false)}
                       className="text-white text-sm border border-white/30 px-3 py-1 rounded"
                     >
-                      Fermer
+                      {t("interface.close")}
                     </button>
                   </div>
                   <div className="mt-6">
                     <h3 className="text-xs uppercase font-medium mb-3 text-white/80">
-                      Qualité
+                      {t("interface.quality")}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(qualityMapping).map(([key, label]) => {

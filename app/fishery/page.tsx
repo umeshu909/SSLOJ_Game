@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
 import { Filter, X, Search } from "lucide-react";
 import { XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface Fish {
   ZoneNom: string;
@@ -23,27 +24,6 @@ interface Fish {
   stat2: string;
   stat3: string;
 }
-
-const availableGrades = ["Bleu", "Violet", "Or", "Rouge", "Platine"];
-const availableZones = ["1", "2", "3", "4", "5", "6"];
-
-const speciesLabels: Record<string, string> = {
-  "1": "Petit",
-  "2": "Moyen",
-  "3": "Grand",
-  "4": "Créature marine",
-  "5": "Crustacé",
-  "6": "Trésor",
-};
-
-const speciesTypePerso: Record<string, string> = {
-  1: "Compétence",
-  2: "Assassin",
-  3: "Guerrier",
-  4: "Assistant",
-  5: "Tank",
-  6: "N/A",
-};
 
 const categoryImages = {
   Compétence: "icon_12g_ji_attack.png",
@@ -82,8 +62,42 @@ const FishPage = () => {
   const [availableBonuses, setAvailableBonuses] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
+  const { t } = useTranslation("common");
 
   const prefix = "sactx-0-4096x4096-ASTC 6x6-icon_daojv-";
+
+  const availableGrades = ["Bleu", "Violet", "Or", "Rouge", "Platine"];
+  const availableZones = ["1", "2", "3", "4", "5", "6"];
+
+  const speciesLabels: Record<string, string> = {
+    "1": t("fishery.Petit"),
+    "2": t("fishery.Moyen"),
+    "3": t("fishery.Grand"),
+    "4": t("fishery.Creature"),
+    "5": t("fishery.Crustacé"),
+    "6": t("fishery.Trésor"),
+  };
+
+  const speciesTypePerso: Record<string, string> = {
+    1: "Compétence",
+    2: "Assassin",
+    3: "Guerrier",
+    4: "Assistant",
+    5: "Tank",
+    6: "N/A",
+  };
+
+  const getColorClass = (grade: string) => {
+    switch (grade) {
+      case "Bleu": return "bg-blue-500";
+      case "Violet": return "bg-purple-500";
+      case "Or": return "bg-yellow-400";
+      case "Rouge": return "bg-red-500";
+      case "Platine": return "bg-gradient-to-r from-white via-gray-300 to-white";
+      default: return "bg-white";
+    }
+  };
+
 
   const fetchFishes = async () => {
     const lang = localStorage.getItem("lang") || "FR";
@@ -121,39 +135,50 @@ const FishPage = () => {
     return matchesZone && matchesGrade && matchesSpecies && matchesBonus && matchesSearch;
   });
 
-  const renderFilters = () => (
-    <div className="space-y-6">
-      {[{
-        title: "Zone",
-        options: availableZones,
-        selected: selectedZone,
-        setSelected: setSelectedZone,
-        format: (z: string) => `Zone ${z}`
-      }, {
-        title: "Type de bonus",
-        options: availableBonuses,
-        selected: selectedBonus,
-        setSelected: setSelectedBonus
-      }, {
-        title: "Rareté",
-        options: availableGrades,
-        selected: selectedGrade,
-        setSelected: setSelectedGrade
-      }, {
-        title: "Espèce",
-        options: Object.keys(speciesLabels),
-        selected: selectedSpecies,
-        setSelected: setSelectedSpecies,
-        format: (s: string) => speciesLabels[s]
-      }].map(({ title, options, selected, setSelected, format }) => (
-        <div key={title} className="mb-8">
-          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{title}</h3>
-          <div className="flex flex-wrap gap-2">
-            {options.map((opt) => (
+ const renderFilters = () => (
+  <div className="space-y-6">
+    {[{
+      title: "Zone",
+      options: availableZones,
+      selected: selectedZone,
+      setSelected: setSelectedZone,
+      format: (z: string) => `Zone ${z}`
+    }, {
+      title: t("fishery.BonusType"),
+      options: availableBonuses,
+      selected: selectedBonus,
+      setSelected: setSelectedBonus
+    }, {
+      title: t("fishery.Rarity"),
+      options: availableGrades,
+      selected: selectedGrade,
+      setSelected: setSelectedGrade,
+      customRender: (opt: string, selected: string | null, setSelected: (val: string | null) => void) => (
+        <button
+          key={opt}
+          onClick={() => setSelected(selected === opt ? null : opt)}
+          title={opt}
+          className={`w-8 h-6 rounded-xs border-2 ${selected === opt ? "border-white" : "border-white/30"} ${getColorClass(opt)} transition-all duration-300`}
+        />
+      )
+    }, {
+      title: t("fishery.Specie"),
+      options: Object.keys(speciesLabels),
+      selected: selectedSpecies,
+      setSelected: setSelectedSpecies,
+      format: (s: string) => speciesLabels[s]
+    }].map(({ title, options, selected, setSelected, format, customRender }) => (
+      <div key={title} className="mb-8">
+        <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{title}</h3>
+        <div className="flex flex-wrap gap-2">
+          {options.map((opt) =>
+            customRender ? (
+              customRender(opt, selected, setSelected)
+            ) : (
               <button
                 key={opt}
                 onClick={() => setSelected((prev: any) => (prev === opt ? null : opt))}
-                className={`rounded-full px-4 py-2 rounded cursor-pointer text-sm border text-white/70
+                className={`rounded-full px-4 py-2 cursor-pointer text-xs border text-white/70
                   ${selected === opt
                     ? "text-white/100 bg-purple-300/15 border-white/80"
                     : "text-white/70 bg-transparent border-white/40"}  
@@ -161,12 +186,14 @@ const FishPage = () => {
               >
                 {format ? format(opt) : opt}
               </button>
-            ))}
-          </div>
+            )
+          )}
         </div>
-      ))}
-    </div>
-  );
+      </div>
+    ))}
+  </div>
+);
+
 
   return (
     <div className="min-h-screen text-white px-4 py-[12px] max-w-screen-xl mx-auto">
@@ -174,7 +201,7 @@ const FishPage = () => {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
         <input
           type="text"
-          placeholder="Rechercher un poisson"
+          placeholder={t("fishery.searchFish")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
@@ -186,7 +213,7 @@ const FishPage = () => {
           onClick={() => setShowMobileFilters(true)}
           className="rounded-full bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg flex items-center gap-2"
         >
-          <Filter size={18} /> Filtrer
+          <Filter size={18} /> {t("interface.filter")}
         </button>
       </div>
 
@@ -194,7 +221,7 @@ const FishPage = () => {
         <div className="hidden lg:block w-full lg:w-[320px] sticky top-[132px] h-[calc(100vh-120px)] overflow-y-auto bg-[#14122a] p-6 text-white custom-scrollbar">
           
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Filtres</h2>
+            <h2 className="text-xs font-semibold">{t("interface.filters")}</h2>
             {/* Annulation des filtres */}
             {(selectedZone || selectedGrade || selectedSpecies || selectedBonus) && (
             <button
@@ -208,7 +235,7 @@ const FishPage = () => {
               title="Réinitialiser les filtres"
             >
               <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
-                Réinitialiser <XCircle size={14} className="text-red-500" />
+                {t("interface.initFilters")} <XCircle size={14} className="text-red-500" />
               </span>
             </button>
             )}
@@ -218,7 +245,7 @@ const FishPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
               type="text"
-              placeholder="Rechercher un poissonss"
+              placeholder={t("fishery.searchFish")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
@@ -230,7 +257,7 @@ const FishPage = () => {
         <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:px-4">
           {filteredFishes.length === 0 ? (
             <p className="col-span-full text-center text-white/60">
-              Aucun poisson trouvé.
+              {t("errors.noFishFound")}
             </p>
           ) : (
             filteredFishes.map((fish, i) => {
@@ -268,54 +295,55 @@ const FishPage = () => {
                     <div className="flex flex-col px-4 py-3 flex-1">
                       <p className="text-sm font-semibold text-center mb-2">{fish.Poisson}</p>
                       <div className="text-sm text-white/70 space-y-1 text-left">
-<p>
-  <span className="text-white/50">Bonus :</span>{" "}
-  {[
-    fish.stat1 ? (
-      <span className="inline-flex items-center gap-1">
-        {fish.stat1}{" "}
-        <img
-          src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
-          alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
-          className="inline-block w-4 h-4 align-middle"
-        />
-      </span>
-    ) : null,
-    fish.stat2,
-    fish.stat3,
-  ]
-    .filter(Boolean)
-    .map((stat, index) => <span key={index}>{stat}</span>)
-    .reduce((prev, curr) => [prev, " / ", curr], []) // ← Ajoute [] comme valeur initiale ici
-    .length > 0 ? (
-      <>
-        {[
-          fish.stat1 ? (
-            <span className="inline-flex items-center gap-1">
-              {fish.stat1}{" "}
-              <img
-                src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
-                alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
-                className="inline-block w-4 h-4 align-middle"
-              />
-            </span>
-          ) : null,
-          fish.stat2,
-          fish.stat3,
-        ]
-          .filter(Boolean)
-          .map((stat, index) => <span key={index}>{stat}</span>)
-          .reduce((prev, curr) => [prev, " / ", curr])}
-      </>
-    ) : (
-      "N/A"
-    )}
-</p>
+
+                        <p>
+                          <span className="text-white/50">Bonus :</span>{" "}
+                          {[
+                            fish.stat1 ? (
+                              <span className="inline-flex items-center gap-1">
+                                {fish.stat1}{" "}
+                                <img
+                                  src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
+                                  alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
+                                  className="inline-block w-4 h-4 align-middle"
+                                />
+                              </span>
+                            ) : null,
+                            fish.stat2,
+                            fish.stat3,
+                          ]
+                            .filter(Boolean)
+                            .map((stat, index) => <span key={index}>{stat}</span>)
+                            .reduce((prev, curr) => [prev, " / ", curr], []) // ← Ajoute [] comme valeur initiale ici
+                            .length > 0 ? (
+                              <>
+                                {[
+                                  fish.stat1 ? (
+                                    <span className="inline-flex items-center gap-1">
+                                      {fish.stat1}{" "}
+                                      <img
+                                        src={`/images/icons/${categoryImages[speciesTypePerso[fish.fishspecies]] || "default.png"}`}
+                                        alt={speciesTypePerso[fish.fishspecies] || "Inconnue"}
+                                        className="inline-block w-4 h-4 align-middle"
+                                      />
+                                    </span>
+                                  ) : null,
+                                  fish.stat2,
+                                  fish.stat3,
+                                ]
+                                  .filter(Boolean)
+                                  .map((stat, index) => <span key={index}>{stat}</span>)
+                                  .reduce((prev, curr) => [prev, " / ", curr])}
+                              </>
+                            ) : (
+                              "N/A"
+                            )}
+                        </p>
 
 
 
                         <p>
-                          <span className="text-white/50">Taille max :</span> {fish.fishsize} cm
+                          <span className="text-white/50">{t("fishery.maxSize")} :</span> {fish.fishsize} cm
                         </p>
 
                       </div>
@@ -346,7 +374,7 @@ const FishPage = () => {
 
       <div className={`fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Filtres</h2>
+          <h2 className="text-2xl font-semibold">{t("interface.filters")}</h2>
 
           <div className="flex space-x-2">
             {/* Annulation filtres */}
@@ -367,7 +395,7 @@ const FishPage = () => {
               onClick={() => setShowMobileFilters(false)}
               className="text-white text-sm border border-white/30 px-3 py-1 rounded"
             >
-              Fermer
+              {t("interface.close")}
             </button>
           </div>
 

@@ -2,3 +2,11 @@
 ⏩ Patch note déjà existant pour 2025-06-11, insertion ignorée.
 ⏩ Patch note déjà existant pour 2025-06-11, insertion ignorée.
 ✅ Patch note inséré pour 2025-06-18
+./run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory

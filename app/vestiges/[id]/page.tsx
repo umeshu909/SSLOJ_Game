@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { ArrowLeft } from "lucide-react";
 import "swiper/css";
 import Description from "@/components/Description";
+import { useTranslation } from "react-i18next";
 
 interface VestigeDetail {
   id: number;
@@ -54,6 +55,9 @@ const VestigeDetailPage = () => {
     const [others, setOthers] = useState<VestigeDetail[]>([]);
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
+    const { t } = useTranslation("common");
+
+
 
     const params = useParams();
     const router = useRouter();
@@ -163,18 +167,18 @@ const VestigeDetailPage = () => {
                         className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
-                        Retour aux vestiges
+                        {t("backOthers.backToVestiges")}
                     </button>
                 </div>
                 <p className="text-lg mt-4">
-                    Ce vestige n’est pas disponible dans la base de données sélectionnée.
+                    {t("errors.vestigeNotAvailable")}
                 </p>
             </div>
         );
     }
 
     if (!lang || details.length === 0) {
-        return <p className="text-white text-center mt-12">Chargement...</p>;
+        return <p className="text-white text-center mt-12">{t("interface.loading")}</p>;
     }
 
     const main = details[0];
@@ -199,7 +203,7 @@ const VestigeDetailPage = () => {
                         className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
-                        Retour aux vestiges
+                        {t("backOthers.backToVestiges")}
                     </button>
                 </div>
                 <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 pt-6 pb-1 flex flex-col md:flex-row gap-8">
@@ -262,7 +266,7 @@ const VestigeDetailPage = () => {
                                                                 key={j}
                                                                 className={`text-sm leading-snug ${isActive ? "opacity-100" : "opacity-30"}`}
                                                             >
-                                                                <span className="font-semibold">Niv {g.level} : </span>
+                                                                <span className="font-semibold">Lvl {g.level} : </span>
                                                                 <div className="text-md inline">
                                                                     <Description skillId={g.skillid} level={g.level} dbChoice = {lang} />
                                                                 </div>
@@ -274,22 +278,22 @@ const VestigeDetailPage = () => {
                                                 <div className="text-sm font-semibold text-white flex flex-wrap gap-x-4 gap-y-1 border-t border-white/10 p-4">
                                                     {skill.starttm !== undefined && skill.starttm !== 0 && (
                                                         <span>
-                                                            <span className="font-normal text-white/80">Début:</span> {(skill.starttm / 1000).toFixed(2)}s
+                                                            <span className="font-normal text-white/80">{t("stat.start")}:</span> {(skill.starttm / 1000).toFixed(2)}s
                                                         </span>
                                                     )}
                                                     {skill.skillendtm !== undefined && skill.skillendtm !== 0 && (
                                                         <span>
-                                                            <span className="font-normal text-white/80">Fin:</span> {(skill.skillendtm / 1000).toFixed(2)}s
+                                                            <span className="font-normal text-white/80">{t("stat.end")}:</span> {(skill.skillendtm / 1000).toFixed(2)}s
                                                         </span>
                                                     )}
                                                     {skill.precd !== undefined && skill.precd !== 0 && (
                                                         <span>
-                                                            <span className="font-normal text-white/80">Délai:</span> {(skill.precd / 1000).toFixed(2)}s
+                                                            <span className="font-normal text-white/80">{t("stat.delay")}:</span> {(skill.precd / 1000).toFixed(2)}s
                                                         </span>
                                                     )}
                                                     {skill.cd !== undefined && skill.cd !== 0 && (
                                                         <span>
-                                                            <span className="font-normal text-white/80">Cooldown:</span> {(skill.cd / 1000).toFixed(2)}s
+                                                            <span className="font-normal text-white/80">{t("stat.cooldown")}:</span> {(skill.cd / 1000).toFixed(2)}s
                                                         </span>
                                                     )}
                                                 </div>
@@ -305,7 +309,7 @@ const VestigeDetailPage = () => {
                 </div>
 
                 <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-10">
-                    <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau</p>
+                    <p className="text-center text-xs text-white/60 mb-2">{t("interface.selectLevel")}</p>
                     <div className="flex justify-center gap-1">
                         {[5, 10, 15, 20, 25, 30].map((lvl) => (
                             <button
@@ -322,11 +326,11 @@ const VestigeDetailPage = () => {
 
                 <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 pt-0 pb-6">
                     <div className="p-0">
-                        <h3 className="text-sl mb-4 text-left">Statistiques selon le rôle</h3>
+                        <h3 className="text-sm mb-4 text-left">{t("interface.statsByRole")}</h3>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                             {Array.isArray(careerValues) && careerValues.map((cv, idx) => (
                                 <div key={idx} className="bg-white/5 border border-white/10 rounded-lg p-6 text-sm">
-                                    <h4 className="text-white font-semibold text-center mb-2">{cv.metierText}</h4>
+                                    <h4 className="text-white font-semibold text-center mb-2">{t(`roles.${cv.metierText}`)}</h4>
                                     <ul className="text-sm text-white/80 space-y-1">
                                         {cv.Attrib1 && <li>{cv.Attrib1.trim()}: {cv.value1}</li>}
                                         {cv.Attrib2 && <li>{cv.Attrib2.trim()}: {cv.value2}</li>}
@@ -337,7 +341,7 @@ const VestigeDetailPage = () => {
                             ))}
                             {allValues && (
                                 <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-sm">
-                                    <h4 className="text-white font-semibold text-center mb-2">Commun</h4>
+                                    <h4 className="text-white font-semibold text-center mb-2">{t("interface.all")}</h4>
                                     <ul className="text-sm text-white/80 space-y-1">
                                         <li>{allValues.AttribAll1.trim()}: {allValues.valueAll1}</li>
                                         <li>{allValues.AttribAll2.trim()}: {allValues.valueAll2}</li>
@@ -351,7 +355,7 @@ const VestigeDetailPage = () => {
 
                 {others.length > 0 && (
                     <div className="max-w-screen-lg mx-auto mt-12 px-4">
-                        <h3 className="text-xl font-bold mb-4 text-center">Autres vestiges</h3>
+                        <h3 className="text-xl font-bold mb-4 text-center">{t("backOthers.otherVestiges")}</h3>
                         <Swiper
                             spaceBetween={16}
                             slidesPerView={3}

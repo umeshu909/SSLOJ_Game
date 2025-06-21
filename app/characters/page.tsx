@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Filter, X, Search } from "lucide-react";
 import { XCircle } from "lucide-react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
 interface Character {
   id: number;
@@ -13,13 +14,6 @@ interface Character {
   link: string;
 }
 
-const roleMapping: Record<number, string> = {
-  1: "Tank",
-  2: "Guerrier",
-  3: "Compétence",
-  4: "Assassin",
-  5: "Support",
-};
 const roleIconMapping: Record<number, string> = {
   1: "/images/icons/icon_12g_fang_attack.png", // Tank
   2: "/images/icons/icon_12g_gong_attack.png", // Guerrier
@@ -29,14 +23,6 @@ const roleIconMapping: Record<number, string> = {
 };
 
 
-const typeMapping: Record<number, string> = {
-  1: "Eau",
-  2: "Feu",
-  3: "Vent",
-  4: "Terre",
-  5: "Lumière",
-  6: "Ombre",
-};
 const typeIconMapping: Record<number, string> = {
   1: "/images/icons/sds_shenqi_shui.png", // Eau
   2: "/images/icons/sds_shenqi_huo.png",   // Feu
@@ -56,15 +42,6 @@ const invocationTypeMapping: Record<string, string> = {
   Bouclier: "sds_xindoushiup_dun_wp",
 };
 
-const invocationLabelMapping: Record<string, string> = {
-  p2w: "Kraken",
-  Stellaire: "Astraux",
-  Sablier: "Sablier",
-  Petale: "Pétale",
-  Fleche: "Flèche",
-  Bouclier: "Bouclier",
-};
-
 
 // Fonction pour retirer les accents des lettres
 const normalizeString = (str: string) =>
@@ -79,6 +56,33 @@ const CharactersPage = () => {
   const [showMobileFilters, setShowMobileFilters] = useState<boolean>(false);
   const [selectedInvocation, setSelectedInvocation] = useState<string>("");
   const [lang, setLang] = useState("FR");
+  const { t } = useTranslation("common");
+
+  const typeMapping: Record<number, string> = {
+    1: t("types.Eau"),
+    2: t("types.Feu"),
+    3: t("types.Vent"),
+    4: t("types.Terre"),
+    5: t("types.Lumière"),
+    6: t("types.Ombre")
+  };
+
+  const roleMapping: Record<number, string> = {
+    1: t("roles.Tank"),
+    2: t("roles.Guerrier"),
+    3: t("roles.Compétence"),
+    4: t("roles.Assassin"),
+    5: t("roles.Support")
+  };
+
+  const invocationLabelMapping: Record<string, string> = {
+    p2w: t("invocation.p2w"),
+    Stellaire: t("invocation.Stellaire"),
+    Sablier: t("invocation.Sablier"),
+    Petale: t("invocation.Petale"),
+    Fleche: t("invocation.Fleche"),
+    Bouclier: t("invocation.Bouclier"),
+  };
 
   useEffect(() => {
     const storedLang = localStorage.getItem("lang");
@@ -149,7 +153,7 @@ const CharactersPage = () => {
         <Search className="absolute left-7 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
         <input
           type="text"
-          placeholder="Rechercher un personnage"
+          placeholder={t("interface.searchCharacter")}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
@@ -161,7 +165,7 @@ const CharactersPage = () => {
         <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
 
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">Filtres</h2>
+              <h2 className="text-xl font-semibold">{t("filters")}</h2>
               {/* Annulation des filtres */}
               {(selectedRoles.length > 0 || selectedTypes.length > 0 || onlyAvailable || searchQuery !== "" || selectedInvocation !== "") && (
               <button
@@ -187,7 +191,7 @@ const CharactersPage = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50 w-4 h-4 pointer-events-none" />
             <input
               type="text"
-              placeholder="Rechercher un personnage"
+              placeholder={t("interface.searchCharacter")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="bg-purple-300/10 border rounded pl-10 pr-4 py-3 border-transparent text-sm focus:outline-none focus:border-purple-300/30 focus:border focus:bg-purple-300/15 w-full text-white hover:bg-purple-300/15 transition-all duration-300 ease-in-out"
@@ -196,7 +200,7 @@ const CharactersPage = () => {
 
           <div className="flex items-center mb-6 gap-4">
             <div className="flex-1 text-xs text-white/70 leading-snug">
-              Uniquement les persos disponibles
+              {t("interface.onlyAvailable")}
             </div>
             <div
               onClick={handleOnlyAvailableToggle}
@@ -209,7 +213,7 @@ const CharactersPage = () => {
           </div>
 
           <div>
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.role")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.keys(roleMapping).map((key) => {
                 const roleId = Number(key);
@@ -235,7 +239,7 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.type")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.keys(typeMapping).map((key) => {
                 const typeId = Number(key);
@@ -261,7 +265,7 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.invocation")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(invocationTypeMapping).map(([key, icon]) => (
                 <button
@@ -292,7 +296,7 @@ const CharactersPage = () => {
         <div className="w-full lg:w-3/4 lg:px-6">
           <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-3">
             {characters.length === 0 ? (
-              <p className="text-center text-lg">Aucun personnage trouvé</p>
+              <p className="text-center text-lg">{t("errors.noCharacter")}</p>
             ) : (
               characters.map((character) => (
                 <div key={character.id} className="border-animated-gradient">
@@ -341,7 +345,7 @@ const CharactersPage = () => {
           }`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Filtres</h2>
+          <h2 className="text-2xl font-semibold">{t("interface.filters")}</h2>
           
           <div className="flex space-x-2">
             {/* Annulation filtres */}
@@ -354,7 +358,7 @@ const CharactersPage = () => {
                   setSelectedInvocation("");
               }}
               className="text-white hover:text-red-500 text-xl"
-              title="Réinitialiser les filtres"
+              title={t("interface.initFilters")}
             >
               ✕
             </button>
@@ -363,7 +367,7 @@ const CharactersPage = () => {
               onClick={() => setShowMobileFilters(false)}
               className="text-white text-sm border border-white/30 px-3 py-1 rounded"
             >
-              Fermer
+              {t("interface.close")}
             </button>
           </div>
 
@@ -371,7 +375,7 @@ const CharactersPage = () => {
 
         {/* Filtres mobiles */}
         <div>
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Rôle</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.role")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.keys(roleMapping).map((key) => {
                 const roleId = Number(key);
@@ -397,7 +401,7 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Type</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.type")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.keys(typeMapping).map((key) => {
                 const typeId = Number(key);
@@ -423,7 +427,7 @@ const CharactersPage = () => {
           </div>
 
           <div className="mt-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Invocation</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.invocation")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(invocationTypeMapping).map(([key, icon]) => (
                 <button
@@ -452,7 +456,7 @@ const CharactersPage = () => {
 
           <div className="flex items-center mt-6 gap-4">
             <div className="flex-1 text-sm text-white/70 leading-snug">
-              Afficher uniquement les persos disponibles
+              {t("interface.onlyAvailable")}
             </div>
             <div
               onClick={handleOnlyAvailableToggle}

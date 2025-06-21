@@ -4,6 +4,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import DropdownMenuPortal from "../components/DropdownMenuPortal";
+import i18n from "@/lib/i18n";
+import { useTranslation } from "react-i18next";
 
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -26,6 +28,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const [isMounted, setIsMounted] = useState(false);
 
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     setIsMounted(true);
@@ -58,6 +61,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     localStorage.setItem("lang", language);
+    i18n.changeLanguage(language === "FR" ? "fr" : "en");
   }, [language]);
 
   useEffect(() => {
@@ -132,17 +136,16 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             md:justify-center md:flex-wrap md:overflow-visible
           "
         >
-          {["characters", "arayashikis", "artefacts", "vestiges", "statues"].map((path) => {
-            const href = `/${path}`;
-            const label = path.charAt(0).toUpperCase() + path.slice(1);
-            const isActive = activeLink !== "/" && activeLink.startsWith(href);
+          {["Characters", "Arayashikis", "Artefacts", "Vestiges", "Statues"].map((label) => {
+            const path = `/${label.toLowerCase()}`;
+            const isActive = activeLink !== "/" && activeLink.startsWith(path);
             return (
               <a
-                key={href}
-                href={href}
+                key={path}
+                href={path}
                 className={`relative group text-sm px-3 py-1 rounded transition-all whitespace-nowrap ${isActive ? "text-yellow-400" : "text-white hover:text-yellow-400"}`}
               >
-                {label}
+                {t(`menu.${label}`)}
                 <span
                   className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[1px] rounded-full transition-all duration-500 bg-gradient-to-r from-[#0a091c] via-yellow-400 to-[#0a091c] ${isActive ? "w-14 opacity-100" : "w-0 group-hover:w-14 group-hover:opacity-100 opacity-0"}`}
                 />
@@ -160,7 +163,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
               }}
               className="relative text-sm px-3 py-1 rounded text-white hover:text-yellow-400 transition-all whitespace-nowrap cursor-pointer"
             >
-              Pêcherie
+              {t("menu.Fishery")}
             </div>
             )}
 
@@ -174,7 +177,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowFisheryDropdown(false)}
               >
-                Poissons
+                {t("menu.Fish")}
               </a>
               <a
                 href="/fishery/tools"
@@ -183,7 +186,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowFisheryDropdown(false)}
               >
-                Matériel
+                {t("menu.Tools")}
               </a>
             </DropdownMenuPortal>
           )}
@@ -194,12 +197,13 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             ref={autresRef}
             onClick={() => {
               setShowAutresDropdown(!showAutresDropdown);
-              setShowFisheryDropdown(false); // fermer l'autre menu
+              setShowFisheryDropdown(false);
             }}
             className="relative text-sm px-3 py-1 rounded text-white hover:text-yellow-400 transition-all whitespace-nowrap cursor-pointer"
           >
-            Autres
+            {t("menu.Others")}
           </div>
+
 
           {isMounted && showAutresDropdown && (
             <DropdownMenuPortal position={autresPos}>
@@ -210,7 +214,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowAutresDropdown(false)}
               >
-                Articles
+                {t("menu.Articles")}
               </a>
               <a
                 href="/timeline"
@@ -219,7 +223,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowAutresDropdown(false)}
               >
-                Timeline
+                {t("menu.Timeline")}
               </a>
               <a
                 href="/calendar"
@@ -228,7 +232,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowAutresDropdown(false)}
               >
-                Planning
+                {t("menu.Calendar")}
               </a>
               <a
                 href="/shops"
@@ -237,7 +241,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 }`}
                 onClick={() => setShowAutresDropdown(false)}
               >
-                Boutiques
+                {t("menu.Shops")}
               </a>
             </DropdownMenuPortal>
           )}

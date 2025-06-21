@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
-import "@/styles/global.css"
+import "@/styles/global.css";
+import I18nProvider from '@/components/I18nProvider';
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -10,7 +11,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "Saint Seiya Legend of Justice – Codex",
   description: "Découvrez tous les personnages, vestiges et nouveautés du jeu Saint Seiya: Legend of Justice. Base de données en ligne pour toutes les versions (CN, JP, Global).",
-  keywords: ["saint seiya", "legend of justice", "codex", "guide", "personnages", "athena", "shiryu", "mise à jour", "gacha", "CN", "JP", "global"],
+  keywords: ["saint seiya", "legend of justice", "codex", "guide", "personnages", "athena", "shiryu", "hades", "seiya", "poseidon", "mise à jour", "gacha", "CN", "JP", "global"],
   authors: [{ name: "Saint Seiya Codex", url: "https://ssloj.com" }],
   creator: "Saint Seiya Codex",
   metadataBase: new URL("https://ssloj.com"),
@@ -53,10 +54,11 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <head>
-      </head>
-      <body className="...">
-        <LayoutWrapper>{children}</LayoutWrapper>
+      <head />
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <I18nProvider>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </I18nProvider>
       </body>
     </html>
   );

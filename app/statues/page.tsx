@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
 interface Statues {
   id: number;
@@ -17,6 +18,7 @@ interface Statues {
 const StatuessPage = () => {
     const [Statuess, setStatuess] = useState<Statues[]>([]);
     const [isMobile, setIsMobile] = useState(false);
+    const { t } = useTranslation("common");
 
     const fetchStatuess = async () => {
         const lang = localStorage.getItem("lang") || "FR";
@@ -49,7 +51,7 @@ const StatuessPage = () => {
                 {/* Grille des cartes */}
                 <div className="w-full lg:w-3/4 px-6">
                     {Statuess.length === 0 ? (
-                        <p className="text-center text-lg">Aucune statue trouvée</p>
+                        <p className="text-center text-lg">{t("errors.noStatues")}</p>
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 items-stretch">
                             {Statuess.map((Statues, index) => (

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 // Structure d'un Arayashiki retourné par l'API
 interface Arayashiki {
@@ -32,6 +33,7 @@ const ArayashikisPage = () => {
   const [availableAttributes, setAvailableAttributes] = useState<string[]>([]);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [lang, setLang] = useState<string | null>(null);
+  const { t } = useTranslation("common");
 
   // Récupération des données depuis l'API
   const fetchArayashikis = async () => {
@@ -78,7 +80,7 @@ const ArayashikisPage = () => {
         <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
 
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Filtres</h2>
+            <h2 className="text-xl font-semibold">{t("interface.filters")}</h2>
             {/* Annulation des filtres */}
             {(selectedQuality || selectedAttribute) && (
             <button
@@ -90,7 +92,7 @@ const ArayashikisPage = () => {
               title="Réinitialiser les filtres"
             >
               <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
-                Réinitialiser <XCircle size={14} className="text-red-500" />
+                {t("reset")} <XCircle size={14} className="text-red-500" />
               </span>
             </button>
             )}
@@ -98,7 +100,7 @@ const ArayashikisPage = () => {
 
           {/* Filtres qualité */}
           <div className="mb-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Qualité</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.quality")}</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(qualityStyleMap).map(([label, style]) => {
                 const isSelected = selectedQuality === label;
@@ -118,7 +120,7 @@ const ArayashikisPage = () => {
 
           {/* Filtres attributs */}
           <div className="mb-6">
-            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Attribut</h3>
+            <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.attribute")}</h3>
             <div className="flex flex-wrap gap-2">
               {availableAttributes.map((attr) => (
                 <button
@@ -141,7 +143,7 @@ const ArayashikisPage = () => {
         <div className="w-full lg:w-3/4 lg:px-6">
           <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-3">
             {filteredArayashikis.length === 0 ? (
-              <p className="text-center text-lg">Aucune carte trouvée</p>
+              <p className="text-center text-lg">{t("errors.noCardsFound")}</p>
             ) : (
               filteredArayashikis.map((arayashiki) => (
                 <a
@@ -183,14 +185,14 @@ const ArayashikisPage = () => {
           onClick={() => setShowMobileFilters(true)}
           className="bg-[#82B0D6] text-[#0a091c] font-semibold py-2 px-6 rounded-full shadow-lg"
         >
-          Filtrer
+          {t("interface.filter")}
         </button>
       </div>
 
       {/* Panneau des filtres mobile */}
       <div className={`lg:hidden fixed inset-0 bg-[#0a091c] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Filtres</h2>
+          <h2 className="text-2xl font-semibold">{t("filter")}</h2>
           
           <div className="flex space-x-2">
             {/* Annulation filtres */}
@@ -203,7 +205,7 @@ const ArayashikisPage = () => {
               title="Réinitialiser les filtres"
             >
               <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
-                Réinitialiser <XCircle size={14} className="text-red-500" />
+                {t("reset")} <XCircle size={14} className="text-red-500" />
               </span>
             </button>
             {/* Bouton Fermer */}
@@ -211,7 +213,7 @@ const ArayashikisPage = () => {
               onClick={() => setShowMobileFilters(false)}
               className="text-white text-sm border border-white/30 px-3 py-1 rounded"
             >
-              Fermer
+              {t("close")}
             </button>
           </div>
 
@@ -219,7 +221,7 @@ const ArayashikisPage = () => {
 
         {/* Qualité mobile */}
         <div className="mb-6">
-          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Qualité</h3>
+          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.quality")}</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(qualityStyleMap).map(([label, style]) => {
               const isSelected = selectedQuality === label;
@@ -239,7 +241,7 @@ const ArayashikisPage = () => {
 
         {/* Attributs mobile */}
         <div className="mb-6">
-          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">Attribut</h3>
+          <h3 className="text-xs uppercase font-medium mb-3 text-white/80">{t("interface.attribute")}</h3>
           <div className="flex flex-wrap gap-2">
             {availableAttributes.map((attr) => (
               <button

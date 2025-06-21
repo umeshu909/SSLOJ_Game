@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Description = ({ text, skillId, level, dbChoice = "FR" }: Props) => {
-  const [parsed, setParsed] = useState<string>("Chargement...");
+  const [parsed, setParsed] = useState<string>("Loading...");
   const [diffText, setDiffText] = useState<string | null>(null);
   const [showOld, setShowOld] = useState<boolean>(false);
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Description from "@/components/Description";
+import { useTranslation } from 'next-i18next'
 
 interface ArmorSkill {
   skillId: number;
@@ -38,6 +39,7 @@ export default function CharacterArmor() {
   const [error, setError] = useState<string | null>(null);
   const [level, setLevel] = useState<number>(30); // Niveau initial de l'armure (par défaut 30)
   const [lang, setLang] = useState<string | null>(null);
+  const { t } = useTranslation("common");
 
   useEffect(() => {
       const storedLang = localStorage.getItem("lang") || "FR";
@@ -54,7 +56,7 @@ export default function CharacterArmor() {
           },
         });
         if (!response.ok) {
-          throw new Error("Erreur lors de la récupération des informations d'armure");
+          throw new Error(t("errors.noArmor"));
         }
         const data = await response.json();
         setArmor(data); // On met à jour l'armure sans remettre à null
@@ -71,9 +73,9 @@ export default function CharacterArmor() {
   }, [id, level, lang]);
 
 
-  if (loading) return <p className="text-white">Chargement de l'armure...</p>;
+  if (loading) return <p className="text-white">{t("interface.loading")}</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!armor) return <p>Aucune armure disponible.</p>;
+  if (!armor) return <p>t("errors.noArmor")}</p>;
 
   /*const formatDescription = (text: string) => {
     return text.replace(/\[([^\]]+)\]/g, '<span class="text-orange-300">$1</span>');
@@ -89,11 +91,11 @@ export default function CharacterArmor() {
 
   return (
   <section className="lg:px-6 relative">
-    <h2 className="text-xl font-semibold text-white mb-2">Armure</h2>
+    <h2 className="text-xl font-semibold text-white mb-2">{t("interface.armor")}</h2>
     {/* Overlay de chargement */}
     {loading && (
       <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10">
-        <p className="text-white">Chargement...</p>
+        <p className="text-white">{t("interface.loading")}</p>
       </div>
     )}
     {error ? (
@@ -161,7 +163,7 @@ export default function CharacterArmor() {
         </div>
       </div>
     ) : (
-      <p>Aucune armure disponible.</p>
+      <p>{t("errors.noArmor")}</p>
     )}
   </section>
 );

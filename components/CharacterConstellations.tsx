@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // Utilisation de useParams pour récupérer l'ID dynamique
 import IconCanvas from "@/components/IconCanvas"; // Importation du composant IconCanvas
 import Description from "@/components/Description";
+import { useTranslation } from 'next-i18next'
 
 interface ConstellationSkill {
   skillName: string;
@@ -25,6 +26,7 @@ const ConstellationsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [lang, setLang] = useState<string | null>(null);
+  const { t } = useTranslation("common");
 
   // Définir le préfixe pour les icônes de constellation
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
@@ -47,7 +49,7 @@ const ConstellationsPage = () => {
           },
         }); // On envoie une requête à l'API
         if (!res.ok) {
-          throw new Error("Erreur lors de la récupération des constellations");
+          throw new Error(t("errors.noConstellation"));
         }
         const data = await res.json(); // On récupère les données de constellations
         setConstellationData(data);
@@ -115,12 +117,12 @@ const ConstellationsPage = () => {
     return <span dangerouslySetInnerHTML={{ __html: description }} />;
   };*/
 
-  if (loading) return <div>Chargement des constellations...</div>; // Afficher pendant le chargement
+  if (loading) return <div>{t("interface.loading")}</div>; // Afficher pendant le chargement
   if (error) return <div>{error}</div>; // Afficher l'erreur s'il y en a
 
   return (
     <section className="lg:p-6">
-      <h2 className="text-xl font-semibold text-white mb-2">Constellations</h2>
+      <h2 className="text-xl font-semibold text-white mb-2">{t("interface.constellation")}</h2>
       <div className=" overflow-hidden">
         {/* Liste des compétences de constellation */}
         {constellationData?.skills && constellationData.skills.length > 0 ? (
@@ -156,7 +158,7 @@ const ConstellationsPage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">Aucune compétence de constellation disponible.</p>
+          <p className="text-gray-500">{t("errors.noConstellation")}</p>
         )}
       </div>
     </section>

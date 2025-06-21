@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import IconCanvas from "@/components/IconCanvas";
 import { getImageSrc, loadIcons } from "@/utils/iconLoader";
 import Description from "@/components/Description";
+import { useTranslation } from 'next-i18next'
 
 interface LinkEntry {
   FetterID: number;
@@ -44,6 +45,7 @@ export default function CharacterLinks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lang, setLang] = useState<string | null>(null);
+  const { t } = useTranslation("common");
 
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const jsonDir = "/images/atlas/icon_touxiang/";
@@ -65,7 +67,7 @@ export default function CharacterLinks() {
           },
         });
         
-        if (!res.ok) throw new Error("Erreur lors du chargement des liens");
+        if (!res.ok) throw new Error(t("errors.noLinks"));
         const data: LinkEntry[] = await res.json();
 
         const grouped: Record<number, LinkGroup> = {};
@@ -104,13 +106,13 @@ export default function CharacterLinks() {
     if (id) fetchLinks();
   }, [id]);
 
-  if (loading) return <p className="text-white">Chargement des liens...</p>;
+  if (loading) return <p className="text-white">{t("interface.loading")}</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (links.length === 0) return <p>Aucun lien trouvé.</p>;
+  if (links.length === 0) return <p>{t("errors.noLinks")}</p>;
 
   return (
     <section className="lg:px-6">
-      <h2 className="text-xl font-semibold text-white mb-2">Liens</h2>
+      <h2 className="text-xl font-semibold text-white mb-2">{t("interface.links")}</h2>
 
       <div className="space-y-2">
         {links.map((link, index) => (
@@ -152,7 +154,7 @@ export default function CharacterLinks() {
                 <div className="space-y-1 text-sm text-white">
                   {link.skills.map((skill, idx) => (
                     <div key={idx}>
-                      <span className="font-semibold">Niv {skill.level} :</span>{" "}
+                      <span className="font-semibold">Lvl {skill.level} :</span>{" "}
                       <Description skillId={skill.skillid} level={skill.level} dbChoice = {lang} />
                     </div>
                   ))}

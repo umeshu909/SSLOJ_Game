@@ -5,60 +5,68 @@ import { useEffect, useState } from "react";
 import { getMediaUrl } from "@/lib/media";
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import { useTranslation } from 'next-i18next'
 
 const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
 
 
-const roleMapping: Record<number, string> = {
-  1: "Tank",
-  2: "Guerrier",
-  3: "Compétence",
-  4: "Assassin",
-  5: "Support",
-};
-
-const typeMapping: Record<number, string> = {
-  1: "Eau",
-  2: "Feu",
-  3: "Vent",
-  4: "Terre",
-  5: "Lumière",
-  6: "Ombre",
-};
-
-const formatStatLabel = (key: string) => {
-  const map: Record<string, string> = {
-    PV: "PV",
-    ATQ: "ATQ",
-    DÉF: "DÉF",
-    "Vitesse ATQ": "Vitesse ATQ",
-    "Taux Crit.": "Taux Crit.",
-    "Taux Tenacité": "Tenacité",
-    "GT Crit.": "GT Crit.",
-    "RÉS DGT CC": "Rés. DGT CC",
-    Frappe: "Frappe",
-    Esquive: "Esquive",
-    "Vol Vie": "Vol Vie",
-    "Effet Soin": "Effet Soin",
-    "Soin Reçu": "Soin Reçu",
-    Accélération: "Accélération",
-    "Dégâts Infligés": "Dégâts Infligés",
-    "Degats Reduits": "Dégâts Réduits",
-    "Régénération sur les Attaques": "Regen Attaques",
-    "Régénération sur les Dégâts": "Regen Dégâts",
-    Stars: "Étoiles",
-    Level: "Niveau"
-  };
-  return map[key] || key;
-};
-
 export default function Home() {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
   const [patchNote, setPatchNote] = useState<any | null>(null);
+
+  const getRoleLabel = (id: number, t: any): string => {
+    const keys: Record<number, string> = {
+      1: t("roles.Tank"),
+      2: t("roles.Guerrier"),
+      3: t("roles.Compétence"),
+      4: t("roles.Assassin"),
+      5: t("roles.Support")
+    };
+    return t(keys[id]) || keys[id];
+  };
+
+  const getTypeLabel = (id: number, t: any): string => {
+    const keys: Record<number, string> = {
+      1: t("types.Eau"),
+      2: t("types.Feu"),
+      3: t("types.Vent"),
+      4: t("types.Terre"),
+      5: t("types.Lumière"),
+      6: t("types.Ombre")
+    };
+    return t(keys[id]) || keys[id];
+  };
+
+  const formatStatLabel = (key: string) => {
+    const map: Record<string, string> = {
+      "PV": t("stat.PV"),
+      "ATQ": t("stat.ATQ"),
+      "DÉF": t("stat.DÉF"),
+      "Vitesse ATQ": t("stat.Vitesse ATQ"),
+      "Taux Crit.": t("stat.Taux Crit."),
+      "Taux Tenacité": t("stat.Tenacité"),
+      "GT Crit.": t("stat.GT Crit."),
+      "RÉS DGT CC": t("stat.Rés. DGT CC"),
+      "Frappe": t("stat.Frappe"),
+      "Esquive": t("stat.Esquive"),
+      "Vol Vie": t("stat.Vol Vie"),
+      "Effet Soin": t("stat.Effet Soin"),
+      "Soin Reçu": t("stat.Soin Reçu"),
+      "Accélération": t("stat.Accélération"),
+      "Dégâts Infligés": t("stat.Dégâts Infligés"),
+      "Degats Reduits": t("stat.Dégâts Réduits"),
+      "Régénération sur les Attaques": t("stat.Regen Attaques"),
+      "Régénération sur les Dégâts": t("stat.Regen Dégâts"),
+      "Stars": t("stat.Stars"),
+      "Level": t("stat.Level")
+    };
+    return map[key] || key;
+  };
 
   function formatPatchNoteContent(patchNote: any): string {
     if (!patchNote?.content) return "";
@@ -102,7 +110,12 @@ export default function Home() {
 
 
   useEffect(() => {
-    fetch("/api/patchnote/latest")
+    const lang = localStorage.getItem("lang") || "FR";
+    fetch("/api/patchnote/latest", {
+      headers: {
+        "x-db-choice": lang,
+      },
+    })
       .then(async (res) => {
         if (!res.ok) {
           const text = await res.text();
@@ -113,6 +126,7 @@ export default function Home() {
       .then(setPatchNote)
       .catch((err) => console.error("Erreur patchnote :", err));
   }, []);
+
 
 
 
@@ -147,7 +161,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-6">
               {/* Colonne gauche : dernier perso */}
               <div className="flex-1">
-                <h1 className="text-xs uppercase font-medium mb-3 text-white/80">Dernier personnage</h1>
+                <h1 className="text-xs uppercase font-medium mb-3 text-white/80">{t("DERNIER PERSONNAGE")}</h1>
                 <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
                   <img
                     src={latestCharacter.image}
@@ -157,10 +171,10 @@ export default function Home() {
                   <div className="flex-1">
                     <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
                     <p className="text-white/90 mb-1">
-                      {roleMapping[latestCharacter.role]} / {typeMapping[latestCharacter.type]}
+                      {getRoleLabel(latestCharacter.role, t)} / {getTypeLabel(latestCharacter.type, t)}
                     </p>
                     <p className="text-sm text-white/60 mb-4">
-                      Sortie : {latestCharacter.releaseDate}
+                      {t("interface.Sortie")} : {latestCharacter.releaseDate}
                     </p>
                     {latestCharacter.stats && (
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
@@ -218,7 +232,7 @@ export default function Home() {
 
         {/* Derniers articles */}
         <div className="mt-20">
-          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Derniers articles</h2>
+          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">{t("DERNIERS ARTICLES")}</h2>
 
           <div className="grid gap-6 md:grid-cols-3">
             {Array.isArray(articles) && articles.length > 0 ? (
@@ -246,7 +260,7 @@ export default function Home() {
                 </a>
               ))
             ) : (
-              <p className="text-white/60">Aucun article disponible.</p>
+              <p className="text-white/60">{t("errors.Aucun article disponible")}</p>
             )}
 
 
@@ -278,7 +292,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-full transition"
           >
-            Rejoindre
+            {t("Rejoindre")}
           </a>
         </div>
       </div>

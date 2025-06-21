@@ -2,15 +2,9 @@
 
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
-type Tool = {
-  Matériel: string;
-  Grade: string;
-  Niveaux: number;
-  Coût: number;
-  condition: string;
-  icon: string;
-};
+
 
 const gradeColors: Record<string, string> = {
   Bleu: "text-blue-400",
@@ -23,6 +17,16 @@ const gradeColors: Record<string, string> = {
 export default function FishingToolsPage() {
   const [tools, setTools] = useState<Tool[]>([]);
   const [grouped, setGrouped] = useState<Record<string, Tool[]>>({});
+  const { t } = useTranslation("common");
+
+  type Tool = {
+    Matériel: string;
+    Grade: string;
+    Niveaux: number;
+    Coût: number;
+    condition: string;
+    icon: string;
+  };
 
   useEffect(() => {
     const lang = localStorage.getItem("lang") || "FR";
@@ -44,19 +48,19 @@ export default function FishingToolsPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 text-white">
-      <h1 className="text-2xl font-bold mb-6 text-center">Matériel de pêche</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">{t("fishery.tool")}</h1>
 
       {Object.entries(grouped).map(([type, items], groupIndex) => (
         <div key={type} className="mb-10">
-          <h2 className="text-xl font-semibold mb-4 border-b border-white/10 pb-1">{type}</h2>
+          <h2 className="text-xl font-semibold mb-4 border-b border-white/10 pb-1">{t(`fishery.${type}`)}</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full border-collapse text-sm">
               <thead>
                 <tr className="text-left text-gray-400 border-b border-white/10">
-                  <th className="py-2 px-3">Icône</th>
-                  <th className="py-2 px-3">Niveaux</th>
-                  <th className="py-2 px-3">Coût</th>
-                  <th className="py-2 px-3">Conditions</th>
+                  <th className="py-2 px-3">{t("fishery.icon")}</th>
+                  <th className="py-2 px-3">{t("fishery.level")}</th>
+                  <th className="py-2 px-3">{t("fishery.cost")}</th>
+                  <th className="py-2 px-3">{t("fishery.condition")}</th>
                 </tr>
               </thead>
               <tbody>

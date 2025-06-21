@@ -5,6 +5,7 @@ import Description from "@/components/Description";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ArtifactDetail {
     id: number;
@@ -39,6 +40,7 @@ const ArtifactDetailPage = () => {
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
     const router = useRouter();
+    const { t } = useTranslation("common");
 
     const professionImages = {
       Compétence: "icon_12g_ji_attack.png",
@@ -119,18 +121,18 @@ const ArtifactDetailPage = () => {
                       className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
                   >
                       <ArrowLeft size={16} />
-                      Retour aux Artefacts
+                      {t("backOthers.backToArtifacts")}
                   </button>
               </div>
               <p className="text-lg mt-4">
-                  Cet artefact n’est pas disponible dans la base de données sélectionnée.
+                  {t("errors.artifactNotFound")}
               </p>
           </div>
         );
     }
 
     if (!artifact || !lang) {
-        return <p className="text-white">Chargement...</p>;
+        return <p className="text-white">{t("interface.loading")}</p>;
     }
 
     // Définition des seuils pour activer chaque compétence
@@ -153,7 +155,7 @@ const ArtifactDetailPage = () => {
                           className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                       >
                           <ArrowLeft size={16} />
-                          Retour aux artefacts
+                          {t("backOthers.backToArtifacts")}
                       </button>
                   </div>
 
@@ -184,7 +186,7 @@ const ArtifactDetailPage = () => {
                 <h2 className="text-xl font-semibold text-center">{artifact.name}</h2>
                 {/* Cette sélection est visible uniquement en mode desktop */}
                 <div className="hidden md:block">
-                    <p className="text-xs text-white/60 mt-1">Sélectionner le niveau</p>
+                    <p className="text-xs text-white/60 mt-1">{t("interface.selectLevel")}</p>
                     <div className="flex flex-wrap justify-center gap-2 mt-1">
                         {[1, 2, 3, 4, 5].map((lvl) => (
                             <button
@@ -205,15 +207,15 @@ const ArtifactDetailPage = () => {
                 {/* Description des compétences */}
                 <div className="flex-1 flex flex-col justify-between gap-6 pt-4">
                     <div>
-                        <h3 className="text-lg font-semibold mb-2">Compétence 1</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t("stat.skill")} 1</h3>
                         <div className={`text-md ${level >= skillThresholds.skill1 ? "opacity-100" : "opacity-30"}`}>
                             <Description skillId={artifact.skill1Id} level={artifact.skill1Level} dbChoice = {lang} />
                         </div>
-                        <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 2</h3>
+                        <h3 className="text-lg font-semibold mt-4 mb-2">{t("stat.skill")} 2</h3>
                         <div className={`text-md ${level >= skillThresholds.skill2 ? "opacity-100" : "opacity-30"}`}>
                             <Description skillId={artifact.skill2Id} level={artifact.skill2Level} dbChoice = {lang} />
                         </div>
-                        <h3 className="text-lg font-semibold mt-4 mb-2">Compétence 3</h3>
+                        <h3 className="text-lg font-semibold mt-4 mb-2">{t("stat.skill")} 3</h3>
                         <div className={`text-md ${level >= skillThresholds.skill3 ? "opacity-100" : "opacity-30"}`}>
                             <Description skillId={artifact.skill3Id} level={artifact.skill3Level} dbChoice = {lang} />
                         </div>
@@ -234,7 +236,7 @@ const ArtifactDetailPage = () => {
 
             {/* Filtre mobile pour le niveau */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-4">
-                <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau</p>
+                <p className="text-center text-xs text-white/60 mb-2">{t("interface.selectLevel")}</p>
                 <div className="flex justify-center gap-1">
                     {[1, 2, 3, 4, 5].map((lvl) => (
                         <button
@@ -253,7 +255,7 @@ const ArtifactDetailPage = () => {
             {/* Autres artefacts */}
             {others.length > 0 && (
                 <div className="max-w-screen-lg mx-auto mt-12">
-                    <h3 className="text-xl font-bold mb-4 text-center">Autres artefacts</h3>
+                    <h3 className="text-xl font-bold mb-4 text-center">{t("backOthers.otherArtifacts")}</h3>
                     <Swiper
                         spaceBetween={16}
                         slidesPerView={2}

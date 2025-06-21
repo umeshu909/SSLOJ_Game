@@ -1,26 +1,21 @@
 'use client'
 
 import FullCalendar from '@fullcalendar/react'
+import frLocale from "@fullcalendar/core/locales/fr";
+import enLocale from "@fullcalendar/core/locales/en-gb";
+
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import '@/styles/global.css'
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
 import { useState, useEffect, useMemo } from 'react'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
+import { fr, enUS } from "date-fns/locale";
 
-const categories = [
-  { id: 'duel', label: 'Combat Duel' },
-  { id: 'competition', label: 'Compétition Compétence' },
-  { id: 'dreamland', label: 'Illusion du vide' },
-  { id: 'glory', label: 'Tournoi des points de Gloire' },
-  { id: 'gods', label: 'Champ de bataille des Dieux' },
-  { id: 'relics', label: 'Reliques des Dieux' },
-  { id: 'arena', label: 'Arène Mondiale' },
-  { id: 'tournois', label: 'Tournois du Sanctuaire' }
-]
+
 
 const typeColors: Record<string, string> = {
   duel: "#3b82f6",
@@ -43,14 +38,43 @@ export default function TimelineCalendar() {
   const [currentView, setCurrentView] = useState("dayGridMonth");
   const [relicBosses, setRelicBosses] = useState([]);
 
+  const { t, i18n } = useTranslation("common");
+
+  const fullCalendarLocales = {
+    fr: frLocale,
+    en: enLocale,
+  };
+
+  const calendarLocale = useMemo(() => fullCalendarLocales[t.language] || enLocale, [t.language]);
+
   const handleViewChange = (view: any) => {
     setCurrentView(view.view.type);
   };
+
+  const categories = [
+    { id: 'duel', label: t("calendar.combatDuel") },
+    { id: 'competition', label: t("calendar.competition")  },
+    { id: 'dreamland', label: t("calendar.dreamland")  },
+    { id: 'glory', label: t("calendar.glory")  },
+    { id: 'gods', label: t("calendar.gods")  },
+    { id: 'relics', label: t("calendar.relics")  },
+    { id: 'arena', label: t("calendar.arena")  },
+    { id: 'tournois', label: t("calendar.tournois")  }
+  ]
+
+  const localeMap: Record<string, Locale> = {
+    fr,
+    en: enUS,
+    // ajoute d'autres si besoin
+  };
+
+  const currentLocale = localeMap[t.language] || fr;
 
   useEffect(() => {
     const storedLang = localStorage.getItem("lang") || "FR"
     setLang(storedLang)
   }, [])
+
 
   useEffect(() => {
     if (!lang) return
@@ -77,6 +101,9 @@ export default function TimelineCalendar() {
             if (end) end = adjust(end);
             if (end2) end2 = adjust(end2);
           }
+
+          // Formattage du titre de l'event
+          //event.title = t(`calendar.${event.category}`);
 
           return {
             ...event,
@@ -205,13 +232,12 @@ export default function TimelineCalendar() {
     );
   };
 
-
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
 
       {/* Filtres - desktop */}
       <div className="hidden lg:flex flex-col w-[240px] bg-[#1a1a2b] p-4 rounded-xl shadow-md text-white">
-        <h2 className="text-lg font-semibold mb-4">Filtres</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("interface.filters")}</h2>
         <div className="flex flex-col gap-2">
           {categories.map(cat => {
             const isActive = enabledCategories.includes(cat.id);
@@ -239,8 +265,10 @@ export default function TimelineCalendar() {
       {/* CALENDRIER */}
       <div className="flex-1 pt-[58px]">
         <FullCalendar
+          key={t.language}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           firstDay={1}
+          locale={calendarLocale}
           showNonCurrentDates={true}
           initialView="dayGridMonth"
           fixedWeekCount={true}
@@ -285,19 +313,19 @@ export default function TimelineCalendar() {
             {selectedEvent.extendedProps?.phase === "enrollday" && (
               <>
                 <div className="text-sm text-gray-400 mb-4">
-                  <span className="text-white font-medium">Du</span>{" "}
-                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
-                  <span className="text-white font-medium">au</span>{" "}
+                  <span className="text-white font-medium">{t("calendar.from")}</span>{" "}
+                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm", { locale: currentLocale })}{" "}
+                  <span className="text-white font-medium">{t("calendar.to")}</span>{" "}
                   {selectedEvent.extendedProps?.end2
-                  ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm")
-                  : format(selectedEvent.end, "dd/MM/yyyy HH:mm")}
+                  ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm", { locale: currentLocale })
+                  : format(selectedEvent.end, "dd/MM/yyyy HH:mm", { locale: currentLocale })}
 
                 </div>
                 <div className="text-sm text-gray-400 mb-2">
-                  <span className="text-white font-medium">Nb joueurs :</span> {selectedEvent.extendedProps?.players} joueurs 
+                  <span className="text-white font-medium">{t("calendar.nbPlayers")} :</span> {selectedEvent.extendedProps?.players} {t("calendar.players")} 
                 </div>
                 <div className="text-sm text-gray-400 mb-2">
-                  <span className="text-white font-medium">Durée :</span> 2 jours 
+                  <span className="text-white font-medium">{t("calendar.duration")} :</span> 2 {t("calendar.days")}
                 </div>
 
 
@@ -308,23 +336,23 @@ export default function TimelineCalendar() {
             {selectedEvent.extendedProps?.phase === "stamina" && (
               <>
                   <div className="text-sm text-gray-400 mb-4">
-                    <span className="text-white font-medium">Du</span>{" "}
-                    {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
-                    <span className="text-white font-medium">au</span>{" "}
+                    <span className="text-white font-medium">{t("calendar.from")}</span>{" "}
+                    {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm", { locale: currentLocale })}{" "}
+                    <span className="text-white font-medium">{t("calendar.to")}</span>{" "}
                     {selectedEvent.extendedProps?.end2
-                    ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm")
-                    : format(selectedEvent.end, "dd/MM/yyyy HH:mm")}
+                    ? format(new Date(selectedEvent.extendedProps.end2), "dd/MM/yyyy HH:mm", { locale: currentLocale })
+                    : format(selectedEvent.end, "dd/MM/yyyy HH:mm", { locale: currentLocale })}
 
                   </div>
 
                   {bossRows.length === 0 ? (
-                    <p className="text-sm text-red-400 mb-2">Chargement des horaires...</p>
+                    <p className="text-sm text-red-400 mb-2">{t("calendar.loadTimes")}</p>
                   ) : (
                     <table className="w-full text-sm text-gray-300 mb-4 border-collapse">
                       <thead>
                         <tr className="border-b border-gray-600">
-                          <th className="text-left py-1 px-2 w-28">Phase</th>
-                          <th className="text-left py-1 px-2">Date & Heure</th>
+                          <th className="text-left py-1 px-2 w-28">{t("calendar.Phase")}</th>
+                          <th className="text-left py-1 px-2">{t("calendar.dateAndHour")}</th>
                           <th className="text-left py-1 px-2">Boss</th>
                         </tr>
                       </thead>
@@ -333,15 +361,15 @@ export default function TimelineCalendar() {
                           <tr key={i}>
                             <td className="py-1 px-2">{row.label}</td>
                             <td className="py-1 px-2">
-                              {format(row.time, "dd/MM/yyyy à HH'h'mm", { locale: fr })}
+                              {format(row.time, "dd/MM/yyyy à HH'h'mm", { locale: currentLocale })}
                               {row.label === "Boss 4" && (
                                 <div className="flex gap-2 items-center">
-                                  (Après Pandore)
+                                  {t("calendar.afterPandore")}
                                 </div>
                               )}
                               {(row.label === "Rerun 1" || row.label === "Rerun 2" || row.label === "Rerun 3" || row.label === "Rerun 4") && (
                                 <div className="flex gap-2 items-center">
-                                  (A partir de ...)
+                                  {t("calendar.fromHour")}
                                 </div>
                               )}
                             </td>
@@ -394,16 +422,16 @@ export default function TimelineCalendar() {
             {selectedEvent.extendedProps?.phase === "silence" && (
               <>
                 <div className="text-sm text-gray-400 mb-4">
-                  <span className="text-white font-medium">Du</span>{" "}
-                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm")}{" "}
-                  <span className="text-white font-medium">au</span>{" "}
-                  {format(new Date(selectedEvent.end), "dd/MM/yyyy HH:mm")}
+                  <span className="text-white font-medium">{t("calendar.from")}</span>{" "}
+                  {format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm", { locale: currentLocale })}{" "}
+                  <span className="text-white font-medium">{t("calendar.to")}</span>{" "}
+                  {format(new Date(selectedEvent.end), "dd/MM/yyyy HH:mm", { locale: currentLocale })}
                 </div>
                 <div className="text-sm text-red-400 font-semibold mb-2">
-                  La stamina ne peut plus être récupérée pendant cette période.
+                  {t("calendar.noStamina")}
                 </div>
                 <div className="text-sm text-gray-400 mb-2">
-                  <span className="text-white font-medium">Durée :</span> 1 jours 
+                  <span className="text-white font-medium">{t("calendar.duration")} :</span> 1 {t("calendar.days")}
                 </div>
               </>
             )}
@@ -411,13 +439,13 @@ export default function TimelineCalendar() {
             {!selectedEvent.extendedProps?.phase && (
               <>
                 <div className="text-sm text-gray-400 mb-4">
-                  Du{" "}
+                  {t("calendar.from")}{" "}
                   <span className="text-white">
-                    {format(new Date(selectedEvent.start), "dd MMMM yyyy", { locale: fr })}
+                    {format(new Date(selectedEvent.start), "dd MMMM yyyy", { locale: currentLocale })}
                   </span>{" "}
-                  au{" "}
+                  {t("calendar.to")}{" "}
                   <span className="text-white">
-                    {format(new Date(selectedEvent.end), "dd MMMM yyyy", { locale: fr })}
+                    {format(new Date(selectedEvent.end), "dd MMMM yyyy", { locale: currentLocale })}
                   </span>
                 </div>
                 {selectedEvent.extendedProps?.buffs?.length > 0 && (
@@ -444,7 +472,7 @@ export default function TimelineCalendar() {
           onClick={() => setShowMobileFilters(true)}
           className="bg-purple-500 text-white font-semibold py-2 px-6 rounded-full shadow-lg"
         >
-          Filtrer
+          {t("interface.filter")}
         </button>
       </div>
 
@@ -452,12 +480,12 @@ export default function TimelineCalendar() {
       <div className={`lg:hidden fixed inset-0 bg-[#1a1a2b] z-50 overflow-y-auto p-6 transition-transform duration-300 ease-in-out
         ${showMobileFilters ? "translate-y-0" : "translate-y-full pointer-events-none"}`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Filtres</h2>
+          <h2 className="text-2xl font-semibold">{t("interface.filters")}</h2>
           <button
             onClick={() => setShowMobileFilters(false)}
             className="text-white text-sm border border-white/30 px-3 py-1 rounded"
           >
-            Fermer
+            {t("interface.close")}
           </button>
         </div>
 

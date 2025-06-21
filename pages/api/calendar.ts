@@ -12,16 +12,49 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const dbChoice = req.headers["x-db-choice"] || "FR";
   const db = await openDb(dbChoice as string);
 
+  const translationMap: Record<string, Record<string, string>> = {
+    FR: {
+      combatDuel: "Combat Duel",
+      competition: "Compétition de compétence",
+      dreamland: "Illusion du vide",
+      glory: "Tournoi de Gloire",
+      gods: "Champs de Bataille des Dieux",
+      relics: "Reliques des Dieux",
+      arena: "Arène Mondiale",
+      tournois: "Tournois du Sanctuaire",
+      enrollday: "Pré-inscription",
+      silence: "Silence"
+    },
+    EN: {
+      combatDuel: "Duel Combat",
+      competition: "Competence Competition",
+      dreamland: "Dreamland of Void",
+      glory: "Glory Tournament",
+      gods: "Battlefield of Gods",
+      relics: "Relics of the Gods",
+      arena: "World Arena",
+      tournois: "Sanctuary Tournament",
+      enrollday: "Pre-registration",
+      silence: "Silence"
+    }
+  };
+
+  const lang = dbChoice === "FR" ? "FR" : "EN";
+  const t = translationMap[lang];
+
+
+
   const files = [
-    { file: "getPlanningCombatDuel.sql", type: "duel", title: "Combat Duel" },
-    { file: "getPlanningCompetition.sql", type: "competition", title: "Compétition de compétence" },
-    { file: "getPlanningDreamland.sql", type: "dreamland", title: "Illusion du vide" },
-    { file: "getPlanningGloryPointsTournament.sql", type: "glory", title: "Tournoi de Gloire" },
-    { file: "GetPlanningGodsBattle.sql", type: "gods", title: "Champs de Bataille des Dieux" },
-    { file: "getPlanningRelics.sql", type: "relics", title: "Reliques des Dieux" },
-    { file: "getPlanningWorldArena.sql", type: "arena", title: "Arène Mondiale" },
-    { file: "getPlanningTournoisSanctaire.sql", type: "tournois", title: "Tournois du Sanctuaire" }
+    { file: "getPlanningCombatDuel.sql", type: "duel", title: "combatDuel" },
+    { file: "getPlanningCompetition.sql", type: "competition", title: "competition" },
+    { file: "getPlanningDreamland.sql", type: "dreamland", title: "dreamland" },
+    { file: "getPlanningGloryPointsTournament.sql", type: "glory", title: "glory" },
+    { file: "GetPlanningGodsBattle.sql", type: "gods", title: "gods" },
+    { file: "getPlanningRelics.sql", type: "relics", title: "relics" },
+    { file: "getPlanningWorldArena.sql", type: "arena", title: "arena" },
+    { file: "getPlanningTournoisSanctaire.sql", type: "tournois", title: "tournois" }
   ];
+
 
   const finalEvents: any[] = [];
 
@@ -53,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const preEnd = addDays(preStart, row.enrollday);
 
         const preEvent = {
-          title: `${f.title} - Pré-inscription`,
+          title: `${t[f.title]} - ${t["enrollday"]}`,
           start: preStart.toISOString(),
           end: preEnd.toISOString(),
           allDay: false,
@@ -68,7 +101,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Phase 2 : Normale (stamina)
         const staminaEnd = addDays(preEnd, row.stamina_days);
         const staminaEvent = {
-          title: `${f.title}`,
+          title: `${t[f.title]}`,
           start: preEnd.toISOString(),
           end: staminaEnd.toISOString(),
           allDay: false,
@@ -83,7 +116,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Phase 3 : Silence
         const silenceEnd = addDays(staminaEnd, row.silence_days);
         const silenceEvent = {
-          title: `${f.title} - Silence`,
+          title: `${t[f.title]} - ${t["silence"]}`,
           start: staminaEnd.toISOString(),
           end: silenceEnd.toISOString(),
           allDay: false,
@@ -127,7 +160,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
       const event: any = {
-        title: f.type === "dreamland" && row.Map ? `${f.title} - ${row.Map}` : f.title,
+        title: f.type === "dreamland" && row.Map ? `${t[f.title]} - ${row.Map}` : t[f.title],
         start: startDate,
         end: endDate,
         allDay: false,

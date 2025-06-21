@@ -6,6 +6,7 @@ import "swiper/css";
 import Description from "@/components/Description";
 import IconCanvas from "@/components/IconCanvas";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ArayashikiDetail {
     id: number;
@@ -49,6 +50,7 @@ const ArayashikiDetailPage = () => {
     const id = params?.id as string | undefined;
     const [lang, setLang] = useState<string | null>(null);
     const [notFound, setNotFound] = useState(false);
+    const { t } = useTranslation("common");
 
 
     const xpByRange = [
@@ -129,7 +131,7 @@ const ArayashikiDetailPage = () => {
             };
 
             const translationsOr: Record<number, string> = {
-                4: "Chevaliers d'or"
+                4: t("interface.GoldenSaints")
             };
 
             let translated = data.hero_names && translations[data.hero_names] || null;
@@ -290,13 +292,13 @@ const getBookDistribution = (xp: number) => {
                         className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                     >
                         <ArrowLeft size={16} />
-                        Retour aux arayashikis
+                        {t("backOthers.backToArayashikis")}
                     </button>
                 </div>
 
                 {/* TEXTE D'INFORMATION */}
                 <p className="text-lg mt-4">
-                    Cette carte n’est pas disponible dans la base de données sélectionnée.
+                    {t("errors.arayashikiNotFound")}
                 </p>
             </div>
 
@@ -304,7 +306,7 @@ const getBookDistribution = (xp: number) => {
     }
 
     if (!detail || !lang) {
-        return <p className="text-white">Chargement...</p>;
+        return <p className="text-white">{t("loading")}</p>;
     }
 
 
@@ -326,7 +328,7 @@ const getBookDistribution = (xp: number) => {
                     className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
                 >
                     <ArrowLeft size={16} />
-                    Retour aux arayashikis
+                    {t("backOthers.backToArayashikis")}
                 </button>
             </div>
 
@@ -389,7 +391,7 @@ const getBookDistribution = (xp: number) => {
                                     ))}
                             </div>
                         ) : (
-                            <p className="text-sm opacity-80">Tous les chevaliers peuvent porter</p>
+                            <p className="text-sm opacity-80">{t("interface.allKnightsCanEquip")}</p>
                         )}
 
                         <div className="leading-relaxed text-sm md:max-w-[50%]">
@@ -413,10 +415,10 @@ const getBookDistribution = (xp: number) => {
 
                     {startLevel !== null && endLevel !== null && (
                     <div className="bg-[#1d1b35] border border-white/10 rounded-lg p-4 text-sm mt-4 space-y-4">
-                        <h3 className="text-base font-semibold text-white">XP nécessaire pour monter de niveau</h3>
+                        <h3 className="text-base font-semibold text-white">{t("interface.requiredXPToLevelUp")}</h3>
                         <div className="flex flex-wrap items-center gap-4">
                             <div className="flex items-center gap-2">
-                                <label htmlFor="start-level" className="text-white/70">Niveau de départ</label>
+                                <label htmlFor="start-level" className="text-white/70">{t("interface.startLevel")}</label>
                                 <select
                                     id="start-level"
                                     value={startLevel}
@@ -432,7 +434,7 @@ const getBookDistribution = (xp: number) => {
                                 </select>
                             </div>
                             <div className="flex items-center gap-2">
-                                <label htmlFor="end-level" className="text-white/70">Niveau final</label>
+                                <label htmlFor="end-level" className="text-white/70">{t("interface.endLevel")}</label>
                                 <select
                                     id="end-level"
                                     value={endLevel}
@@ -449,7 +451,7 @@ const getBookDistribution = (xp: number) => {
                             </div>
                         </div>
                         <p className="text-white">
-                            XP totale requise : <strong>{computeTotalXP(startLevel + 1, endLevel)}</strong>
+                            {t("interface.totalXP")} : <strong>{computeTotalXP(startLevel + 1, endLevel)}</strong>
                         </p>
 
 
@@ -478,7 +480,7 @@ const getBookDistribution = (xp: number) => {
             {/* SWIPER AUTRES */}
             {otherArayashikis.length > 0 && (
                 <div className="max-w-screen-lg mx-auto my-12">
-                    <h3 className="text-xl font-bold mb-4 text-center">Autres Arayashikis</h3>
+                    <h3 className="text-xl font-bold mb-4 text-center">{t("backOthers.otherArayashikis")}</h3>
 
                     {/* ✅ Wrapper avec padding horizontal */}
                     <div className="px-6">
@@ -518,7 +520,7 @@ const getBookDistribution = (xp: number) => {
 
             {/* Sticky étoiles mobile */}
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md pt-2 pb-10">
-                <p className="text-center text-xs text-white/60 mb-2">Sélectionner le niveau d’étoiles</p>
+                <p className="text-center text-xs text-white/60 mb-2">{t("selectStarLevel")}</p>
                 <div className="flex justify-center gap-1">
                     {[...Array(detail.levelMax)].map((_, i) => (
                         <span

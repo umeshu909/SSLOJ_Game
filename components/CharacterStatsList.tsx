@@ -1,6 +1,7 @@
 import React from "react";
 import { Character } from "@/types/character";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from 'next-i18next'
 
 interface Props {
   character: Character;
@@ -17,6 +18,7 @@ const invocationImageMap: Record<string, string> = {
 
 
 const CharacterStatsList: React.FC<Props> = ({ character }) => {
+  const { t } = useTranslation("common");
 
   return (
     <ul className="text-sm text-white space-y-1">
@@ -25,9 +27,9 @@ const CharacterStatsList: React.FC<Props> = ({ character }) => {
 
         return (
           <li key={label} className="flex items-center gap-2">
-            <span className="text-sm text-white/60">{label}:</span>
+            <span className="text-sm text-white/60">{t(`stat.${label}`)}:</span>
 
-            {label.toLowerCase() === "invocation" && invocationImageMap[value] ? (
+            {invocationImageMap[value] ? (
               <img
                 src={invocationImageMap[value]}
                 alt={value}
@@ -45,7 +47,7 @@ const CharacterStatsList: React.FC<Props> = ({ character }) => {
 
       {Object.entries(character.stats).map(([label, value]) => (
         <li key={label} className="flex items-center gap-2">
-          <span className="text-sm text-white/60">{label}:</span>
+          <span className="text-sm text-white/60">{t(`stat.${label}`)}:</span>
           <span className="font-text-white font-medium text-cosmosCrystal/30">{value}</span>
         </li>
       ))}

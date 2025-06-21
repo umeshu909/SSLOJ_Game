@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from "react-i18next";
 
 export default function ShopItemsPage() {
   const [shops, setShops] = useState([]);
@@ -9,12 +10,13 @@ export default function ShopItemsPage() {
   const [selectedShopId, setSelectedShopId] = useState<number | null>(null);
   const [loadingItems, setLoadingItems] = useState(true);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const { t } = useTranslation("common");
 
   const dbChoice = typeof window !== "undefined" ? localStorage.getItem("lang") || "FR" : "FR";
 
   const getTranslatedShopLabel = (label: string) => {
-    if (label === "遺跡商店") return "Reliques 1";
-    if (label === "秘寶商店") return "Reliques 2";
+    if (label === "遺跡商店") return t("interface.relics1");
+    if (label === "秘寶商店") return t("interface.relics2");
     if (label === "对决之战") return null;
     return label;
   };
@@ -58,7 +60,7 @@ export default function ShopItemsPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-white">
       <h1 className="text-2xl font-bold mb-6 text-center">
-        Boutique{currentShopLabel ? ` : ${currentShopLabel}` : ""}
+        {t("interface.shop")} {currentShopLabel ? ` : ${currentShopLabel}` : ""}
       </h1>
 
 
@@ -68,7 +70,7 @@ export default function ShopItemsPage() {
           onClick={() => setShowMobileFilter(!showMobileFilter)}
           className="bg-yellow-400 text-black px-4 py-2 rounded-full shadow-lg"
         >
-          Filtrer
+          {t("interface.filter")}
         </button>
       </div>
 
@@ -105,9 +107,9 @@ export default function ShopItemsPage() {
         {/* Liste des items */}
         <div className="flex-1">
           {loadingItems ? (
-            <p className="text-center">Chargement des items...</p>
+            <p className="text-center">{t("interface.loading")}</p>
           ) : items.length === 0 ? (
-            <p className="text-center">Aucun item trouvé pour cette boutique.</p>
+            <p className="text-center">{t("errors.noShopItems")}</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {items.map((item, index) => (
@@ -149,9 +151,6 @@ export default function ShopItemsPage() {
                 </div>
               ))}
             </div>
-
-
-
 
 
           )}

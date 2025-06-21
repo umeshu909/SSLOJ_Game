@@ -4,6 +4,7 @@ import IconCanvas from "@/components/IconCanvas";
 import Description from "@/components/Description";
 import { ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface Skill {
   skillid: string;
@@ -38,6 +39,7 @@ const StatueDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [multiplier, setMultiplier] = useState<number>(0);
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const prefixCharacter = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const prefixSkill = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
@@ -81,7 +83,7 @@ const StatueDetailPage = () => {
           setNotFound(false);
         }
       } catch (err) {
-        console.error("Erreur de chargement des données de la statue:", err);
+        console.error(t("error.noStatuesData"), err);
         setNotFound(true);
       } finally {
         setLoading(false);
@@ -104,14 +106,14 @@ const StatueDetailPage = () => {
               </button>
           </div>
           <p className="text-lg mt-4">
-              Cette statue n’est pas disponible dans la base de données sélectionnée.
+              {t("error.noStatuesData")}
           </p>
       </div>
     );
   }
 
   if (loading || !lang) {
-    return <p className="text-white text-center mt-12">Chargement...</p>;
+    return <p className="text-white text-center mt-12">{t("interface.loading")}</p>;
   }
 
   return (
@@ -125,13 +127,13 @@ const StatueDetailPage = () => {
                   className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition cursor-pointer"
               >
                   <ArrowLeft size={16} />
-                  Retour aux statues
+                  {t("backOthers.backtoStatues")}
               </button>
           </div>
 
           {/* Sélecteur visible uniquement en mode desktop */}
           <div className="hidden md:block">
-            <p className="mb-1 text-sm text-white/60">Multiplicateur :</p>
+            <p className="mb-1 text-sm text-white/60">{t("interface.Multiplicateur")} :</p>
             <div className="flex flex-wrap gap-1 text-xs">
               {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((val) => (
                 <button
@@ -151,7 +153,7 @@ const StatueDetailPage = () => {
 
           {/* Liste des personnages */}
           <div className="space-y-4 mt-2">
-            <h2 className="text-lg font-semibold mb-2">Personnages liés</h2>
+            <h2 className="text-lg font-semibold mb-2">{t("interface.linkedCharacters")}</h2>
             {characters.map((char, i) => (
               <div key={i} className="flex items-start gap-4 bg-white/5 p-3 rounded-lg">
                 <IconCanvas
@@ -200,7 +202,7 @@ const StatueDetailPage = () => {
 
         {/* Skills */}
         <div className="w-full md:w-2/3 space-y-6">
-          <h2 className="text-lg font-semibold mb-4">Compétences de la statue</h2>
+          <h2 className="text-lg font-semibold mb-4">{t("interface.StatueCompetence")}</h2>
           {[...new Set(skills.map((s) => s.skillid))].map((skillid) => {
             const group = skills.filter((s) => s.skillid === skillid);
             const skill = group[0];
@@ -239,7 +241,7 @@ const StatueDetailPage = () => {
 
       {/* Filtre mobile fixé en bas */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a091c] border-t border-white/10 shadow-md p-4">
-        <p className="text-center text-sm text-white/60 mb-2">Multiplicateur :</p>
+        <p className="text-center text-sm text-white/60 mb-2">{t("interface.Multiplicateur")} :</p>
         <div className="flex flex-wrap justify-center gap-1 text-xs">
           {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((val) => (
             <button

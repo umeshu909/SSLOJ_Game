@@ -4,6 +4,7 @@ import IconCanvas from "@/components/IconCanvas";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 type TimelineItem = {
   id: number;
@@ -29,6 +30,7 @@ const TimelinePage = () => {
   const [items, setItems] = useState<TimelineItem[]>([]);
   const [selectedVersion, setSelectedVersion] = useState<"ALL" | "GLO" | "CN" | "JP">("ALL");
   const [search, setSearch] = useState("");
+  const { t } = useTranslation("common");
 
   const fetchTimeline = async () => {
     const res = await fetch(`/api/timeline/${selectedVersion}`);
@@ -51,10 +53,10 @@ const TimelinePage = () => {
   }, [search, items]);
 
   const versionLabels = {
-    ALL: "Tous",
-    GLO: "Global",
-    CN: "Chine",
-    JP: "Japon",
+    ALL: t("interface.All"),
+    GLO:  t("interface.Global"),
+    CN:  t("interface.China"),
+    JP:  t("interface.Japan"),
   };
 
   return (
@@ -66,7 +68,7 @@ const TimelinePage = () => {
           <div className="mb-6">
             <input
               type="text"
-              placeholder="Rechercher un personnage..."
+              placeholder={t("interface.searchCharacter")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-4 py-2 rounded-md bg-[#1e1c3a] border border-white/10 placeholder-white/40 text-white"
@@ -96,7 +98,7 @@ const TimelinePage = () => {
           <div className="lg:hidden mb-4">
             <input
               type="text"
-              placeholder="Rechercher un personnage..."
+              placeholder={t("interface.searchCharacter")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full px-4 py-2 rounded-md bg-[#1e1c3a] border border-white/10 placeholder-white/40 text-white"
