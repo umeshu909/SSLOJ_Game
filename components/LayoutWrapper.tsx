@@ -14,9 +14,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   const [activeLink, setActiveLink] = useState<string>("");
   const [language, setLanguage] = useState<string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("lang") || "FR";
+      return localStorage.getItem("lang") || "EN";
     }
-    return "FR";
+    return "EN";
   });
 
   const fisheryRef = useRef<HTMLDivElement>(null);
@@ -120,8 +120,8 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 window.location.reload();
               }}
             >
-              <option value="FR">FR</option>
               <option value="EN">EN</option>
+              <option value="FR">FR</option>
               <option value="CN">CN</option>
               <option value="JP">JP</option>
             </select>

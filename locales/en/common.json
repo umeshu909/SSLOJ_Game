@@ -161,7 +161,11 @@
     "Gain Cosmos ATK": "Cosmos gain (ATK)",
     "Gain Cosmos DMG": "Cosmos gain (DMG)",
     "Stars": "Stars",
-    "Level": "Level"
+    "Level": "Level",
+    "speedTrunc": "ATK Spd",
+    "critTrunk": "Crit.rate",
+    "tenacityTrunk": "Tenacity"
+
   },
   "tag": {
     "Arcane": "Might",
@@ -194,6 +198,7 @@
     "condition": "Condition"
   },
   "DERNIER PERSONNAGE": "LAST CHARACTER",
-  "DERNIERS ARTICLES": "LASTS ARTICLES",
+  "DERNIERS ARTICLES": "LASTEST ARTICLES",
+  "patchnote": "PATCH NOTE",
   "Rejoindre": "Join"
 }

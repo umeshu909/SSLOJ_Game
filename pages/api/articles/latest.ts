@@ -5,7 +5,7 @@ const CMS_URL = process.env.CMS_URL || 'http://localhost:8055'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const response = await fetch(`${CMS_URL}/items/Articles?fields=id,title,text,date_created,images&sort=-date_created&limit=2`)
+    const response = await fetch(`${CMS_URL}/items/Articles?fields=id,title,text,date_created,images&sort=-date_created&limit=10`)
     const data = await response.json()
     res.status(200).json({ data: data.data })
 

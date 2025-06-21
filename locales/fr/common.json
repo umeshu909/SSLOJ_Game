@@ -162,7 +162,10 @@
     "Gain Cosmos ATK": "Gain Cosmos (ATK)",
     "Gain Cosmos DMG": "Gain Cosmos (DMG)",
     "Stars": "Étoiles",
-    "Level": "Niveau"
+    "Level": "Niveau",
+    "speedTrunc": "Vit. ATK",
+    "critTrunk": "Tx Crit.",
+    "tenacityTrunk": "Tenacité"
   },
   "tag": {
     "Arcane": "Arcane",
@@ -196,5 +199,6 @@
   },
   "DERNIER PERSONNAGE": "DERNIER PERSONNAGE",
   "DERNIERS ARTICLES": "DERNIERS ARTICLES",
+  "patchnote": "PATCH NOTE",
   "Rejoindre": "Rejoindre"
 }

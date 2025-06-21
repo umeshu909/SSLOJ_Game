@@ -83,7 +83,7 @@ export default async function ArticlesPage() {
     <div className="max-w-5xl mx-auto px-4 py-10 space-y-10">
       <h1 className="text-4xl font-bold text-white mb-8">Articles</h1>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 md:grid-cols-3 items-start">
         {articles.map((article) => {
           const imageUrl = article.images ? `${PUBLIC_URL}/assets/${article.images}` : null;
 
@@ -91,36 +91,37 @@ export default async function ArticlesPage() {
             <a
               key={article.id}
               href={`/articles/${article.id}`}
-              className="flex flex-col md:flex-row items-stretch bg-neutral-800/70 hover:bg-neutral-700 transition-all border border-neutral-700 rounded-2xl shadow-md hover:shadow-lg overflow-hidden"
+              className="bg-[#1f1d3a] hover:bg-[#29264a] transition-colors rounded-2xl shadow-lg overflow-hidden flex flex-col h-full"
             >
-              {/* Image à gauche */}
+              {/* Image */}
               {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt={article.title}
-                  className="w-full md:w-48 h-48 object-cover object-top md:rounded-l-2xl md:rounded-r-none rounded-t-2xl md:rounded-t-none"
-                />
+                <div className="w-full h-[250px] overflow-hidden">
+                  <img
+                    src={imageUrl}
+                    alt={article.title}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
               )}
 
-              {/* Contenu à droite */}
-              <div className="flex flex-col justify-between p-5 text-white flex-1">
-                <div>
-                  <h2 className="text-2xl font-semibold text-blue-100 mb-2">{article.title}</h2>
-                  <p className="text-gray-100 text-sm leading-relaxed">
-                    {decodeHtmlEntities(getExcerpt(cleanText(article.text), 50))}
-                  </p>
-                </div>
+              {/* Contenu */}
+              <div className="flex flex-col flex-1 p-5 text-white">
+                <h2 className="text-xm font-semibold text-yellow-400 mb-2">{article.title}</h2>
 
-                <div className="flex justify-end mt-4">
-                  <span className="text-xs text-blue-300">{formatDate(article.date_created)}</span>
+                <p className="text-xs text-white/80 leading-relaxed flex-1">
+                  {decodeHtmlEntities(getExcerpt(cleanText(article.text), 50))}
+                </p>
+
+                <div className="mt-4 text-right text-xs text-blue-300">
+                  {formatDate(article.date_created)}
                 </div>
               </div>
             </a>
-
-
           );
         })}
       </div>
-    </div>
+
+
+  </div>
   );
 }

@@ -6,6 +6,7 @@ import { getMediaUrl } from "@/lib/media";
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import { useTranslation } from 'next-i18next'
+import Link from "next/link";
 
 const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
@@ -18,6 +19,7 @@ export default function Home() {
   const [articles, setArticles] = useState<any[]>([]);
   const [latestCharacter, setLatestCharacter] = useState<any | null>(null);
   const [patchNote, setPatchNote] = useState<any | null>(null);
+  const [startIndex, setStartIndex] = useState(0);
 
   const getRoleLabel = (id: number, t: any): string => {
     const keys: Record<number, string> = {
@@ -44,12 +46,12 @@ export default function Home() {
 
   const formatStatLabel = (key: string) => {
     const map: Record<string, string> = {
-      "PV": t("stat.PV"),
-      "ATQ": t("stat.ATQ"),
-      "DÉF": t("stat.DÉF"),
-      "Vitesse ATQ": t("stat.Vitesse ATQ"),
-      "Taux Crit.": t("stat.Taux Crit."),
-      "Taux Tenacité": t("stat.Tenacité"),
+      "hp": t("stat.PV"),
+      "atk": t("stat.ATQ"),
+      "def": t("stat.DÉF"),
+      "speed": t("stat.speedTrunc"),
+      "crit": t("stat.critTrunk"),
+      "tenacity": t("stat.tenacityTrunk"),
       "GT Crit.": t("stat.GT Crit."),
       "RÉS DGT CC": t("stat.Rés. DGT CC"),
       "Frappe": t("stat.Frappe"),
@@ -67,6 +69,18 @@ export default function Home() {
     };
     return map[key] || key;
   };
+  const handleNext = () => {
+    if (startIndex + 2 < articles.length) {
+      setStartIndex(startIndex + 2);
+    }
+  };
+
+  const handlePrev = () => {
+    if (startIndex - 2 >= 0) {
+      setStartIndex(startIndex - 2);
+    }
+  };
+
 
   function formatPatchNoteContent(patchNote: any): string {
     if (!patchNote?.content) return "";
@@ -160,39 +174,44 @@ export default function Home() {
           <div className="mb-20">
             <div className="flex flex-col md:flex-row gap-6">
               {/* Colonne gauche : dernier perso */}
-              <div className="flex-1">
-                <h1 className="text-xs uppercase font-medium mb-3 text-white/80">{t("DERNIER PERSONNAGE")}</h1>
-                <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] p-6 rounded-lg shadow-lg">
-                  <img
-                    src={latestCharacter.image}
-                    alt={latestCharacter.name}
-                    className="w-40 h-auto rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
-                    <p className="text-white/90 mb-1">
-                      {getRoleLabel(latestCharacter.role, t)} / {getTypeLabel(latestCharacter.type, t)}
-                    </p>
-                    <p className="text-sm text-white/60 mb-4">
-                      {t("interface.Sortie")} : {latestCharacter.releaseDate}
-                    </p>
-                    {latestCharacter.stats && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-white/80">
-                        {Object.entries(latestCharacter.stats)
-                          .filter(([_, value]) => {
-                            if (typeof value === "string") return value !== "0%" && value !== "0";
-                            return Number(value) > 0;
-                          })
-                          .map(([key, value]) => (
-                            <div key={key} className="bg-[#29264a] p-2 rounded">
-                              {formatStatLabel(key)} : {String(value)}
-                            </div>
-                          ))}
-                      </div>
-                    )}
+              <Link href={`/characters/${latestCharacter.id}`}>
+                <div className="flex-1">
+                  <h1 className="text-xs uppercase font-medium mb-3 text-white/80">{t("DERNIER PERSONNAGE")}</h1>
+                  <div className="flex flex-col md:flex-row items-center gap-6 bg-[#1f1d3a] hover:bg-[#2a2750] transition-colors duration-300 p-6 rounded-lg shadow-lg">
+
+
+                    <img
+                      src={latestCharacter.image}
+                      alt={latestCharacter.name}
+                      className="w-40 h-auto rounded"
+                    />
+                    
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-semibold text-yellow-400 mb-2">{latestCharacter.name}</h3>
+                      <p className="text-white/90 mb-1">
+                        {getRoleLabel(latestCharacter.role, t)} / {getTypeLabel(latestCharacter.type, t)}
+                      </p>
+                      <p className="text-sm text-white/60 mb-4">
+                        {t("interface.Sortie")} : {latestCharacter.releaseDate}
+                      </p>
+                      {latestCharacter.stats && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-white/80">
+                          {Object.entries(latestCharacter.stats)
+                            .filter(([_, value]) => {
+                              if (typeof value === "string") return value !== "0%" && value !== "0";
+                              return Number(value) > 0;
+                            })
+                            .map(([key, value]) => (
+                              <div key={key} className="bg-[#29264a] p-2 rounded">
+                                {formatStatLabel(key)} : {String(value)}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
 
               {/* Colonne droite : previews CN */}
               <div className="flex-1 flex flex-col">
@@ -230,58 +249,99 @@ export default function Home() {
 
 
 
-        {/* Derniers articles */}
         <div className="mt-20">
-          <h2 className="text-xs uppercase font-medium mb-3 text-white/80">{t("DERNIERS ARTICLES")}</h2>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {Array.isArray(articles) && articles.length > 0 ? (
-              articles.slice(0, 3).map((article) => (
-                <a
-                  key={article.id}
-                  href={`/articles/${article.id}`}
-                  className="bg-[#1f1d3a] p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300 block"
-                >
-                  <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '300px' }}>
-                    <img
-                      src={`${PUBLIC_URL}/assets/${article.images}`}
-                      alt={article.title}
-                      className="w-full object-cover object-top"
-                      style={{ height: '300px' }}
-                    />
-                  </div>
-
-                  <h3 className="text-lg font-semibold text-yellow-400 mb-1">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-gray-300">
-                    Publié le {new Date(article.date_created).toLocaleDateString("fr-FR")}
-                  </p>
-                </a>
-              ))
-            ) : (
-              <p className="text-white/60">{t("errors.Aucun article disponible")}</p>
-            )}
+          <div className="flex justify-between items-end mb-3">
+            <h2 className="text-xs uppercase font-medium text-white/80">{t("patchnote")}</h2>
+            <h2 className="text-xs uppercase font-medium text-white/80">{t("DERNIERS ARTICLES")}</h2>
+          </div>
 
 
-            {/* PatchNote */}
+          <div className="grid gap-6 md:grid-cols-3 items-start relative">
+            {/* PATCH NOTE */}
             {patchNote?.content && (
-              <div className="mt-0 bg-[#1f1d3a] p-6 rounded-lg shadow-lg min-h-[450px] flex flex-col">
+              <div className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg flex flex-col h-[375px]">
                 <h1 className="text-sm uppercase font-bold mb-3 text-[#80cfff]">📅 {patchNote.date_patch}</h1>
-                <h1 className="text-sm uppercase font-bold mb-3 text-white/80">
-                  {patchNote.title}
-                </h1>
+                <h1 className="text-sm uppercase font-bold mb-3 text-white/80">{patchNote.title}</h1>
                 <div
-                  className="text-sm text-white/90 leading-relaxed max-h-[300px] overflow-y-auto pr-2"
+                  className="text-sm text-white/90 leading-relaxed overflow-y-auto pr-2"
                   dangerouslySetInnerHTML={{ __html: formatPatchNoteContent(patchNote) }}
                 />
               </div>
             )}
 
+            {/* ARTICLE 1 */}
+            <div className="relative h-[375px]">
+              {startIndex > 0 && (
+                <button
+                  onClick={handlePrev}
+                  className="absolute left-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-l"
+                >
+                  ◀
+                </button>
+              )}
+              {articles[startIndex] && (
+                <a
+                  href={`/articles/${articles[startIndex].id}`}
+                  className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
+                >
+                  <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '250px' }}>
+                    <img
+                      src={`${PUBLIC_URL}/assets/${articles[startIndex].images}`}
+                      alt={articles[startIndex].title}
+                      className="w-full object-cover object-top"
+                    />
+                  </div>
+                  <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex].title}</h3>
+                  <p className="text-sm text-gray-300">
+                    Publié le {new Date(articles[startIndex].date_created).toLocaleDateString("fr-FR")}
+                  </p>
+                </a>
+              )}
+            </div>
 
+            {/* ARTICLE 2 */}
+            <div className="relative h-[375px]">
+              {startIndex + 1 < articles.length && (
+                <>
+                  <a
+                    href={`/articles/${articles[startIndex + 1].id}`}
+                    className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
+                  >
+                    <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '250px' }}>
+                      <img
+                        src={`${PUBLIC_URL}/assets/${articles[startIndex + 1].images}`}
+                        alt={articles[startIndex + 1].title}
+                        className="w-full object-cover object-top"
+                      />
+                    </div>
+                    <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex + 1].title}</h3>
+                    <p className="text-sm text-gray-300">
+                      Publié le {new Date(articles[startIndex + 1].date_created).toLocaleDateString("fr-FR")}
+                    </p>
+                  </a>
 
+                  {/* Flèche droite */}
+                  {startIndex + 2 < articles.length && (
+                    <button
+                      onClick={handleNext}
+                      className="absolute right-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-r"
+                    >
+                      ▶
+                    </button>
+                  )}
+                </>
+              )}
+
+            </div>
           </div>
+
+
+
         </div>
+
+
+
 
         {/* Discord */}
         <div className="flex flex-col items-center justify-center rounded-lg shadow-lg p-6 text-center mt-20">

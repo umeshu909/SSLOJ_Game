@@ -120,20 +120,23 @@ const TimelinePage = () => {
                 }}
                 icon={
                   <Link href={`/characters/${item.id}`}>
-                    {item.icon ? (
-                      <IconCanvas
-                        prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
-                        iconName={item.icon}
-                        jsonDir="/images/atlas/icon_touxiang/"
-                        canvasId={`timeline-canvas-${item.id}-${index}`}
-                        imgHeight={2048}
-                        size={2}
-                      />
-                    ) : (
-                      <div className="text-xs bg-white text-black rounded-full p-2">?</div>
-                    )}
+                    <div className="transition-transform duration-300 transform hover:scale-110">
+                      {item.icon ? (
+                        <IconCanvas
+                          prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
+                          iconName={item.icon}
+                          jsonDir="/images/atlas/icon_touxiang/"
+                          canvasId={`timeline-canvas-${item.id}-${index}`}
+                          imgHeight={2048}
+                          size={2}
+                        />
+                      ) : (
+                        <div className="text-xs bg-white text-black rounded-full p-2">?</div>
+                      )}
+                    </div>
                   </Link>
-                }
+}
+
                 contentStyle={{ background: "#2C2F58", color: "#fff" }}
                 contentArrowStyle={{ borderRight: "7px solid #2C2F58" }}
               >

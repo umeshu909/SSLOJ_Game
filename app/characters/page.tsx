@@ -165,7 +165,7 @@ const CharactersPage = () => {
         <div className="hidden lg:flex flex-col w-[320px] sticky top-[132px] h-fit bg-[#14122a] p-6 text-white">
 
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">{t("filters")}</h2>
+              <h2 className="text-xl font-semibold">{t("interface.filters")}</h2>
               {/* Annulation des filtres */}
               {(selectedRoles.length > 0 || selectedTypes.length > 0 || onlyAvailable || searchQuery !== "" || selectedInvocation !== "") && (
               <button
@@ -177,10 +177,10 @@ const CharactersPage = () => {
                   setSelectedInvocation(""); 
                 }}
                 className="text-white hover:text-red-500 text-xl"
-                title="Réinitialiser les filtres"
+                title={t("interface.initFilters")}
               >
                 <span className="text-xs ml-1 inline-flex items-center gap-1 cursor-pointer">
-                  Réinitialiser <XCircle size={14} className="text-red-500" />
+                  {t("interface.initFilters")} <XCircle size={14} className="text-red-500" />
                 </span>
 
               </button>
