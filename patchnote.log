@@ -10,3 +10,5 @@ run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No suc
 run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
 run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
 run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
+⏩ Patch note déjà existant pour 2025-06-18 (fr), insertion ignorée.
+✅ Patch note inséré pour 2025-06-18 (en)
