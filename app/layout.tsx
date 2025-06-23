@@ -10,14 +10,14 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: "Saint Seiya Legend of Justice – Codex",
-  description: "Découvrez tous les personnages, vestiges et nouveautés du jeu Saint Seiya: Legend of Justice. Base de données en ligne pour toutes les versions (CN, JP, Global).",
-  keywords: ["saint seiya", "legend of justice", "codex", "guide", "personnages", "athena", "shiryu", "hades", "seiya", "poseidon", "mise à jour", "gacha", "CN", "JP", "global"],
+  description: "Discover all characters, relics, and new features from the game Saint Seiya: Legend of Justice. Online database for all versions. (CN, JP, Global).",
+  keywords: ["saint seiya", "legend of justice", "codex", "guide", "characters", "athena", "shiryu", "hades", "seiya", "poseidon", "update", "gacha", "CN", "JP", "global"],
   authors: [{ name: "Saint Seiya Codex", url: "https://ssloj.com" }],
   creator: "Saint Seiya Codex",
   metadataBase: new URL("https://ssloj.com"),
   openGraph: {
-    title: "Saint Seiya Codex – Base de données complète",
-    description: "Toutes les nouveautés des versions CN, JP et Global du jeu Saint Seiya: Legend of Justice.",
+    title: "Saint Seiya Codex – Complete database",
+    description: "All News about versions CN, JP et Global (EN, FR, BR, ES, IT) of the game Saint Seiya: Legend of Justice.",
     url: "https://ssloj.com",
     siteName: "Saint Seiya Codex",
     images: [
@@ -28,13 +28,14 @@ export const metadata: Metadata = {
         alt: "Saint Seiya Codex Logo",
       },
     ],
-    locale: "fr_FR",
+    locale: "en_US",
+    alternateLocales: ["fr_FR", "pt_BR", "es_ES", "it_IT", "zh_CN", "ja_JP"],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Saint Seiya Codex – Derniers ajouts",
-    description: "Toutes les nouveautés des versions CN, JP et Global du jeu Saint Seiya: Legend of Justice.",
+    description: "All news about versions CN, JP et Global of the game Saint Seiya: Legend of Justice.",
     images: ["/images/share-logo.png"],
     creator: "@saintseiyacodex",
   },

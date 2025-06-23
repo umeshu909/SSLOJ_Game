@@ -112,6 +112,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           </div>
 
           <div className="absolute right-4">
+            <div className="text-xs">Version</div>
             <select
               className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
               value={language}
@@ -122,6 +123,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             >
               <option value="EN">EN</option>
               <option value="FR">FR</option>
+              <option value="BR">BR</option>
+              <option value="ES">ES</option>
+              <option value="IT">IT</option>
               <option value="CN">CN</option>
               <option value="JP">JP</option>
             </select>

@@ -144,14 +144,20 @@ export default function Home() {
 
 
 
-  useEffect(() => {
-    fetch("/api/articles/latest")
-      .then((res) => res.json())
-      .then((data) => {
-        setArticles(data.data); // attention, avec Directus il faut aller dans `data.data`
-      })
-      .catch((err) => console.error("Erreur chargement articles :", err));
-  }, []);
+useEffect(() => {
+  const fetchArticles = async () => {
+    try {
+      const res = await fetch("/api/articles/latest");
+      if (!res.ok) throw new Error("Directus non joignable");
+      const data = await res.json();
+      setArticles(data.data);
+    } catch (err) {
+      console.error("Erreur chargement articles :", err);
+      setArticles([]); // met un tableau vide
+    }
+  };
+  fetchArticles();
+}, []);
 
 
   useEffect(() => {
@@ -270,70 +276,75 @@ export default function Home() {
               </div>
             )}
 
-            {/* ARTICLE 1 */}
-            <div className="relative h-[375px]">
-              {startIndex > 0 && (
-                <button
-                  onClick={handlePrev}
-                  className="absolute left-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-l"
-                >
-                  ◀
-                </button>
-              )}
-              {articles[startIndex] && (
-                <a
-                  href={`/articles/${articles[startIndex].id}`}
-                  className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
-                >
-                  <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '250px' }}>
-                    <img
-                      src={`${PUBLIC_URL}/assets/${articles[startIndex].images}`}
-                      alt={articles[startIndex].title}
-                      className="w-full object-cover object-top"
-                    />
-                  </div>
-                  <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex].title}</h3>
-                  <p className="text-sm text-gray-300">
-                    Publié le {new Date(articles[startIndex].date_created).toLocaleDateString("fr-FR")}
-                  </p>
-                </a>
-              )}
-            </div>
-
-            {/* ARTICLE 2 */}
-            <div className="relative h-[375px]">
-              {startIndex + 1 < articles.length && (
-                <>
+            {articles.length > 0 && (
+            <>
+              {/* ARTICLE 1 */}
+              <div className="relative h-[375px]">
+                {startIndex > 0 && (
+                  <button
+                    onClick={handlePrev}
+                    className="absolute left-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-l"
+                  >
+                    ◀
+                  </button>
+                )}
+                {articles[startIndex] && (
                   <a
-                    href={`/articles/${articles[startIndex + 1].id}`}
+                    href={`/articles/${articles[startIndex].id}`}
                     className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
                   >
                     <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '250px' }}>
                       <img
-                        src={`${PUBLIC_URL}/assets/${articles[startIndex + 1].images}`}
-                        alt={articles[startIndex + 1].title}
+                        src={`${PUBLIC_URL}/assets/${articles[startIndex].images}`}
+                        alt={articles[startIndex].title}
                         className="w-full object-cover object-top"
                       />
                     </div>
-                    <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex + 1].title}</h3>
+                    <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex].title}</h3>
                     <p className="text-sm text-gray-300">
-                      Publié le {new Date(articles[startIndex + 1].date_created).toLocaleDateString("fr-FR")}
+                      Publié le {new Date(articles[startIndex].date_created).toLocaleDateString("fr-FR")}
                     </p>
                   </a>
+                )}
+              </div>
 
-                  {/* Flèche droite */}
-                  {startIndex + 2 < articles.length && (
-                    <button
-                      onClick={handleNext}
-                      className="absolute right-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-r"
+              {/* ARTICLE 2 */}
+              <div className="relative h-[375px]">
+                {startIndex + 1 < articles.length && (
+                  <>
+                    <a
+                      href={`/articles/${articles[startIndex + 1].id}`}
+                      className="bg-[#1f1d3a] p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col h-full"
                     >
-                      ▶
-                    </button>
-                  )}
-                </>
-              )}
+                      <div className="rounded-lg mb-3 w-full overflow-hidden" style={{ height: '250px' }}>
+                        <img
+                          src={`${PUBLIC_URL}/assets/${articles[startIndex + 1].images}`}
+                          alt={articles[startIndex + 1].title}
+                          className="w-full object-cover object-top"
+                        />
+                      </div>
+                      <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex + 1].title}</h3>
+                      <p className="text-sm text-gray-300">
+                        Publié le {new Date(articles[startIndex + 1].date_created).toLocaleDateString("fr-FR")}
+                      </p>
+                    </a>
 
-            </div>
+                    {/* Flèche droite */}
+                    {startIndex + 2 < articles.length && (
+                      <button
+                        onClick={handleNext}
+                        className="absolute right-0 top-0 bottom-0 w-8 bg-black/20 hover:bg-black/40 text-white z-10 flex items-center justify-center rounded-r"
+                      >
+                        ▶
+                      </button>
+                    )}
+                  </>
+                )}
+
+              </div>
+              </>
+            )}
+            
           </div>
 
 
