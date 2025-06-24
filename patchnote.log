@@ -1,50 +1,18 @@
-⏩ Patch note déjà existant pour 2025-06-11, insertion ignorée.
-⏩ Patch note déjà existant pour 2025-06-11, insertion ignorée.
-⏩ Patch note déjà existant pour 2025-06-11, insertion ignorée.
-✅ Patch note inséré pour 2025-06-18
-./run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 10: /home/ubuntu/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-run_fetch.sh: line 11: /Users/waliv/.nvm/versions/node/v20.19.2/bin/node: No such file or directory
-⏩ Patch note déjà existant pour 2025-06-18 (fr), insertion ignorée.
-✅ Patch note inséré pour 2025-06-18 (en)
-⏩ Patch note déjà existant pour 2025-06-18 (fr), insertion ignorée.
-⏩ Patch note déjà existant pour 2025-06-18 (en), insertion ignorée.
-⏩ Patch note déjà existant pour 2025-06-18 (fr), insertion ignorée.
-⏩ Patch note déjà existant pour 2025-06-18 (en), insertion ignorée.
-❌ Erreur de récupération depuis l'URL http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=fr : FetchError: request to http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=fr failed, reason: getaddrinfo ENOTFOUND list.seiya-eur.wdyxgames.com
-    at ClientRequest.<anonymous> (file:///home/ubuntu/SSLOJ_Game/node_modules/node-fetch/src/index.js:108:11)
-    at ClientRequest.emit (node:events:524:28)
-    at emitErrorEvent (node:_http_client:101:11)
-    at Socket.socketErrorListener (node:_http_client:504:5)
-    at Socket.emit (node:events:524:28)
-    at emitErrorNT (node:internal/streams/destroy:169:8)
-    at emitErrorCloseNT (node:internal/streams/destroy:128:3)
-    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
-  type: 'system',
-  errno: 'ENOTFOUND',
-  code: 'ENOTFOUND',
-  erroredSysCall: 'getaddrinfo'
-}
-⏩ Patch note déjà existant pour 2025-06-18 (en), insertion ignorée.
-file:///home/ubuntu/SSLOJ_Game/fetchPatchNote.js:17
-function extractDateFromContent(content: string): string | null {
-                                       ^
-
-SyntaxError: Unexpected token ':'
-    at compileSourceTextModule (node:internal/modules/esm/utils:340:16)
-    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:146:18)
-    at #translate (node:internal/modules/esm/loader:431:12)
-    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:478:27)
-    at async ModuleJob._link (node:internal/modules/esm/module_job:110:19)
-
-Node.js v20.19.2
-⏩ Déjà existant : 2025-06-18 (fr)
-⏩ Déjà existant : 2025-06-18 (en)
-✅ Patch note inséré pour 2025-06-18 (es)
-✅ Patch note inséré pour 2025-06-18 (br)
-✅ Patch note inséré pour 2025-06-18 (ita)
+🔄 FETCH → fr
+✅ fr: insertion ou ignore pour 2025-18-06
+🔄 FETCH → en
+✅ en: insertion ou ignore pour 2025-18-06
+🔄 FETCH → es
+✅ es: insertion ou ignore pour 2025-18-06
+🔄 FETCH → br
+✅ br: insertion ou ignore pour 2025-18-06
+🔄 FETCH → ita
+✅ ita: insertion ou ignore pour 2025-18-06
+🔄 FETCH → jp
+[jp] Aucune date détectée
+[jp] Aucune date détectée
+✅ jp: insertion ou ignore pour 2025-02-26
+✅ jp: insertion ou ignore pour 2025-06-25
+🔄 FETCH → cn
+[cn] Aucune date détectée
+[cn] Aucune date détectée
