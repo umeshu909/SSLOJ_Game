@@ -14,10 +14,14 @@ const LANGUAGES = [
   { code: 'cn', url: 'http://list.seiya-tw.wdyxgames.com:8082/getgg.php?ptid=10001&language=cht' }
 ];
 
+// Prend en charge les formats "18/6" ainsi que "6月25日"
 function extractDateFromContent(content) {
-  const match = content.match(/(\d{1,2})\/(\d{1,2})/);
+  let match = content.match(/(\d{1,2})\/(\d{1,2})/);
+  if (!match) {
+    match = content.match(/(\d{1,2})月(\d{1,2})日/);
+  }
   if (!match) return null;
-  const day = match[1], month = match[2];
+  const day = match[2], month = match[1];
   const year = new Date().getFullYear();
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
@@ -32,23 +36,23 @@ async function main() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       json = await res.json();
     } catch (err) {
-      console.error(`🌐 Erreur réseau pour ${code}:`, err.message);
+      console.error(`[${code}] Erreur réseau/JSON:`, err.message);
       continue;
     }
 
     for (const entry of json) {
       const datePatch = extractDateFromContent(entry.content);
       if (!datePatch) {
-        console.log(`⏩ Pas de date détectée pour une entrée ${code}`);
+        console.log(`⏩ Pas de date détectée pour une entrée (${code})`);
         continue;
       }
 
-      const existing = await db.get(
+      const exists = await db.get(
         `SELECT 1 FROM PatchNotes WHERE date_patch = ? AND language = ?`,
         [datePatch, code]
       );
 
-      if (!existing) {
+      if (!exists) {
         try {
           await db.run(
             `INSERT INTO PatchNotes (ptid, type, level, title, content, language, date_patch)
@@ -59,11 +63,11 @@ async function main() {
               entry.level ?? '',
               entry.title ?? '',
               entry.content ?? '',
-              code, // On force la langue ici
+              code,
               datePatch
             ]
           );
-          console.log(`✅ Patch note inséré pour ${datePatch} (${code})`);
+          console.log(`✅ Patch note inséré : ${datePatch} (${code})`);
         } catch (err) {
           console.error(`❌ Erreur insertion (${code}):`, err.message);
         }
