@@ -6,8 +6,19 @@ import path from 'path';
 
 export async function GET(req: NextRequest) {
   try {
-    const lang = req.headers.get('x-db-choice') || 'FR';
-    const patchLang = lang === 'FR' ? 'fr' : 'en';
+    const lang = (req.headers.get('x-db-choice') || 'FR').toUpperCase();
+
+    // Cartographie personnalisée pour les langues
+    const mapping: Record<string, string> = {
+      FR: 'fr',
+      EN: 'en',
+      ES: 'es',
+      BR: 'br',  // portugais brésilien
+      IT: 'ita',
+      JP: 'jp',
+      CN: 'en'   // CN redirige vers anglais
+    };
+    const patchLang = mapping[lang] ?? 'en';
 
     const dbPath = path.join(process.cwd(), 'databases', 'DB_COMMON.sqlite');
     const db = await open({ filename: dbPath, driver: sqlite3.Database });
