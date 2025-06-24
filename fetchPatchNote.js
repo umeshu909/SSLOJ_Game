@@ -4,28 +4,30 @@ import { open } from 'sqlite';
 
 const DB_PATH = '/home/ubuntu/SSLOJ_Game/databases/DB_COMMON.sqlite';
 
-const LANGUAGES = ['fr', 'en'];
+const LANGUAGES = [
+  { code: 'fr', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=fr' },
+  { code: 'en', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=en' },
+  { code: 'es', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=es' },
+  { code: 'br', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=pt' },
+  { code: 'ita', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=ita' },
+  { code: 'jp', url: 'http://list.seiya-jp.wdyxgames.com:8082//getgg.php?ptid=2&language=ja' },
+];
 
-function extractDateFromContent(content) {
+function extractDateFromContent(content: string): string | null {
   const match = content.match(/(\d{1,2})\/(\d{1,2})/);
   if (!match) return null;
 
-  const day = match[1];
-  const month = match[2];
+  const [_, day, month] = match;
   const year = new Date().getFullYear();
-
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
-
 
 async function main() {
   const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
 
-  for (const lang of LANGUAGES) {
-    const PATCH_URL = `http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=${lang}`;
-
+  for (const { code, url } of LANGUAGES) {
     try {
-      const res = await fetch(PATCH_URL);
+      const res = await fetch(url);
       const json = await res.json();
 
       for (const entry of json) {
@@ -34,7 +36,7 @@ async function main() {
 
         const existing = await db.get(
           `SELECT 1 FROM PatchNotes WHERE date_patch = ? AND language = ?`,
-          [datePatch, lang]
+          [datePatch, code]
         );
 
         if (!existing) {
@@ -48,20 +50,20 @@ async function main() {
                 entry.level,
                 entry.title,
                 entry.content,
-                lang,
+                code,
                 datePatch,
               ]
             );
-            console.log(`✅ Patch note inséré pour ${datePatch} (${lang})`);
+            console.log(`✅ Patch note inséré pour ${datePatch} (${code})`);
           } catch (err) {
-            console.error(`❌ Erreur insertion patch note (${lang}) :`, err);
+            console.error(`❌ Erreur insertion patch note (${code}) :`, err);
           }
         } else {
-          console.log(`⏩ Patch note déjà existant pour ${datePatch} (${lang}), insertion ignorée.`);
+          console.log(`⏩ Patch note déjà existant pour ${datePatch} (${code}), insertion ignorée.`);
         }
       }
     } catch (err) {
-      console.error(`❌ Erreur de récupération depuis l'URL ${PATCH_URL} :`, err);
+      console.error(`❌ Erreur de récupération depuis l'URL ${url} (${code}) :`, err);
     }
   }
 
