@@ -11,6 +11,7 @@ const LANGUAGES = [
   { code: 'br', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=pt' },
   { code: 'ita', url: 'http://list.seiya-eur.wdyxgames.com:8082//getgg.php?ptid=2&language=ita' },
   { code: 'jp', url: 'http://list.seiya-jp.wdyxgames.com:8082//getgg.php?ptid=2&language=ja' },
+  { code: 'cn', url: 'http://list.seiya-tw.wdyxgames.com:8082/getgg.php?ptid=10001&language=cht' }
 ];
 
 function extractDateFromContent(content: string): string | null {
