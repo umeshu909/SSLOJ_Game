@@ -19,21 +19,18 @@ function extractDateFromContent(content) {
   if (!match) return null;
   const day = match[1], month = match[2];
   const year = new Date().getFullYear();
-  return `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 }
 
 async function main() {
   const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
 
   for (const { code, url } of LANGUAGES) {
-    console.log(`🔄 FETCH   → ${code}: ${url}`);
     let json;
     try {
       const res = await fetch(url);
-      console.log(`[${code}] HTTP status = ${res.status}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       json = await res.json();
-      console.log(`[${code}] JSON reçu (length=${Array.isArray(json)?json.length:'?'}):`, json);
     } catch (err) {
       console.error(`🌐 Erreur réseau pour ${code}:`, err.message);
       continue;
@@ -41,7 +38,10 @@ async function main() {
 
     for (const entry of json) {
       const datePatch = extractDateFromContent(entry.content);
-      if (!datePatch) continue;
+      if (!datePatch) {
+        console.log(`⏩ Pas de date détectée pour une entrée ${code}`);
+        continue;
+      }
 
       const existing = await db.get(
         `SELECT 1 FROM PatchNotes WHERE date_patch = ? AND language = ?`,
@@ -53,7 +53,15 @@ async function main() {
           await db.run(
             `INSERT INTO PatchNotes (ptid, type, level, title, content, language, date_patch)
              VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [entry.ptid, entry.type, entry.level, entry.title, entry.content, code, datePatch]
+            [
+              entry.ptid ?? '',
+              entry.type ?? '',
+              entry.level ?? '',
+              entry.title ?? '',
+              entry.content ?? '',
+              code, // On force la langue ici
+              datePatch
+            ]
           );
           console.log(`✅ Patch note inséré pour ${datePatch} (${code})`);
         } catch (err) {
