@@ -26,10 +26,14 @@ async function main() {
   const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
 
   for (const { code, url } of LANGUAGES) {
+    console.log(`🔄 FETCH   → ${code}: ${url}`);
     let json;
     try {
       const res = await fetch(url);
+      console.log(`[${code}] HTTP status = ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       json = await res.json();
+      console.log(`[${code}] JSON reçu (length=${Array.isArray(json)?json.length:'?'}):`, json);
     } catch (err) {
       console.error(`🌐 Erreur réseau pour ${code}:`, err.message);
       continue;
