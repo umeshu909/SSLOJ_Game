@@ -14,57 +14,50 @@ const LANGUAGES = [
   { code: 'cn', url: 'http://list.seiya-tw.wdyxgames.com:8082/getgg.php?ptid=10001&language=cht' }
 ];
 
-function extractDateFromContent(content: string): string | null {
+function extractDateFromContent(content) {
   const match = content.match(/(\d{1,2})\/(\d{1,2})/);
   if (!match) return null;
-
-  const [_, day, month] = match;
+  const day = match[1], month = match[2];
   const year = new Date().getFullYear();
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  return `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
 }
 
 async function main() {
   const db = await open({ filename: DB_PATH, driver: sqlite3.Database });
 
   for (const { code, url } of LANGUAGES) {
+    let json;
     try {
       const res = await fetch(url);
-      const json = await res.json();
-
-      for (const entry of json) {
-        const datePatch = extractDateFromContent(entry.content);
-        if (!datePatch) continue;
-
-        const existing = await db.get(
-          `SELECT 1 FROM PatchNotes WHERE date_patch = ? AND language = ?`,
-          [datePatch, code]
-        );
-
-        if (!existing) {
-          try {
-            await db.run(
-              `INSERT INTO PatchNotes (ptid, type, level, title, content, language, date_patch)
-               VALUES (?, ?, ?, ?, ?, ?, ?)`,
-              [
-                entry.ptid,
-                entry.type,
-                entry.level,
-                entry.title,
-                entry.content,
-                code,
-                datePatch,
-              ]
-            );
-            console.log(`✅ Patch note inséré pour ${datePatch} (${code})`);
-          } catch (err) {
-            console.error(`❌ Erreur insertion patch note (${code}) :`, err);
-          }
-        } else {
-          console.log(`⏩ Patch note déjà existant pour ${datePatch} (${code}), insertion ignorée.`);
-        }
-      }
+      json = await res.json();
     } catch (err) {
-      console.error(`❌ Erreur de récupération depuis l'URL ${url} (${code}) :`, err);
+      console.error(`🌐 Erreur réseau pour ${code}:`, err.message);
+      continue;
+    }
+
+    for (const entry of json) {
+      const datePatch = extractDateFromContent(entry.content);
+      if (!datePatch) continue;
+
+      const existing = await db.get(
+        `SELECT 1 FROM PatchNotes WHERE date_patch = ? AND language = ?`,
+        [datePatch, code]
+      );
+
+      if (!existing) {
+        try {
+          await db.run(
+            `INSERT INTO PatchNotes (ptid, type, level, title, content, language, date_patch)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [entry.ptid, entry.type, entry.level, entry.title, entry.content, code, datePatch]
+          );
+          console.log(`✅ Patch note inséré pour ${datePatch} (${code})`);
+        } catch (err) {
+          console.error(`❌ Erreur insertion (${code}):`, err.message);
+        }
+      } else {
+        console.log(`⏩ Déjà existant : ${datePatch} (${code})`);
+      }
     }
   }
 
