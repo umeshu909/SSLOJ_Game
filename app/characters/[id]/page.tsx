@@ -35,6 +35,8 @@ export default function CharacterPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
     const [notFound, setNotFound] = useState(false);
+    const [skillsError, setSkillsError] = useState(false);
+
     const { t } = useTranslation("common");
 
     useEffect(() => {
@@ -48,6 +50,8 @@ export default function CharacterPage() {
                         "X-DB-Choice": lang,
                     },
                 });
+
+                console.log(characterResponse);
 
                 if (!characterResponse.ok) {
                     setNotFound(true);
@@ -66,11 +70,20 @@ export default function CharacterPage() {
                 });
 
                 if (!skillsResponse.ok) {
+                    console.warn("Compétences non disponibles pour ce personnage");
+                    setSkillsError(true);
+                    setSkills([]);
+                } else {
                     setNotFound(true);
-                    return;
                 }
 
                 const dataSkills = await skillsResponse.json();
+                if (!dataSkills || dataSkills.Skill1Level1 == null) {
+                    //console.error("Erreur : données de compétences incomplètes");
+                    setNotFound(true);
+                    return;
+                }
+                                 
                 setSkills(dataSkills || []);
                 setNotFound(false);
             } catch (error: any) {
@@ -99,7 +112,7 @@ export default function CharacterPage() {
             <div className="min-h-screen flex flex-col items-center justify-center text-center text-white p-6">
                 {/* TEXTE D'INFORMATION */}
                 <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
-                    <BackButton fallbackHref="/characters" label="Retour aux personnages"/>
+                    <BackButton fallbackHref="/characters" label={t("backOthers.backToCharacters")}/>
                 </div>
                 <p className="text-lg mt-4">
                     {t("errors.noCharacter")}

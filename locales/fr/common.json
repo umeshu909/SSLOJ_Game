@@ -32,7 +32,7 @@
     "noArtifactsFound": "Aucun artefact trouvé",
     "noSageMarkFound": "Aucun vestige trouvé",
     "vestigeNotAvailable": "Ce vestige n’est pas disponible dans la base de données sélectionnée.",
-    "noCharacter": "Personnage non disponible",
+    "noCharacter": "Personnage non disponible dans la base de données sélectionnée.",
     "noArmor": "Aucune armure disponible.",
     "noConstellation": "Aucune Constelltion disponible.",
     "noLinks" : "Aucun lien disponible.",
@@ -199,6 +199,6 @@
   },
   "DERNIER PERSONNAGE": "DERNIER PERSONNAGE",
   "DERNIERS ARTICLES": "DERNIERS ARTICLES",
-  "patchnote": "PATCH NOTE (GLO)",
+  "patchnote": "PATCH NOTE",
   "Rejoindre": "Rejoindre"
 }

@@ -31,8 +31,8 @@
     "artifactNotFound": "This artifact is not available in the selected database.",
     "noArtifactsFound": "No artifacts found",
     "noSageMarkFound": "No Sage Mark found",
-    "vestigeNotAvailable": "This Sage Mark is not available in the database",
-    "noCharacter": "Character not available",
+    "vestigeNotAvailable": "This Sage Mark is not available in the selected database",
+    "noCharacter": "Character not available in the selected database",
     "noArmor": "No armor available.",
     "noConstellation": "No Constelltion available.",
     "noLinks" : "No links available.",
@@ -199,6 +199,6 @@
   },
   "DERNIER PERSONNAGE": "LAST CHARACTER",
   "DERNIERS ARTICLES": "LASTEST ARTICLES",
-  "patchnote": "PATCH NOTE (GLO)",
+  "patchnote": "PATCH NOTE",
   "Rejoindre": "Join"
 }

@@ -83,7 +83,7 @@ const StatueDetailPage = () => {
           setNotFound(false);
         }
       } catch (err) {
-        console.error(t("error.noStatuesData"), err);
+        console.error(t("errors.noStatuesData"), err);
         setNotFound(true);
       } finally {
         setLoading(false);
@@ -102,11 +102,11 @@ const StatueDetailPage = () => {
                   className="flex items-center gap-2 text-sm text-white px-3 py-1 rounded hover:bg-white/10 transition"
               >
                   <ArrowLeft size={16} />
-                  Retour aux Statues
+                  {t("backOthers.backtoStatues")}
               </button>
           </div>
           <p className="text-lg mt-4">
-              {t("error.noStatuesData")}
+              {t("errors.noStatuesData")}
           </p>
       </div>
     );
