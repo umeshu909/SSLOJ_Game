@@ -35,10 +35,10 @@
     "noCharacter": "Personnage non disponible dans la base de données sélectionnée.",
     "noArmor": "Aucune armure disponible.",
     "noConstellation": "Aucune Constelltion disponible.",
-    "noLinks" : "Aucun lien disponible.",
+    "noLinks": "Aucun lien disponible.",
     "noStatues": "Aucune statue trouvée",
     "noStatuesData": "Statue non disponible",
-    "noFishFound" : "Aucun poisson trouvé",
+    "noFishFound": "Aucun poisson trouvé",
     "noShopItems": "Aucun item dans cette boutique"
   },
   "menu": {
@@ -64,13 +64,13 @@
     "backToVestiges": "Retour aux vestiges",
     "otherVestiges": "Autres vestiges",
     "backToCharacters": "Retour aux personnages",
-    "backtoStatues" : "Retour aux statues"
+    "backtoStatues": "Retour aux statues"
   },
   "interface": {
     "loading": "Chargement...",
     "filters": "Filtres",
     "reset": "Réinitialiser",
-    "initFilters" : "Reinitialiser les filtres",
+    "initFilters": "Reinitialiser les filtres",
     "filter": "Filtrer",
     "close": "Fermer",
     "role": "Rôle",
@@ -91,14 +91,14 @@
     "totalXP": "XP totale requise",
     "GoldenSaints": "Chevaliers d'Or",
     "allKnightsCanEquip": "Tous les chevaliers peuvent porter",
-    "onlyAvailable" : "Uniquement les persos disponibles",
+    "onlyAvailable": "Uniquement les persos disponibles",
     "searchCharacter": "Rechercher un personnage",
     "armor": "Armure",
     "constellation": "Constellations",
     "links": "Liens",
-    "linkedCharacters" : "Personnages liés",
-    "Multiplicateur" : "Multiplicateur",
-    "StatueCompetence" : "Compétences de la statue",
+    "linkedCharacters": "Personnages liés",
+    "Multiplicateur": "Multiplicateur",
+    "StatueCompetence": "Compétences de la statue",
     "shop": "Boutique",
     "relics1": "Reliques 1",
     "relics2": "Reliques 2",
@@ -106,7 +106,7 @@
     "China": "Chine",
     "Japan": "Japon",
     "Global": "Global"
-    },
+  },
   "calendar": {
     "combatDuel": "combatDuel",
     "competition": "Compétition Compétence",
@@ -123,12 +123,11 @@
     "players": "Joueurs",
     "days": "jours",
     "loadTimes": "Chargement des horaires...",
-    "Phase" : "Phase",
+    "Phase": "Phase",
     "dateAndHour": "Date & Heure",
     "afterPandore": "Après Pandore",
     "fromHour": "(A partir de ...)",
     "noStamina": "La stamina ne peut plus être récupérée pendant cette période."
-
   },
   "stat": {
     "skill": "Compétence",
@@ -169,24 +168,24 @@
   },
   "tag": {
     "Arcane": "Arcane",
-    "Cycle" : "Cycle",
-    "Passif" : "Passif",
-    "Trigger" : "Trigger",
-    "Ouverture" : "Ouverture",
-    "Halo" : "Halo"
+    "Cycle": "Cycle",
+    "Passif": "Passif",
+    "Trigger": "Trigger",
+    "Ouverture": "Ouverture",
+    "Halo": "Halo"
   },
   "fishery": {
     "maxSize": "Taille max",
-    "Crustacé" : "Crustacé",
-    "Petit" : "Petit",
-    "Moyen" : "Moyen",
-    "Grand" : "Grand",
-    "Creature" : "Créature marine",
-    "Trésor" : "Trésor",
-    "BonusType" : "TYPES DE BONUS",
+    "Crustacé": "Crustacé",
+    "Petit": "Petit",
+    "Moyen": "Moyen",
+    "Grand": "Grand",
+    "Creature": "Créature marine",
+    "Trésor": "Trésor",
+    "BonusType": "TYPES DE BONUS",
     "Rarity": "Rareté",
     "Specie": "Espèce",
-    "searchFish" : "Rechercher un poisson",
+    "searchFish": "Rechercher un poisson",
     "tool": "Matériels de pêche",
     "Canne": "Canne",
     "Flotteur": "Flotteur",
@@ -194,7 +193,7 @@
     "Ligne": "Ligne",
     "icon": "Icone",
     "cost": "Coût",
-    "level" : "Niveaux",
+    "level": "Niveaux",
     "condition": "Condition"
   },
   "abilities": {
@@ -259,7 +258,6 @@
     "reduce_speed": "Réduction vitesse d'attaque",
     "reduce_acceleration": "Réduction accélération"
   },
-
   "DERNIER PERSONNAGE": "DERNIER PERSONNAGE",
   "DERNIERS ARTICLES": "DERNIERS ARTICLES",
   "patchnote": "PATCH NOTE",
