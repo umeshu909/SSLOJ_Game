@@ -250,7 +250,14 @@
     "stun": "Etourdissement",
     "boost_hp": "Boost des PV",
     "immune_control": "Immunité aux contrôles",
-    "no_heal": "Anti soins"
+    "no_heal": "Anti soins",
+    "immunity_dammage": "Immunité aux dégâts",
+    "reduce_critic": "Réduction du critique",
+    "reduce_precision": "Réduction de la précision",
+    "passive_deactivation": "Désactivation du passif",
+    "trigger_deactivation": "Désactivation attaques lancées",
+    "reduce_speed": "Réduction vitesse d'attaque",
+    "reduce_acceleration": "Réduction accélération"
   },
 
   "DERNIER PERSONNAGE": "DERNIER PERSONNAGE",

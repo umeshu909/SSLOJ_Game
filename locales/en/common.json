@@ -250,7 +250,14 @@
     "stun": "Stun",
     "boost_hp": "HP Boost",
     "immune_control": "Control Immunity",
-    "no_heal": "Healing Block"
+    "no_heal": "Healing Block",
+    "immunity_dammage": "Dammages immunity",
+    "reduce_critic": "Critic reduction",
+    "reduce_precision": "Accuracy reduction",
+    "passive_deactivation": "Passive deactivation",
+    "trigger_deactivation": "Trigger attacks deactivation",
+    "reduce_speed": "Attack speed reduction",
+    "reduce_acceleration": "Acceleration reduction"
   },
   "DERNIER PERSONNAGE": "LAST CHARACTER",
   "DERNIERS ARTICLES": "LASTEST ARTICLES",
