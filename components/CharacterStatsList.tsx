@@ -20,7 +20,7 @@ const invocationImageMap: Record<string, string> = {
 const CharacterStatsList: React.FC<Props> = ({ character }) => {
   const { t } = useTranslation("common");
 
-  return (
+    return (
     <ul className="text-sm text-white space-y-1">
 
       {Object.entries(character.release).map(([label, value]) => {
@@ -51,6 +51,7 @@ const CharacterStatsList: React.FC<Props> = ({ character }) => {
           <span className="font-text-white font-medium text-cosmosCrystal/30">{value}</span>
         </li>
       ))}
+
     </ul>
   );
 };

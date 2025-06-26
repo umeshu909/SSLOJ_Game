@@ -7,6 +7,7 @@ import CharacterLinks from "@/components/CharacterLinks";
 import CharacterSidebar from "@/components/CharacterSidebar";
 import CharacterHeaderInfo from "@/components/CharacterHeaderInfo";
 import CharacterStatsList from "@/components/CharacterStatsList";
+import CharacterAbilities from "@/components/CharacterAbilities";
 import BackButton from "@/components/BackButton";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from 'next-i18next'
@@ -50,8 +51,6 @@ export default function CharacterPage() {
                         "X-DB-Choice": lang,
                     },
                 });
-
-                console.log(characterResponse);
 
                 if (!characterResponse.ok) {
                     setNotFound(true);
@@ -143,6 +142,7 @@ export default function CharacterPage() {
 
                     {/* Contenu principal */}
                     <div className="flex-1">
+
                         <section id="skills" className="lg:px-6 pb-4 scroll-mt-24">
                           <CharacterSkills skills={skills} />
                         </section>
@@ -153,6 +153,10 @@ export default function CharacterPage() {
 
                         <section id="constellation" className="lg:px-6 pb-4 scroll-mt-24">
                           <CharacterConstellations constellations={constellations} />
+                        </section>
+
+                        <section id="abilities" className="lg:px-6 pb-4 scroll-mt-24">
+                          {selectedCharacter && <CharacterAbilities character={selectedCharacter} />}
                         </section>
 
                         <section id="links" className="lg:px-6 pb-4 scroll-mt-24">

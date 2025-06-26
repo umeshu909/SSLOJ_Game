@@ -14,18 +14,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Charger la requête depuis le fichier SQL
         const sqlFilePath   = path.join(process.cwd(), "sql", "getCharacterInfo.sql");
         const sqlFilePath2  = path.join(process.cwd(), "sql", "getCommonsInfos.sql");
+        const sqlFilePath3  = path.join(process.cwd(), "sql", "getCharacterAbilities.sql");
 
         const sqlQuery  = fs.readFileSync(sqlFilePath, "utf-8");
         const sqlQuery2 = fs.readFileSync(sqlFilePath2, "utf-8");
+        const sqlQuery3 = fs.readFileSync(sqlFilePath3, "utf-8");
 
         const data  = await db.get(sqlQuery, [id]);
         const data2 = await db2.get(sqlQuery2, [id]);
+        const abilities = await db2.all(sqlQuery3, [id]);
 
         if (!data) {
             return res.status(404).json({ error: "Personnage non trouvé" });
         }
 
         const formatDate = (date: string) => date === "0000-00-00" ? "Not released" : date;
+
+        // Construire la string d'aptitudes : "apt1, apt2, apt3"
+        const abilitiesList = abilities
+          .map((row: any) => row.name) // utilisez le champ réel retourné, par ex. ability_name
+          .join(", ");
+
 
 
         // Construire la structure JSON comme demandé
@@ -54,7 +63,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "Taux Tenacité": `${data.Tenacite}%`,
                     "Gain Cosmos ATK": `${data.angerattack}`,
                     "Gain Cosmos DMG": `${data.angerbeattack}`
-                }
+                }, "abilities": abilitiesList, // Ajout de la liste d'aptitudes
+
             }
         };
 
