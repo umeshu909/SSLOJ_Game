@@ -256,7 +256,11 @@
     "passive_deactivation": "Désactivation du passif",
     "trigger_deactivation": "Désactivation attaques lancées",
     "reduce_speed": "Réduction vitesse d'attaque",
-    "reduce_acceleration": "Réduction accélération"
+    "reduce_acceleration": "Réduction accélération",
+    "boost_acceleration": "Boost de l'accéleration",
+    "reduce_cosmos": "Réduction du cosmos",
+    "attack_reduction": "Réduction de l'attaque",
+    "blindness": "Aveuglement"
   },
   "DERNIER PERSONNAGE": "DERNIER PERSONNAGE",
   "DERNIERS ARTICLES": "DERNIERS ARTICLES",
