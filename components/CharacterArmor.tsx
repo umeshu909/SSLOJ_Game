@@ -74,7 +74,7 @@ export default function CharacterArmor() {
 
 
   if (loading) return <p className="text-white">{t("interface.loading")}</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (error) return <div className="text-center"><h2 className="text-xl font-semibold">{error}</h2></div>
   if (!armor) return <p>t("errors.noArmor")}</p>;
 
   /*const formatDescription = (text: string) => {
@@ -163,7 +163,9 @@ export default function CharacterArmor() {
         </div>
       </div>
     ) : (
-      <p>{t("errors.noArmor")}</p>
+      <div className="text-center">
+        <h2 className="text-xl font-semibold">{t("errors.noArmor")}</h2>
+      </div>
     )}
   </section>
 );

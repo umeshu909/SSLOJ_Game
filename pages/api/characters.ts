@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         AND HeroAwakeInfoConfig.lv = 16
       WHERE HeroConfig.handbookimg != '' 
         AND HeroConfig.handbookimg IS NOT NULL 
-        AND HeroConfig.initialstar = '5'
+
     `;
 
     if (onlyAvailable === 'true') {

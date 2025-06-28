@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /chemin/vers/ton/repo || exit
+cd /home/ubuntu/SSLOJ_Game || exit
 
 # Ajout et commit
 git add .

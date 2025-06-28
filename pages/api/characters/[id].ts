@@ -53,8 +53,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     "Date": dbChoice === 'JP' ? formatDate(data2.datejp) : dbChoice === 'CN' ? formatDate(data2.datecn) : formatDate(data2.datefr)
                 } : null,
                 "stats": {
-                    "Stars": "16★",
-                    "Level": 240,
+                    "Stars": data.initialstar === 5 ? "16 ⭐" : "8 ⭐",
+                    "Level": data.initialstar === 5 ? 240 : 160,
                     "PV": data.HP,
                     "ATQ": data.ATK,
                     "DÉF": data.DEF,

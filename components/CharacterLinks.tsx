@@ -107,7 +107,7 @@ export default function CharacterLinks() {
   }, [id]);
 
   if (loading) return <p className="text-white">{t("interface.loading")}</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (error) return <div className="text-center"><h2 className="text-xl font-semibold">{error}</h2></div>
   if (links.length === 0) return <p>{t("errors.noLinks")}</p>;
 
   return (

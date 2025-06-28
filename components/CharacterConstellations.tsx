@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation"; // Utilisation de useParams pour récupérer l'ID dynamique
-import IconCanvas from "@/components/IconCanvas"; // Importation du composant IconCanvas
+import { useParams } from "next/navigation";
+import IconCanvas from "@/components/IconCanvas";
 import Description from "@/components/Description";
 import { useTranslation } from 'next-i18next'
 
@@ -9,8 +9,8 @@ interface ConstellationSkill {
   skillId: number;
   level: number;
   skillDescription: string;
-  suitNeed: number; // suitNeed représente le niveau de constellation (3, 9, etc.)
-  icon: string; // Icon pour chaque niveau de constellation
+  suitNeed: number;
+  icon: string;
 }
 
 interface Constellation {
@@ -20,56 +20,54 @@ interface Constellation {
 }
 
 const ConstellationsPage = () => {
-  const params = useParams(); // Récupère les paramètres dynamiques de l'URL
-  const id = params?.id as string | undefined; // Assurez-vous que l'ID est bien récupéré
+  const params = useParams();
+  const id = params?.id as string | undefined;
   const [constellationData, setConstellationData] = useState<Constellation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [lang, setLang] = useState<string | null>(null);
   const { t } = useTranslation("common");
 
-  // Définir le préfixe pour les icônes de constellation
   const prefix = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
 
   useEffect(() => {
-      const storedLang = localStorage.getItem("lang") || "FR";
-      setLang(storedLang);
+    const storedLang = localStorage.getItem("lang") || "FR";
+    setLang(storedLang);
   }, []);
 
   useEffect(() => {
-    if (!id || !lang) return; // Si l'ID est manquant, on arrête l'exécution
+    if (!id || !lang) return;
 
     const fetchConstellations = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/characters/${id}/constellations`,
-        {
+        const res = await fetch(`/api/characters/${id}/constellations`, {
           headers: {
             "x-db-choice": lang,
           },
-        }); // On envoie une requête à l'API
+        });
+
         if (!res.ok) {
           throw new Error(t("errors.noConstellation"));
         }
-        const data = await res.json(); // On récupère les données de constellations
+
+        const data = await res.json();
         setConstellationData(data);
       } catch (err: any) {
-        setError(err.message); // En cas d'erreur, on la récupère
+        setError(err.message);
       } finally {
-        setLoading(false); // On arrête de charger une fois la récupération terminée
+        setLoading(false);
       }
     };
 
     fetchConstellations();
-  }, [id, lang]); // Ce useEffect se déclenche à chaque changement d'ID
+  }, [id, lang]);
 
-  // Fonction pour afficher les images de constellations en fonction de suitNeed
   const renderSuitNeedImages = (suitNeed: number) => {
     const yellowImages = [];
     const redImages = [];
 
     if (suitNeed === 3) {
-      // Afficher 3 images rouges d'abord, puis 7 images jaunes
       for (let i = 0; i < 3; i++) {
         redImages.push(
           <img
@@ -91,7 +89,6 @@ const ConstellationsPage = () => {
         );
       }
     } else if (suitNeed === 9) {
-      // Afficher 9 images rouges
       for (let i = 0; i < 9; i++) {
         redImages.push(
           <img
@@ -112,53 +109,53 @@ const ConstellationsPage = () => {
     );
   };
 
-  // Fonction pour rendre la description avec HTML intégré
-  /*const renderDescription = (description: string) => {
-    return <span dangerouslySetInnerHTML={{ __html: description }} />;
-  };*/
+  if (loading) return <div>{t("interface.loading")}</div>;
 
-  if (loading) return <div>{t("interface.loading")}</div>; // Afficher pendant le chargement
-  if (error) return <div>{error}</div>; // Afficher l'erreur s'il y en a
+  if (error) {
+    return (
+      <h2 className="text-xl font-semibold text-white mb-2 text-center">
+        {error}
+      </h2>
+    );
+  }
 
   return (
     <section className="lg:p-6">
       <h2 className="text-xl font-semibold text-white mb-2">{t("interface.constellation")}</h2>
-      <div className=" overflow-hidden">
-        {/* Liste des compétences de constellation */}
+      <div className="overflow-hidden">
         {constellationData?.skills && constellationData.skills.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {constellationData.skills.map((skill, index) => (
               <div key={index} className="flex flex-col bg-white/5 p-6 border border-white/20 rounded-xl items-center justify-center">
-                {/* Bloc gauche - icône et nom de la constellation */}
                 <div className="flex flex-col items-center justify-center mb-4">
                   <div className="mb-2">
                     <IconCanvas
-                      prefix={prefix} // Le préfixe du dossier des icônes
-                      iconName={skill.icon} // L'icône de la constellation récupérée depuis l'API
-                      jsonDir="/images/atlas/icon_jineng/" // Le dossier où sont stockées les images JSON
-                      canvasId={`canvas-${index}`} // Un identifiant unique pour chaque icône
-                      imgHeight={2048} // Taille de l'image à afficher
-                      size={1} // Taille réduite de l'image, ajustée pour un affichage plus petit
+                      prefix={prefix}
+                      iconName={skill.icon}
+                      jsonDir="/images/atlas/icon_jineng/"
+                      canvasId={`canvas-${index}`}
+                      imgHeight={2048}
+                      size={1}
                     />
                   </div>
                   <h3 className="text-white text-center text-m font-semibold">{skill.skillName}</h3>
                 </div>
 
-                {/* Affichage des images de suitNeed */}
                 {renderSuitNeedImages(skill.suitNeed)}
 
-                {/* Bloc droit - description et niveau */}
                 <div className="flex-1 flex flex-col justify-between text-center md:text-left">
-                  {/* Description avec interprétation HTML */}
                   <div className="mt-2 text-sm text-white">
-                    <Description skillId={skill.skillId} level={skill.level} dbChoice = {lang} />
+                    <Description skillId={skill.skillId} level={skill.level} dbChoice={lang} />
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">{t("errors.noConstellation")}</p>
+          <div className="text-center">
+            <h2 className="text-xl font-semibold">{error}</h2>
+          </div>
+
         )}
       </div>
     </section>
