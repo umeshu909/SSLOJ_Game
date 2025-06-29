@@ -282,7 +282,15 @@
     "immune_spatial_effect": "Immune to spatial effects",
     "damage_transfert_ennemy": "Transfer damage to ennemies",
     "immune_flight": "Immune to flight",
-    "immune_reversal": "Immune to reversal"
+    "immune_reversal": "Immune to reversal",
+    "damage_transfert_team": "Damage transfer with teammates",
+    "immune_debuff": "Immune to debuff",
+    "instant_death": "Instant death",
+    "weakening": "Weakening",
+    "seduction": "Seduction/Charm",
+    "terrified": "Terrified",
+    "sealing": "Sealing",
+    "increase_cosmos_limit": "Increase cosmos limit"
   },
   "DERNIER PERSONNAGE": "LAST CHARACTER",
   "DERNIERS ARTICLES": "LASTEST ARTICLES",
