@@ -48,7 +48,7 @@ function cleanText(html: string): string {
 }
 
 async function getArticles(): Promise<Article[]> {
-  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,images`, {
+  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,images,status&filter[status][_eq]=published`, {
     cache: "no-store",
   });
 

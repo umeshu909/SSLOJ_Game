@@ -23,7 +23,7 @@ function cleanHTML(html: string): string {
 
 
 async function getArticle(id: string): Promise<Article | null> {
-  const res = await fetch(`${API_URL}/items/Articles/${id}?fields=*,user_created.first_name,likes`, {
+  const res = await fetch(`${API_URL}/items/Articles/${id}?fields=*,user_created.first_name,likes,status&filter[status][_eq]=published`, {
     cache: "no-store",
   });
 
