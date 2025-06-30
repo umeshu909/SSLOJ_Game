@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "Saint Seiya Codex",
     images: [
       {
-        url: "/images/share-preview.png",
+        url: "https://ssloj.com/images/share-preview.png",
         width: 1200,
         height: 630,
         alt: "Saint Seiya Codex Logo",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Saint Seiya Codex – Derniers ajouts",
     description: "All news about versions CN, JP et Global of the game Saint Seiya: Legend of Justice.",
-    images: ["/images/share-logo.png"],
+    images: ["https://ssloj.com/images/share-logo.png"],
     creator: "@saintseiyacodex",
   },
   icons: {
@@ -55,7 +55,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <head />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <I18nProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
