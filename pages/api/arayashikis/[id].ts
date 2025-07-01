@@ -12,7 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const db = await openDb(dbChoice as string);
 
         // Charger la requête depuis le fichier SQL
-        const sqlFilePath = path.join(process.cwd(), "sql", "getArayashikiDetail.sql");
+        const fileAraya   = id == '750008' ? "getArayashikiDetailPopo.sql" : "getArayashikiDetail.sql";
+        const sqlFilePath = path.join(process.cwd(), "sql", fileAraya);
         const sqlQuery = fs.readFileSync(sqlFilePath, "utf-8");
 
         // Vérifier si l'ID est valide
@@ -20,12 +21,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: "ID requis" });
         }
 
-        /*console.log("Requête SQL : ", sqlQuery);
-        console.log("ID : ", id);
-        console.log("Level : ", level);*/
-
         // Exécuter la requête avec les paramètres
-        const data = await db.get(sqlQuery, [id, id, level]);
+        let data;
+        if(id=='750008'){
+            data = await db.all(sqlQuery);
+            data = data[level - 1];
+            data.level = level;
+            //data = await db.get(`${sqlQuery} LIMIT 1 OFFSET ${level}`);
+        } else {
+            data = await db.get(sqlQuery, [id, id, level]);
+        }
 
         if (!data) {
             return res.status(404).json({ error: "Détail de la carte non trouvé" });

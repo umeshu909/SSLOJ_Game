@@ -115,6 +115,7 @@ const ArayashikiDetailPage = () => {
             }
 
             const data = await res.json();
+            console.log(data);
             const levelNiv = level * 10;
 
             data.value1 = calculateValue(data.value1, data.gwnum1, data.Percent1, levelNiv);
