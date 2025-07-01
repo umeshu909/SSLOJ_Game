@@ -115,7 +115,6 @@ const ArayashikiDetailPage = () => {
             }
 
             const data = await res.json();
-            console.log(data);
             const levelNiv = level * 10;
 
             data.value1 = calculateValue(data.value1, data.gwnum1, data.Percent1, levelNiv);
@@ -396,8 +395,14 @@ const getBookDistribution = (xp: number) => {
                         )}
 
                         <div className="leading-relaxed text-sm md:max-w-[50%]">
-                            <Description skillId={detail.skillid} level={detail.level} dbChoice = {lang} />
+                          {detail.id === 750008 ? (
+                            detail.desc.replace(/<[^>]*>?/gm, '')
+                          ) : (
+                            <Description skillId={detail.skillid} level={detail.level} dbChoice={lang} />
+                          )}
                         </div>
+
+
                     </div>
 
                     {/* Bloc stats fixé en bas de la colonne */}
