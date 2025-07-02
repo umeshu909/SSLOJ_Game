@@ -216,3 +216,36 @@ After doing this, you may fix the identity used for this commit with:
  create mode 100644 directus-cms/uploads/fbc276d8-98bc-4614-a52a-9cf21f7436d8__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
 To github.com:umeshu909/SSLOJ_Game.git
    728742e5..95c2bd40  main -> main
+[main 024b6ac7] Mise à jour journalière du server
+ Committer: Ubuntu <ubuntu@vps-54331b9e.vps.ovh.net>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 21 files changed, 289 insertions(+)
+ delete mode 100644 directus-cms/uploads/11272bc5-24dd-46f3-9e3f-8dce99e45a04.jpg
+ create mode 100644 directus-cms/uploads/11272bc5-24dd-46f3-9e3f-8dce99e45a04.png
+ delete mode 100644 directus-cms/uploads/11272bc5-24dd-46f3-9e3f-8dce99e45a04__7809681e43a17c0d8ad77890c0e89a2f36978e77.avif
+ create mode 100644 directus-cms/uploads/11272bc5-24dd-46f3-9e3f-8dce99e45a04__7abd30a2f63f675625d6888e2ed9d65992751e3c.avif
+ create mode 100644 directus-cms/uploads/135a53a8-c83d-49ee-ad5c-8250a672d566.png
+ create mode 100644 directus-cms/uploads/135a53a8-c83d-49ee-ad5c-8250a672d566__053a5aba31f1c4a10736cfcf84aa1d84aedf0273.png
+ create mode 100644 directus-cms/uploads/135a53a8-c83d-49ee-ad5c-8250a672d566__4be72871f82ba4ce88843e4d0cc0e5247e34f669.png
+ create mode 100644 directus-cms/uploads/135a53a8-c83d-49ee-ad5c-8250a672d566__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/5bbdabef-5c0e-48d1-9f78-dbb9e5108b1c__7abd30a2f63f675625d6888e2ed9d65992751e3c.avif
+ create mode 100644 directus-cms/uploads/bedf672f-b682-473d-b21e-97f92a764ff9.png
+ create mode 100644 directus-cms/uploads/bedf672f-b682-473d-b21e-97f92a764ff9__7809681e43a17c0d8ad77890c0e89a2f36978e77.avif
+ create mode 100644 directus-cms/uploads/bedf672f-b682-473d-b21e-97f92a764ff9__7abd30a2f63f675625d6888e2ed9d65992751e3c.avif
+ create mode 100644 directus-cms/uploads/bedf672f-b682-473d-b21e-97f92a764ff9__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/faa67d09-a9c4-40fb-b87c-8d9b1c2e1c05.png
+ create mode 100644 directus-cms/uploads/faa67d09-a9c4-40fb-b87c-8d9b1c2e1c05__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/faa67d09-a9c4-40fb-b87c-8d9b1c2e1c05__fd065d7d3b4a9ff8c7c8e3abd08a4fc984860535.png
+To github.com:umeshu909/SSLOJ_Game.git
+   8d4dbad0..024b6ac7  main -> main
