@@ -17,6 +17,7 @@ interface Skill {
 interface Character {
   charaId: string;
   name: string;
+  id: number;
   handbookherores: string;
   icon: string;
   Attrib1: string;
@@ -163,6 +164,7 @@ const StatueDetailPage = () => {
                   canvasId={`char-${i}`}
                   imgHeight={2048}
                   size={2}
+                  id={char.id}
                 />
                 <div className="flex-1">
                   <p className="font-semibold text-white">{char.name}</p>

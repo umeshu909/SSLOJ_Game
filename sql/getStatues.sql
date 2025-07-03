@@ -8,30 +8,60 @@ SELECT
     WHERE s.toid = c.id
     ORDER BY h.name
     LIMIT 1 OFFSET 0) AS hero1_icon,
-
+  
+  (SELECT h.id FROM StatueBaseConfig s
+    JOIN HeroConfig h ON h.id = s.hero
+    WHERE s.toid = c.id
+    ORDER BY h.name
+    LIMIT 1 OFFSET 0) AS hero1_id,
+  
   (SELECT h.icon FROM StatueBaseConfig s
     JOIN HeroConfig h ON h.id = s.hero
     WHERE s.toid = c.id
     ORDER BY h.name
     LIMIT 1 OFFSET 1) AS hero2_icon,
 
+ (SELECT h.id FROM StatueBaseConfig s
+    JOIN HeroConfig h ON h.id = s.hero
+    WHERE s.toid = c.id
+    ORDER BY h.name
+    LIMIT 1 OFFSET 1) AS hero2_id,
+  
   (SELECT h.icon FROM StatueBaseConfig s
     JOIN HeroConfig h ON h.id = s.hero
     WHERE s.toid = c.id
     ORDER BY h.name
     LIMIT 1 OFFSET 2) AS hero3_icon,
 
+ (SELECT h.id FROM StatueBaseConfig s
+    JOIN HeroConfig h ON h.id = s.hero
+    WHERE s.toid = c.id
+    ORDER BY h.name
+    LIMIT 1 OFFSET 2) AS hero3_id,
+  
   (SELECT h.icon FROM StatueBaseConfig s
     JOIN HeroConfig h ON h.id = s.hero
     WHERE s.toid = c.id
     ORDER BY h.name
     LIMIT 1 OFFSET 3) AS hero4_icon,
 
+  (SELECT h.id FROM StatueBaseConfig s
+    JOIN HeroConfig h ON h.id = s.hero
+    WHERE s.toid = c.id
+    ORDER BY h.name
+    LIMIT 1 OFFSET 3) AS hero4_id,
+  
   (SELECT h.icon FROM StatueBaseConfig s
     JOIN HeroConfig h ON h.id = s.hero
     WHERE s.toid = c.id
     ORDER BY h.name
-    LIMIT 1 OFFSET 4) AS hero5_icon
+    LIMIT 1 OFFSET 4) AS hero5_icon,
 
+(SELECT h.id FROM StatueBaseConfig s
+    JOIN HeroConfig h ON h.id = s.hero
+    WHERE s.toid = c.id
+    ORDER BY h.name
+    LIMIT 1 OFFSET 4) AS hero5_id
+  
 FROM ChurchBaseConfig c
 ORDER BY c.id;

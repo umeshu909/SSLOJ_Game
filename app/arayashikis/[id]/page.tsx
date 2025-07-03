@@ -38,6 +38,7 @@ interface ArayashikiDetail {
     gwnum4: number;
     param: string;
     hero_names: string | null;
+    hero_ids: string | null;
     hero_imgs?: string;
     hero_names_translated?: string;
 }

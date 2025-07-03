@@ -12,6 +12,11 @@ interface Statues {
   hero3_icon?: string;
   hero4_icon?: string;
   hero5_icon?: string;
+  hero1_id?: number;
+  hero2_id?: number;
+  hero3_id?: number;
+  hero4_id?: number;
+  hero5_id?: number;
 }
 
 
@@ -84,19 +89,27 @@ const StatuessPage = () => {
 
                                 {/* Partie basse : portraits */}
                                 <div className="border-t border-white/10 mt-2 pt-2 w-full flex rounded-none justify-center gap-1">
-                                  {[Statues.hero1_icon, Statues.hero2_icon, Statues.hero3_icon, Statues.hero4_icon, Statues.hero5_icon]
-                                    .filter(Boolean)
-                                    .map((icon, i) => (
-                                      <IconCanvas
-                                        key={i}
-                                        prefix={prefixCharacter}
-                                        iconName={icon!}
-                                        jsonDir="/images/atlas/icon_touxiang/"
-                                        canvasId={`canvas-statue-hero-${Statues.id}-${i}`}
-                                        imgHeight={2048}
-                                        size={isMobile ? 5 : 3}
-                                      />
+                                    {[
+                                      { icon: Statues.hero1_icon, id: Statues.hero1_id },
+                                      { icon: Statues.hero2_icon, id: Statues.hero2_id },
+                                      { icon: Statues.hero3_icon, id: Statues.hero3_id },
+                                      { icon: Statues.hero4_icon, id: Statues.hero4_id },
+                                      { icon: Statues.hero5_icon, id: Statues.hero5_id },
+                                    ]
+                                      .filter(({ icon }) => !!icon)
+                                      .map(({ icon, id }, i) => (
+                                        <IconCanvas
+                                          key={i}
+                                          prefix={prefixCharacter}
+                                          iconName={icon!}
+                                          jsonDir="/images/atlas/icon_touxiang/"
+                                          canvasId={`canvas-statue-hero-${Statues.id}-${i}`}
+                                          imgHeight={2048}
+                                          size={isMobile ? 5 : 3}
+                                          id={id?.toString()} // au cas où l'id est numérique
+                                        />
                                     ))}
+
                                 </div>
                               </div>
                             </a>

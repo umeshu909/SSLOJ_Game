@@ -129,6 +129,7 @@ const TimelinePage = () => {
                           canvasId={`timeline-canvas-${item.id}-${index}`}
                           imgHeight={2048}
                           size={2}
+                          id={item.id}
                         />
                       ) : (
                         <div className="text-xs bg-white text-black rounded-full p-2">?</div>

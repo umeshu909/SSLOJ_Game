@@ -4,6 +4,7 @@ SELECT
     ChurchBaseConfig.name,
     HeroConfig.handbookherores,
     HeroConfig.name,
+    HeroConfig.id,
     HeroConfig.icon,
     AC_Statue1.name AS Attrib1,
     AC_Statue1.percent AS Percent1,

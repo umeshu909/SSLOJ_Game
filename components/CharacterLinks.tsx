@@ -129,6 +129,7 @@ export default function CharacterLinks() {
                       canvasId={`main-canvas-${index}`}
                       imgHeight={imgHeight}
                       size={1.5}
+                      id={link.HeroID}
                     />
                   </a>
                 </div>
@@ -142,6 +143,7 @@ export default function CharacterLinks() {
                         canvasId={`companion-${index}-${idx}`}
                         imgHeight={imgHeight}
                         size={2}
+                        id={companion.id}
                       />
                     </a>
                   ))}
