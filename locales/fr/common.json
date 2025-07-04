@@ -25,14 +25,14 @@
     "Bouclier": "Bouclier"
   },
   "errors": {
-    "arayashikiNotFound": "Cette carte n’est pas disponible dans la base de données sélectionnée.",
+    "arayashikiNotFound": "Cette carte n’est pas disponible dans la version sélectionnée.",
     "Aucun article disponible": "Aucun article disponible.",
     "noCardsFound": "Aucune carte trouvée",
-    "artifactNotFound": "Cet artefact n’est pas disponible dans la base de données sélectionnée.",
+    "artifactNotFound": "Cet artefact n’est pas disponible dans la version sélectionnée.",
     "noArtifactsFound": "Aucun artefact trouvé",
     "noSageMarkFound": "Aucun vestige trouvé",
-    "vestigeNotAvailable": "Ce vestige n’est pas disponible dans la base de données sélectionnée.",
-    "noCharacter": "Personnage non disponible dans la base de données sélectionnée.",
+    "vestigeNotAvailable": "Ce vestige n’est pas disponible dans la version sélectionnée.",
+    "noCharacter": "Personnage non disponible dans la version sélectionnée.",
     "noArmor": "Aucune armure disponible.",
     "noConstellation": "Aucune Constelltion disponible.",
     "noLinks": "Aucun lien disponible.",

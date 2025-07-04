@@ -266,3 +266,20 @@ After doing this, you may fix the identity used for this commit with:
  4 files changed, 137 insertions(+)
 To github.com:umeshu909/SSLOJ_Game.git
    9182d884..1ed01b10  main -> main
+[main 4b352cac] Mise à jour journalière du server
+ Committer: Ubuntu <ubuntu@vps-54331b9e.vps.ovh.net>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 3 files changed, 33 insertions(+)
+To github.com:umeshu909/SSLOJ_Game.git
+   08e104f3..4b352cac  main -> main
