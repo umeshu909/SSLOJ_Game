@@ -376,20 +376,33 @@ const getBookDistribution = (xp: number) => {
                             <p className="text-sm opacity-80">{detail.hero_names_translated}</p>
                         ) : detail.hero_imgs ? (
                             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                                {detail.hero_imgs
-                                    .split(",")
-                                    .filter(name => name.trim())
-                                    .map((img, i) => (
-                                        <IconCanvas
+
+
+                                {detail.hero_imgs && detail.param && (
+                                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                                    {detail.hero_imgs
+                                      .split(",")
+                                      .map((img, i) => {
+                                        const icon = img.trim();
+                                        const ids = detail.param.split("|").map(p => p.trim());
+                                        const charId = ids[i];
+
+                                        return (
+                                          <IconCanvas
                                             key={i}
                                             prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-"
-                                            iconName={img}
+                                            iconName={icon}
                                             jsonDir="/images/atlas/icon_touxiang/"
-                                            canvasId={`canvas-${img}`}
+                                            canvasId={`canvas-${icon}`}
                                             imgHeight={2048}
-                                            size={2}
-                                        />
-                                    ))}
+                                            size={3}
+                                            id={charId}
+                                          />
+                                        );
+                                      })}
+                                  </div>
+                                )}
+
                             </div>
                         ) : (
                             <p className="text-sm opacity-80">{t("interface.allKnightsCanEquip")}</p>
