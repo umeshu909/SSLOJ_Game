@@ -30,7 +30,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const dbOld = path.join(process.cwd(), "databases", "DB_OLDFR.sqlite");
   const dbNew = path.join(process.cwd(), "databases", "DB_FR.sqlite");
 
-  exec(`sqldiff "${dbOld}" "${dbNew}"`, (error, stdout, stderr) => {
+  exec(`/usr/bin/sqldiff "${dbOld}" "${dbNew}"`, (error, stdout, stderr) => {
     if (error) {
       console.error("Erreur sqldiff :", error);
       res.status(500).json({ error: "Erreur sqldiff", details: stderr });

@@ -8,6 +8,8 @@ import CharacterSidebar from "@/components/CharacterSidebar";
 import CharacterHeaderInfo from "@/components/CharacterHeaderInfo";
 import CharacterStatsList from "@/components/CharacterStatsList";
 import CharacterAbilities from "@/components/CharacterAbilities";
+import ConstellationGrid from "@/components/ConstellationGrid";
+
 import BackButton from "@/components/BackButton";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from 'next-i18next'
@@ -153,6 +155,7 @@ export default function CharacterPage() {
 
                         <section id="constellation" className="lg:px-6 pb-4 scroll-mt-24">
                           <CharacterConstellations constellations={constellations} />
+                          <ConstellationGrid id={id as string} />
                         </section>
 
                         <section id="abilities" className="lg:px-6 pb-4 scroll-mt-24">

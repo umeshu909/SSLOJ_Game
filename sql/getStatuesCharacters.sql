@@ -1,7 +1,7 @@
 SELECT  
     StatueBaseConfig.id as charaId,
     ChurchBaseConfig.id,
-    ChurchBaseConfig.name,
+    ChurchBaseConfig.name as nameStatue,
     HeroConfig.handbookherores,
     HeroConfig.name,
     HeroConfig.id,

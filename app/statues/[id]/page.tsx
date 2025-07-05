@@ -41,6 +41,7 @@ const StatueDetailPage = () => {
   const [multiplier, setMultiplier] = useState<number>(0);
   const router = useRouter();
   const { t } = useTranslation("common");
+  const [isMobile, setIsMobile] = useState(false);
 
   const prefixCharacter = "sactx-0-4096x2048-ASTC 6x6-icon_touxiang-";
   const prefixSkill = "sactx-0-4096x2048-ASTC 6x6-icon_jineng-";
@@ -48,6 +49,13 @@ const StatueDetailPage = () => {
   useEffect(() => {
     const storedLang = localStorage.getItem("lang") || "FR";
     setLang(storedLang);
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 840);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -119,7 +127,16 @@ const StatueDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a091c] via-[#1a183a] to-[#0e0c1e] text-white p-6 pb-24">
-      <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 py-8 flex flex-col md:flex-row gap-8">      
+
+      {characters[0]?.name && (
+        <h1 className="text-2xl font-bold text-center text-white mb-6 drop-shadow-md tracking-wide">
+          {characters[0].nameStatue}
+        </h1>
+      )}
+       
+
+      <div className="max-w-screen-xl mx-auto bg-[#14122a] rounded-xl shadow-lg px-6 py-8 flex flex-col md:flex-row gap-8">     
+
         <div className="w-full md:w-1/3 flex flex-col space-y-4">
 
           <div className="hidden md:block py-2 max-w-screen-xl mx-auto">
@@ -168,7 +185,7 @@ const StatueDetailPage = () => {
                 />
                 <div className="flex-1">
                   <p className="font-semibold text-white">{char.name}</p>
-                  <div className="mt-2 text-sm text-white/80 flex flex-wrap gap-x-6 gap-y-1">
+                  <div className="mt-2 text-xs text-white/80 flex flex-wrap gap-x-6 gap-y-1">
                     {char.Attrib1 && (
                       <span>
                         {char.Attrib1.trim()} :{" "}
@@ -218,7 +235,7 @@ const StatueDetailPage = () => {
                       jsonDir="/images/atlas/icon_jineng/"
                       canvasId={`canvas-skill-${skillid}`}
                       imgHeight={2048}
-                      size={1}
+                      size={isMobile ? 3 : 1}
                     />
                   </div>
                   <div className="flex-1 p-4">
@@ -227,7 +244,7 @@ const StatueDetailPage = () => {
                       {group.map((g, j) => (
                         <div key={j} className="text-sm leading-snug">
                           <span className="font-semibold inline">Niv {g.level} : </span>
-                          <span className="text-md inline">
+                          <span className="text-xs inline">
                             <Description skillId={g.skillid} level={g.level} dbChoice = {lang} />
                           </span>
                         </div>

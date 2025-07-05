@@ -69,22 +69,37 @@ const StatuessPage = () => {
                               <div className="flex flex-col justify-between flex-grow h-full items-center">
                                 {/* Partie haute : image + titre */}
                                 <div className="w-full flex flex-col items-center">
-                                  <div className="relative w-full aspect-[2/3] max-h-32 flex items-center justify-center">
+
+                                 <div className="relative w-full aspect-[2/3] max-h-32 flex items-center justify-center">
+                                    {/* Image de fond */}
+                                    <img
+                                      src="/images/bg_statues_final.png"
+                                      alt="Background statue"
+                                      className="absolute inset-0 w-full h-full object-contain pointer-events-none z-0 scale-170 translate-x-1.5 translate-y-5.5"
+                                    />
+
+
+
+                                    {/* Image de la statue par-dessus */}
+                                    <div className="relative z-10 translate-x-0.5 translate-y-5">
                                     <IconCanvas
                                       prefix={prefix}
                                       iconName={Statues.icon}
                                       jsonDir="/images/atlas/jiaotang/"
                                       canvasId={`canvas-${index}`}
                                       imgHeight={2048}
-                                      size={1.5}
+                                      size={2}
                                     />
-                                  </div>
-                                  <h3
-                                    className="mt-3 text-sm font-semibold text-white leading-tight text-center w-full max-w-full h-[2.75rem] overflow-hidden"
-                                    title={Statues.name}
-                                  >
-                                    {Statues.name}
-                                  </h3>
+                                    </div>
+                                </div>
+
+                                <h4
+                                  className="relative z-20 mt-3 text-[10px] font-semibold translate-y-0.5 text-white leading-tight text-center w-full max-w-full h-[2.75rem] overflow-hidden"
+                                  title={Statues.name}
+                                >
+                                  {Statues.name}
+                                </h4>
+
                                 </div>
 
                                 {/* Partie basse : portraits */}
@@ -105,7 +120,7 @@ const StatuessPage = () => {
                                           jsonDir="/images/atlas/icon_touxiang/"
                                           canvasId={`canvas-statue-hero-${Statues.id}-${i}`}
                                           imgHeight={2048}
-                                          size={isMobile ? 5 : 3}
+                                          size={isMobile ? 5 : 3.5}
                                           id={id?.toString()} // au cas où l'id est numérique
                                         />
                                     ))}
