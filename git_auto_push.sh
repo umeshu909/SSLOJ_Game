@@ -2,13 +2,12 @@
 
 cd /home/ubuntu/SSLOJ_Game || exit
 
-# Rebase
-git pull --rebase
-
-
 # Ajout et commit
 git add .
 git commit -m "Mise à jour journalière du server"
+
+# Rebase
+git pull --rebase
 
 # Push (tu dois être dans une branche, pas en detached HEAD)
 git push origin main
