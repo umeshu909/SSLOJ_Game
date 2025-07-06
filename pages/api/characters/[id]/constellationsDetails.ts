@@ -38,18 +38,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           name: row.ConstAttrib1,
           percent: row.percentConst1,
           base: row.value1,
+          grow: row.growvalue1
         },
         {
           id: row.prop2,
           name: row.ConstAttrib2,
           percent: row.percentConst2,
           base: row.value2,
+          grow: row.growvalue2
         },
         {
           id: row.prop3,
           name: row.ConstAttrib3,
           percent: row.percentConst3,
           base: row.value3,
+          grow: row.growvalue3
         }
       ]
     }));
