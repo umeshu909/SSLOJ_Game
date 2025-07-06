@@ -62,46 +62,48 @@ const ConstellationGrid = ({ id }: ConstellationGridProps) => {
   if (error) return <div className="text-white text-center">{error}</div>;
 
   return (
-    <section className="mt-4 md:mt-0 lg:p-6">
+<section className="mt-4 md:mt-0 lg:p-6">
+  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+    {data.map((item, index) => (
+      <div
+        key={index}
+        className="bg-white/5 border border-white/20 rounded-xl p-4 flex items-center gap-4"
+      >
+        {/* Icône à gauche, centrée verticalement */}
+        <div className="flex-shrink-0">
+          <IconCanvas
+            prefix={prefix}
+            iconName={item.icon}
+            jsonDir="/images/atlas/xingzuo/"
+            canvasId={`canvas-${index}`}
+            imgHeight={2048}
+            size={2.5}
+          />
+        </div>
 
-      <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-4">
-
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white/5 border border-white/20 rounded-xl p-4 flex flex-col items-center"
-          >
-            <h3 className="hidden md:block text-white text-center text-sm font-semibold mt-2 mb-4">
-              {item.name}
-            </h3>
-
-
-            <IconCanvas
-              prefix={prefix}
-              iconName={item.icon}
-              jsonDir="/images/atlas/xingzuo/"
-              canvasId={`canvas-${index}`}
-              imgHeight={2048}
-              size={3}
-            />
-
-
-            <div className="w-full text-sm text-white space-y-2">
-              {item.props.map((prop, i) => (
-                <div key={i} className="flex justify-between border-b border-white/10 pb-1">
-                  <div className="font-medium">{prop.name}</div>
-                  <div className="text-right">
-                    {prop.percent === 1
-                      ? `+${(prop.base * 100).toFixed(2)}%`
-                      : `+${prop.base.toFixed(1)}`}
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Infos à droite de l'icône */}
+        <div className="w-full text-sm text-white space-y-2">
+          <div className="flex justify-between text-center font-medium text-gray-400">
+            {item.props.map((prop, i) => (
+              <div key={`label-${i}`} className="w-1/3">{prop.name}</div>
+            ))}
           </div>
-        ))}
+          <div className="flex justify-between text-center">
+            {item.props.map((prop, i) => (
+              <div key={`value-${i}`} className="w-1/3">
+                {prop.percent === 1
+                  ? `${(prop.base * 100).toFixed(2)}%`
+                  : `${prop.base.toFixed(1)}`}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+    ))}
+  </div>
+</section>
+
+
   );
 };
 
