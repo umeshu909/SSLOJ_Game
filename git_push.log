@@ -95,3 +95,5 @@ Use --update-env to update environment variables
 │ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 123982   │ 0s     │ 3    │ online    │ 0%       │ 31.8mb   │ ubuntu   │ disabled │
 │ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 123988   │ 0s     │ 2    │ online    │ 0%       │ 20.6mb   │ ubuntu   │ disabled │
 └────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
