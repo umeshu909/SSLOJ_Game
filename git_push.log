@@ -1185,3 +1185,165 @@ Use --update-env to update environment variables
 │ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 162584   │ 0s     │ 3    │ online    │ 0%       │ 3.0mb    │ ubuntu   │ disabled │
 │ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 162585   │ 0s     │ 2    │ online    │ 0%       │ 4.6mb    │ ubuntu   │ disabled │
 └────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[main 4eacc608] Mise à jour journalière du server
+ Committer: Ubuntu <ubuntu@vps-54331b9e.vps.ovh.net>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 10 files changed, 54 insertions(+)
+ create mode 100644 directus-cms/uploads/5fdfbfaa-6841-4078-baa6-2208f320e5c2.mp4
+ create mode 100644 directus-cms/uploads/aa4cee6c-c28b-4480-b7d8-97fe59c70609.png
+ create mode 100644 directus-cms/uploads/aa4cee6c-c28b-4480-b7d8-97fe59c70609__7809681e43a17c0d8ad77890c0e89a2f36978e77.avif
+ create mode 100644 directus-cms/uploads/aa4cee6c-c28b-4480-b7d8-97fe59c70609__7abd30a2f63f675625d6888e2ed9d65992751e3c.avif
+ create mode 100644 directus-cms/uploads/aa4cee6c-c28b-4480-b7d8-97fe59c70609__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/b20dfab4-9725-4254-b6ff-2291884ab155__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/deaee9c7-fd10-4acd-b5ef-9ab028ec9a81__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To github.com:umeshu909/SSLOJ_Game.git
+   9225f83f..4eacc608  main -> main
+[PM2] Applying action stopProcessId on app [all](ids: [ 0, 6 ])
+[PM2] [SSLOJ_Game](0) ✓
+[PM2] [directus](6) ✓
+┌────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name          │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 0        │ 0      │ 3    │ stopped   │ 0%       │ 0b       │ ubuntu   │ disabled │
+│ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 0        │ 0      │ 2    │ stopped   │ 0%       │ 0b       │ ubuntu   │ disabled │
+└────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+From github.com:umeshu909/SSLOJ_Game
+ * branch              main       -> FETCH_HEAD
+Already up to date.
+
+up to date, audited 499 packages in 2s
+
+162 packages are looking for funding
+  run `npm fund` for details
+
+1 low severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+> saint-seiya-next@0.1.0 build
+> next build
+
+ ⚠ i18n configuration in next.config.ts is unsupported in App Router.
+Learn more about internationalization in App Router: https://nextjs.org/docs/app/building-your-application/routing/internationalization
+   ▲ Next.js 15.3.1
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 5.0s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/27) ...
+   Generating static pages (6/27) 
+   Generating static pages (13/27) 
+   Generating static pages (20/27) 
+ ✓ Generating static pages (27/27)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                        Size  First Load JS
+┌ ○ /                                           2.99 kB         124 kB
+├ ○ /_not-found                                   982 B         102 kB
+├ ○ /abilities                                  1.44 kB         103 kB
+├ ƒ /api/like                                     158 B         101 kB
+├ ƒ /api/list-texture2d                           158 B         101 kB
+├ ƒ /api/patchnote/latest                         158 B         101 kB
+├ ƒ /api/skills/parse                             158 B         101 kB
+├ ƒ /api/skills/text                              158 B         101 kB
+├ ○ /arayashikis                                 2.6 kB         106 kB
+├ ƒ /arayashikis/[id]                           5.09 kB         139 kB
+├ ○ /artefacts                                  1.46 kB         105 kB
+├ ƒ /artefacts/[id]                             2.98 kB         137 kB
+├ ƒ /articles                                     158 B         101 kB
+├ ƒ /articles/[id]                                708 B         102 kB
+├ ƒ /articles/preview/[id]                        708 B         102 kB
+├ ○ /calendar                                   89.9 kB         193 kB
+├ ○ /characters                                 4.35 kB         108 kB
+├ ƒ /characters/[id]                            10.9 kB         135 kB
+├ ○ /compare                                      884 B         102 kB
+├ ○ /fishery                                    4.66 kB         108 kB
+├ ○ /fishery/tools                              1.72 kB         105 kB
+├ ○ /items                                      1.66 kB         103 kB
+├ ○ /shops                                      2.23 kB         106 kB
+├ ○ /statues                                    2.16 kB         106 kB
+├ ƒ /statues/[id]                               3.64 kB         114 kB
+├ ○ /timeline                                   5.53 kB         112 kB
+├ ○ /translations                               1.28 kB         102 kB
+├ ○ /vestiges                                   2.36 kB         106 kB
+└ ƒ /vestiges/[id]                              4.26 kB         139 kB
++ First Load JS shared by all                    101 kB
+  ├ chunks/1684-17a762027c3470bd.js             45.9 kB
+  ├ chunks/4bd1b696-07f64071e3540146.js         53.2 kB
+  └ other shared chunks (total)                 1.94 kB
+
+Route (pages)                                      Size  First Load JS
+┌ ƒ /api/abilities                                  0 B        99.6 kB
+├ ƒ /api/arayashikis                                0 B        99.6 kB
+├ ƒ /api/arayashikis/[id]                           0 B        99.6 kB
+├ ƒ /api/articles/latest                            0 B        99.6 kB
+├ ƒ /api/artifacts                                  0 B        99.6 kB
+├ ƒ /api/artifacts/[id]                             0 B        99.6 kB
+├ ƒ /api/calendar                                   0 B        99.6 kB
+├ ƒ /api/characters                                 0 B        99.6 kB
+├ ƒ /api/characters/[id]                            0 B        99.6 kB
+├ ƒ /api/characters/[id]/abilities                  0 B        99.6 kB
+├ ƒ /api/characters/[id]/armor                      0 B        99.6 kB
+├ ƒ /api/characters/[id]/constellations             0 B        99.6 kB
+├ ƒ /api/characters/[id]/constellationsDetails      0 B        99.6 kB
+├ ƒ /api/characters/[id]/links                      0 B        99.6 kB
+├ ƒ /api/characters/[id]/skills                     0 B        99.6 kB
+├ ƒ /api/characters/latest                          0 B        99.6 kB
+├ ƒ /api/characters/list                            0 B        99.6 kB
+├ ƒ /api/compare-databases                          0 B        99.6 kB
+├ ƒ /api/fishes                                     0 B        99.6 kB
+├ ƒ /api/fishingTools                               0 B        99.6 kB
+├ ƒ /api/items/all                                  0 B        99.6 kB
+├ ƒ /api/parse-description                          0 B        99.6 kB
+├ ƒ /api/relics/bosses                              0 B        99.6 kB
+├ ƒ /api/shop/items/[id]                            0 B        99.6 kB
+├ ƒ /api/shop/list                                  0 B        99.6 kB
+├ ƒ /api/statues                                    0 B        99.6 kB
+├ ƒ /api/statues/[id]                               0 B        99.6 kB
+├ ƒ /api/statues/[id]/characters                    0 B        99.6 kB
+├ ƒ /api/statues/[id]/skills                        0 B        99.6 kB
+├ ƒ /api/test                                       0 B        99.6 kB
+├ ƒ /api/timeline/[type]                            0 B        99.6 kB
+├ ƒ /api/translations                               0 B        99.6 kB
+├ ƒ /api/vestiges                                   0 B        99.6 kB
+├ ƒ /api/vestiges/[id]                              0 B        99.6 kB
+├ ƒ /api/vestiges/[id]/values                       0 B        99.6 kB
+└ ƒ /api/vestiges/[id]/valuesall                    0 B        99.6 kB
++ First Load JS shared by all                   99.6 kB
+  ├ chunks/framework-fda66049c8bbcca5.js        57.7 kB
+  ├ chunks/main-90b76eab5524cc94.js             39.9 kB
+  └ other shared chunks (total)                 1.91 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [all](ids: [ 0, 6 ])
+[PM2] [SSLOJ_Game](0) ✓
+[PM2] [directus](6) ✓
+┌────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name          │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 167935   │ 0s     │ 3    │ online    │ 0%       │ 27.8mb   │ ubuntu   │ disabled │
+│ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 167936   │ 0s     │ 2    │ online    │ 0%       │ 1.5mb    │ ubuntu   │ disabled │
+└────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
