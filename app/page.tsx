@@ -228,16 +228,6 @@ useEffect(() => {
 
                   <div className="relative w-40 h-fit">
                     <img
-                      src="/images/atlas/icon_tujian/K_shun_chuanshuo.png"
-                      className="rounded-lg w-full h-auto"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
-                      Shun ND
-                    </div>
-                  </div>
-
-                  <div className="relative w-40 h-fit">
-                    <img
                       src="/images/atlas/icon_tujian/K_xiakaer_nd.png"
                       className="rounded-lg w-full h-auto"
                     />
@@ -246,7 +236,16 @@ useEffect(() => {
                     </div>
                   </div>
 
-
+                  <div className="relative w-40 h-fit">
+                    <img
+                      src="/images/atlas/icon_tujian/K_huihuo_tianbao.png"
+                      className="rounded-lg w-full h-auto"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-sm font-semibold text-center py-1 rounded-b-lg z-10">
+                      Bennu Kagaho
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
 
