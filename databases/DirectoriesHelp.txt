@@ -1,0 +1,6 @@
+Langue -> Repertoire -> Fichier
+FR -> 1 -> 115b88b3830087a92144e1575633652f
+EN -> 7 -> 7f245bf1fef59d612279b34090da60ac
+ES -> c -> c97f65f4959d51ce6d75d714e9a2f996
+BR -> 6 -> 6cb9b05fa166a478aa4a5689acaa1235
+IT -> 2 -> 2bfdf2ada0e3eb5a6289a91f2a038d6e
