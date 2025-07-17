@@ -1065,3 +1065,18 @@
 🔄 FETCH → cn
 [cn] Aucune date détectée
 [cn] Aucune date détectée
+🔄 FETCH → fr
+✅ fr: insertion ou ignore pour 2025-16-07
+🔄 FETCH → en
+✅ en: insertion ou ignore pour 2025-16-07
+🔄 FETCH → es
+✅ es: insertion ou ignore pour 2025-16-07
+🔄 FETCH → br
+✅ br: insertion ou ignore pour 2025-16-07
+🔄 FETCH → ita
+✅ ita: insertion ou ignore pour 2025-16-07
+🔄 FETCH → jp
+[jp] Erreur fetch: request to http://list.seiya-jp.wdyxgames.com:8082//getgg.php?ptid=2&language=ja failed, reason: getaddrinfo EAI_AGAIN list.seiya-jp.wdyxgames.com
+🔄 FETCH → cn
+[cn] Aucune date détectée
+[cn] Aucune date détectée
