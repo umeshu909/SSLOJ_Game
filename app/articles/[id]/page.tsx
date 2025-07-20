@@ -150,7 +150,7 @@ async function ArticlePageAsync({ id }: { id: string }) {
                       <img
                         src={`${PUBLIC_URL}/assets/${art.images}`}
                         alt={art.title}
-                        className="w-full h-36 object-cover object-[center_20%]"
+                        className="w-full h-60 object-cover object-[center_20%]"
                       />
                     )}
                     <div className="flex flex-col justify-between flex-1 p-4">
