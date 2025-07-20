@@ -297,7 +297,7 @@ useEffect(() => {
                       <img
                         src={`${PUBLIC_URL}/assets/${articles[startIndex].images}`}
                         alt={articles[startIndex].title}
-                        className="w-full object-cover object-top"
+                        className="w-full h-full object-cover object-[center_30%]"
                       />
                     </div>
                     <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex].title}</h3>
@@ -320,7 +320,7 @@ useEffect(() => {
                         <img
                           src={`${PUBLIC_URL}/assets/${articles[startIndex + 1].images}`}
                           alt={articles[startIndex + 1].title}
-                          className="w-full object-cover object-top"
+                          className="w-full h-full object-cover object-[center_30%]"
                         />
                       </div>
                       <h3 className="text-xm font-semibold text-yellow-400 mb-1">{articles[startIndex + 1].title}</h3>

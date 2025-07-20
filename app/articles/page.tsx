@@ -1,5 +1,6 @@
 // app/articles/page.tsx
 export const dynamic = "force-dynamic";
+import he from 'he';
 
 const API_URL = process.env.PUBLIC_INTERNAL_API_URL || 'http://localhost:8055';
 const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055';
@@ -9,46 +10,17 @@ type Article = {
   title: string;
   text: string;
   date_created: string;
+  user_created: string;
   images?: string;
 };
 
-function decodeHtmlEntities(text: string): string {
-  return text
-    .replace(/&eacute;/g, "é")
-    .replace(/&egrave;/g, "è")
-    .replace(/&ecirc;/g, "ê")
-    .replace(/&agrave;/g, "à")
-    .replace(/&acirc;/g, "â")
-    .replace(/&ocirc;/g, "ô")
-    .replace(/&ucirc;/g, "û")
-    .replace(/&ccedil;/g, "ç")
-    .replace(/&aacute;/g, "á")
-    .replace(/&iacute;/g, "í")
-    .replace(/&oacute;/g, "ó")
-    .replace(/&uacute;/g, "ú")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&quot;/g, '"')
-    .replace(/&ldquo;/g, "“")
-    .replace(/&rdquo;/g, "”")
-    .replace(/&lsquo;/g, "‘")
-    .replace(/&rsquo;/g, "’")
-    .replace(/&apos;/g, "'")
-    .replace(/&amp;/g, "&")
-    .replace(/&hellip;/g, "…")
-    .replace(/&mdash;/g, "—")
-    .replace(/&ndash;/g, "–")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">");
-}
-
-
 function cleanText(html: string): string {
   const noHtml = html.replace(/<[^>]*>/g, '');
-  return decodeHtmlEntities(noHtml);
+  return he.decode(noHtml);
 }
 
 async function getArticles(): Promise<Article[]> {
-  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,images,status&filter[status][_eq]=published`, {
+  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,user_created.first_name,images,status&filter[status][_eq]=published`, {
     cache: "no-store",
   });
 
@@ -95,27 +67,28 @@ export default async function ArticlesPage() {
             >
               {/* Image */}
               {imageUrl && (
-                <div className="w-full h-[250px] overflow-hidden">
+                <div className="w-full h-[300px] overflow-hidden">
                   <img
                     src={imageUrl}
                     alt={article.title}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-[center_20%]"
                   />
                 </div>
               )}
 
               {/* Contenu */}
               <div className="flex flex-col flex-1 p-5 text-white">
-                <h2 className="text-xm font-semibold text-yellow-400 mb-2">{article.title}</h2>
+                <h2 className="text-xm font-semibold text-yellow-400 mb-1">{article.title}</h2>
 
-                <p className="text-xs text-white/80 leading-relaxed flex-1">
-                  {decodeHtmlEntities(getExcerpt(cleanText(article.text), 50))}
-                </p>
-
-                <div className="mt-4 text-right text-xs text-blue-300">
-                  {formatDate(article.date_created)}
+                <div className="text-left text-xs text-gray-500">
+                  Le {formatDate(article.date_created)} par {article.user_created?.first_name || "Inconnu"} ✨
                 </div>
+
+                <p className="text-xs text-white/80 leading-relaxed flex-1 mt-5">
+                  {getExcerpt(cleanText(article.text), 50)}
+                </p>
               </div>
+
             </a>
           );
         })}
