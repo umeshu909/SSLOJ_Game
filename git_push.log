@@ -2167,3 +2167,194 @@ Use --update-env to update environment variables
 │ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 192943   │ 0s     │ 3    │ online    │ 0%       │ 6.2mb    │ ubuntu   │ disabled │
 │ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 192944   │ 0s     │ 2    │ online    │ 0%       │ 14.5mb   │ ubuntu   │ disabled │
 └────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+[main a5795288] Mise à jour journalière du server
+ Committer: Ubuntu <ubuntu@vps-54331b9e.vps.ovh.net>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 40 files changed, 287 insertions(+)
+ create mode 100644 directus-cms/uploads/034978b6-0842-47ce-bb8a-81b0646ee077.png
+ create mode 100644 directus-cms/uploads/034978b6-0842-47ce-bb8a-81b0646ee077__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/034978b6-0842-47ce-bb8a-81b0646ee077__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/2b45ae47-edd6-402d-8e1a-f4e2e2ffea82.png
+ create mode 100644 directus-cms/uploads/2b45ae47-edd6-402d-8e1a-f4e2e2ffea82__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/2b45ae47-edd6-402d-8e1a-f4e2e2ffea82__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/335654b4-66a3-4922-b42e-b9382d720a6a.png
+ create mode 100644 directus-cms/uploads/335654b4-66a3-4922-b42e-b9382d720a6a__72b98823d031a91a5bb793ba0fa017de674f01e6.png
+ create mode 100644 directus-cms/uploads/335654b4-66a3-4922-b42e-b9382d720a6a__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/335654b4-66a3-4922-b42e-b9382d720a6a__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ delete mode 100644 directus-cms/uploads/3deca586-411f-48fe-8e38-83f387cbcb21.mp4
+ create mode 100644 directus-cms/uploads/3e75944c-f977-4f85-a956-9df1f7bd0711.png
+ create mode 100644 directus-cms/uploads/3e75944c-f977-4f85-a956-9df1f7bd0711__b66e6b3c82acc35f020a88c354c3b3946c421555.png
+ create mode 100644 directus-cms/uploads/3e75944c-f977-4f85-a956-9df1f7bd0711__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/479d1249-288f-4fc3-af22-02b48efacfa9.png
+ create mode 100644 directus-cms/uploads/479d1249-288f-4fc3-af22-02b48efacfa9__a2ac317ccff191abb9efbd904a7c971b72c4241f.png
+ create mode 100644 directus-cms/uploads/479d1249-288f-4fc3-af22-02b48efacfa9__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/5cee579b-1a09-4b22-ac6b-e4075a0300e4.png
+ create mode 100644 directus-cms/uploads/5cee579b-1a09-4b22-ac6b-e4075a0300e4__a2ac317ccff191abb9efbd904a7c971b72c4241f.png
+ create mode 100644 directus-cms/uploads/5cee579b-1a09-4b22-ac6b-e4075a0300e4__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/80d1bcf3-6a29-41a2-b935-58f3dfd5faa7.png
+ create mode 100644 directus-cms/uploads/80d1bcf3-6a29-41a2-b935-58f3dfd5faa7__a2ac317ccff191abb9efbd904a7c971b72c4241f.png
+ create mode 100644 directus-cms/uploads/80d1bcf3-6a29-41a2-b935-58f3dfd5faa7__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/916a8605-7849-468f-8ba5-1d0d7f427e84.mp4
+ create mode 100644 directus-cms/uploads/bf6e97bf-7718-4f24-a862-7522e7ba7533.png
+ create mode 100644 directus-cms/uploads/bf6e97bf-7718-4f24-a862-7522e7ba7533__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/bf6e97bf-7718-4f24-a862-7522e7ba7533__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/c944ae01-4524-479a-a572-76a80406c3b9.png
+ create mode 100644 directus-cms/uploads/c944ae01-4524-479a-a572-76a80406c3b9__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/c944ae01-4524-479a-a572-76a80406c3b9__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/db64ab06-5366-4b97-b782-4fef9e787a92.png
+ create mode 100644 directus-cms/uploads/db64ab06-5366-4b97-b782-4fef9e787a92__a2ac317ccff191abb9efbd904a7c971b72c4241f.png
+ create mode 100644 directus-cms/uploads/db64ab06-5366-4b97-b782-4fef9e787a92__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+ create mode 100644 directus-cms/uploads/f6a0eb70-3edb-4136-a3b5-11eafc7188b2.png
+ create mode 100644 directus-cms/uploads/f6a0eb70-3edb-4136-a3b5-11eafc7188b2__b9566188ba0c1fda6c9512c699cedd3596ddfcd2.png
+ create mode 100644 directus-cms/uploads/f6a0eb70-3edb-4136-a3b5-11eafc7188b2__f15aa4b815722867859d2a3fa46ab50834dfc8dc.avif
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+To github.com:umeshu909/SSLOJ_Game.git
+   cfd8eee3..a5795288  main -> main
+[PM2] Applying action stopProcessId on app [all](ids: [ 0, 6 ])
+[PM2] [SSLOJ_Game](0) ✓
+[PM2] [directus](6) ✓
+┌────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name          │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 0        │ 0      │ 3    │ stopped   │ 0%       │ 0b       │ ubuntu   │ disabled │
+│ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 0        │ 0      │ 2    │ stopped   │ 0%       │ 0b       │ ubuntu   │ disabled │
+└────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+From github.com:umeshu909/SSLOJ_Game
+ * branch              main       -> FETCH_HEAD
+Already up to date.
+
+up to date, audited 499 packages in 3s
+
+162 packages are looking for funding
+  run `npm fund` for details
+
+3 vulnerabilities (1 low, 2 high)
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+
+> saint-seiya-next@0.1.0 build
+> next build
+
+ ⚠ i18n configuration in next.config.ts is unsupported in App Router.
+Learn more about internationalization in App Router: https://nextjs.org/docs/app/building-your-application/routing/internationalization
+   ▲ Next.js 15.3.1
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 5.0s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/27) ...
+   Generating static pages (6/27) 
+   Generating static pages (13/27) 
+   Generating static pages (20/27) 
+ ✓ Generating static pages (27/27)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                        Size  First Load JS
+┌ ○ /                                              3 kB         124 kB
+├ ○ /_not-found                                   982 B         102 kB
+├ ○ /abilities                                  1.44 kB         103 kB
+├ ƒ /api/like                                     158 B         101 kB
+├ ƒ /api/list-texture2d                           158 B         101 kB
+├ ƒ /api/patchnote/latest                         158 B         101 kB
+├ ƒ /api/skills/parse                             158 B         101 kB
+├ ƒ /api/skills/text                              158 B         101 kB
+├ ○ /arayashikis                                 2.6 kB         106 kB
+├ ƒ /arayashikis/[id]                           5.09 kB         139 kB
+├ ○ /artefacts                                  1.46 kB         105 kB
+├ ƒ /artefacts/[id]                             2.98 kB         137 kB
+├ ƒ /articles                                     158 B         101 kB
+├ ƒ /articles/[id]                                708 B         102 kB
+├ ƒ /articles/preview/[id]                        708 B         102 kB
+├ ○ /calendar                                   89.9 kB         193 kB
+├ ○ /characters                                 4.35 kB         108 kB
+├ ƒ /characters/[id]                            10.9 kB         135 kB
+├ ○ /compare                                      884 B         102 kB
+├ ○ /fishery                                    4.66 kB         108 kB
+├ ○ /fishery/tools                              1.72 kB         105 kB
+├ ○ /items                                      1.66 kB         103 kB
+├ ○ /shops                                      2.23 kB         106 kB
+├ ○ /statues                                    2.16 kB         106 kB
+├ ƒ /statues/[id]                               3.64 kB         114 kB
+├ ○ /timeline                                   5.53 kB         112 kB
+├ ○ /translations                               1.28 kB         102 kB
+├ ○ /vestiges                                   2.36 kB         106 kB
+└ ƒ /vestiges/[id]                              4.26 kB         139 kB
++ First Load JS shared by all                    101 kB
+  ├ chunks/1684-17a762027c3470bd.js             45.9 kB
+  ├ chunks/4bd1b696-07f64071e3540146.js         53.2 kB
+  └ other shared chunks (total)                 1.94 kB
+
+Route (pages)                                      Size  First Load JS
+┌ ƒ /api/abilities                                  0 B        99.6 kB
+├ ƒ /api/arayashikis                                0 B        99.6 kB
+├ ƒ /api/arayashikis/[id]                           0 B        99.6 kB
+├ ƒ /api/articles/latest                            0 B        99.6 kB
+├ ƒ /api/artifacts                                  0 B        99.6 kB
+├ ƒ /api/artifacts/[id]                             0 B        99.6 kB
+├ ƒ /api/calendar                                   0 B        99.6 kB
+├ ƒ /api/characters                                 0 B        99.6 kB
+├ ƒ /api/characters/[id]                            0 B        99.6 kB
+├ ƒ /api/characters/[id]/abilities                  0 B        99.6 kB
+├ ƒ /api/characters/[id]/armor                      0 B        99.6 kB
+├ ƒ /api/characters/[id]/constellations             0 B        99.6 kB
+├ ƒ /api/characters/[id]/constellationsDetails      0 B        99.6 kB
+├ ƒ /api/characters/[id]/links                      0 B        99.6 kB
+├ ƒ /api/characters/[id]/skills                     0 B        99.6 kB
+├ ƒ /api/characters/latest                          0 B        99.6 kB
+├ ƒ /api/characters/list                            0 B        99.6 kB
+├ ƒ /api/compare-databases                          0 B        99.6 kB
+├ ƒ /api/fishes                                     0 B        99.6 kB
+├ ƒ /api/fishingTools                               0 B        99.6 kB
+├ ƒ /api/items/all                                  0 B        99.6 kB
+├ ƒ /api/parse-description                          0 B        99.6 kB
+├ ƒ /api/relics/bosses                              0 B        99.6 kB
+├ ƒ /api/shop/items/[id]                            0 B        99.6 kB
+├ ƒ /api/shop/list                                  0 B        99.6 kB
+├ ƒ /api/statues                                    0 B        99.6 kB
+├ ƒ /api/statues/[id]                               0 B        99.6 kB
+├ ƒ /api/statues/[id]/characters                    0 B        99.6 kB
+├ ƒ /api/statues/[id]/skills                        0 B        99.6 kB
+├ ƒ /api/test                                       0 B        99.6 kB
+├ ƒ /api/timeline/[type]                            0 B        99.6 kB
+├ ƒ /api/translations                               0 B        99.6 kB
+├ ƒ /api/vestiges                                   0 B        99.6 kB
+├ ƒ /api/vestiges/[id]                              0 B        99.6 kB
+├ ƒ /api/vestiges/[id]/values                       0 B        99.6 kB
+└ ƒ /api/vestiges/[id]/valuesall                    0 B        99.6 kB
++ First Load JS shared by all                   99.6 kB
+  ├ chunks/framework-fda66049c8bbcca5.js        57.7 kB
+  ├ chunks/main-90b76eab5524cc94.js             39.9 kB
+  └ other shared chunks (total)                 1.91 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [all](ids: [ 0, 6 ])
+[PM2] [SSLOJ_Game](0) ✓
+[PM2] [directus](6) ✓
+┌────┬───────────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name          │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼───────────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ SSLOJ_Game    │ default     │ 0.39.7  │ fork    │ 197315   │ 0s     │ 3    │ online    │ 0%       │ 28.5mb   │ ubuntu   │ disabled │
+│ 6  │ directus      │ default     │ 0.39.7  │ fork    │ 197316   │ 0s     │ 2    │ online    │ 0%       │ 16.4mb   │ ubuntu   │ disabled │
+└────┴───────────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
