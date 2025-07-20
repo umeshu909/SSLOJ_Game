@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     };
 
     // Calcul des statistiques pour le niveau 30
-    const stats30 = [
+    /*const stats30 = [
       formatStat(armorData[0].ArmorAttrib1, armorData[0].grownum1, armorData[0].percentArmor1 === 1, 30),
       formatStat(armorData[0].ArmorAttrib2, armorData[0].grownum2, armorData[0].percentArmor2 === 1, 30),
       formatStat(armorData[0].ArmorAttrib3, armorData[0].grownum3, armorData[0].percentArmor3 === 1, 30),
@@ -63,14 +63,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       formatStat(armorData[0].ArmorAttrib2, armorData[0].grownum2, armorData[0].percentArmor2 === 1, 40),
       formatStat(armorData[0].ArmorAttrib3, armorData[0].grownum3, armorData[0].percentArmor3 === 1, 40),
       formatStat(armorData[0].ArmorAttrib4, armorData[0].grownum4, armorData[0].percentArmor4 === 1, 40),
+    ];*/
+
+    const stats = [
+      formatStat(armorData[0].ArmorAttrib1, armorData[0].grownum1, armorData[0].percentArmor1 === 1, useLevel),
+      formatStat(armorData[0].ArmorAttrib2, armorData[0].grownum2, armorData[0].percentArmor2 === 1, useLevel),
+      formatStat(armorData[0].ArmorAttrib3, armorData[0].grownum3, armorData[0].percentArmor3 === 1, useLevel),
+      formatStat(armorData[0].ArmorAttrib4, armorData[0].grownum4, armorData[0].percentArmor4 === 1, useLevel),
     ];
+
 
     // Récupère les infos du personnage pour déterminer si on doit afficher le switch
     const heroRow = await db.get(`SELECT party, showtp FROM HeroConfig WHERE id = ?`, [id]);
     const canSwitch = heroRow && (heroRow.party === 5 || heroRow.party === 6 || heroRow.showtp == 7);
 
     // Sélectionner les stats en fonction du niveau demandé
-    const stats = useLevel === 40 ? stats40 : stats30;
+    //const stats = useLevel === 40 ? stats40 : stats30;
 
     const armorIcon = armorData[0].icon?.replace(".png", "");
 

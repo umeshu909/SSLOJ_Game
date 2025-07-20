@@ -40,6 +40,8 @@ export default function CharacterArmor() {
   const [level, setLevel] = useState<number>(30); // Niveau initial de l'armure (par défaut 30)
   const [lang, setLang] = useState<string | null>(null);
   const { t } = useTranslation("common");
+  const [buttonSelected, setButtonSelected] = useState<number | null>(null);
+
 
   useEffect(() => {
       const storedLang = localStorage.getItem("lang") || "FR";
@@ -47,8 +49,10 @@ export default function CharacterArmor() {
   }, []);
 
   useEffect(() => {
+    //let shouldSetLoading = level === 30 || level === 40;
+    let shouldSetLoading = true;
     async function fetchArmor() {
-      setLoading(true);
+      //if (shouldSetLoading) setLoading(true);
       try {
         const response = await fetch(`/api/characters/${id}/armor?level=${level}`, {
           headers: {
@@ -59,11 +63,11 @@ export default function CharacterArmor() {
           throw new Error(t("errors.noArmor"));
         }
         const data = await response.json();
-        setArmor(data); // On met à jour l'armure sans remettre à null
+        setArmor(data);
       } catch (error: any) {
         setError(error.message || "Erreur inconnue");
       } finally {
-        setLoading(false);
+        if (shouldSetLoading) setLoading(false);
       }
     }
 
@@ -71,6 +75,7 @@ export default function CharacterArmor() {
       fetchArmor();
     }
   }, [id, level, lang]);
+
 
 
   if (loading) return <p className="text-white">{t("interface.loading")}</p>;
@@ -86,6 +91,7 @@ export default function CharacterArmor() {
   const handleLevelChange = (selectedLevel: number) => {
     if (canSwitch) {
       setLevel(selectedLevel);
+      setButtonSelected(selectedLevel);
     }
   };
 
@@ -127,36 +133,60 @@ export default function CharacterArmor() {
             )}
             {armor.stats.length > 0 && (
               <div className="text-sm text-white px-6 py-4 flex flex-wrap gap-x-6 border-t border-white/10">
-                {canSwitch && (
-                  <div className="rounded flex justify-center items-center bg-[#3D3A5F]">
-                    <button
-                      type="button"
-                      className={`rounded py-2 px-3 ${level === 30 ? "bg-white/20 text-white" : "bg-[#3D3A5F] text-white/40"}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLevelChange(30);
-                      }}
-                    >
-                      30
-                    </button>
-                    <button
-                      type="button"
-                      className={`rounded py-2 px-3 ${level === 40 ? "bg-white/20 text-white" : "bg-[#3D3A5F] text-white/40"}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLevelChange(40);
-                      }}
-                    >
-                      40
-                    </button>
-                  </div>
-                )}
+
+
                 {armor.stats.map((stat, index) => (
                   <span key={index} className="flex flex-col">
                     <span className="text-white/60">{stat.attribute}:</span>
                     <span className="font-medium text-white">{stat.formattedValue}</span>
                   </span>
                 ))}
+
+                {canSwitch && (
+                  <div className="w-full mt-4 ">
+
+                    <div className="flex items-center gap-4">{t("stat.Level")}
+                      {/* Slider */}
+                      <div className="flex-1">
+                        <input
+                          type="range"
+                          min={30}
+                          max={40}
+                          step={1}
+                          value={level}
+                          onChange={(e) => handleLevelChange(Number(e.target.value))}
+                          className="w-full accent-yellow-400"
+                        />
+                        <div className="flex justify-between text-xs text-white/60 mt-1">
+                          {[...Array(11)].map((_, i) => (
+                            <span key={i}>{30 + i}</span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Coût en sang de Dieu */}
+                      <div className="flex items-center gap-1 min-w-[90px]">
+                        <img
+                          src="/images/icons/sang_or_transparent.png"
+                          alt="Sang de Dieu"
+                          className="w-6 h-6"
+                        />
+                        <span className="text-white text-sm">
+                          {(() => {
+                            const levelCosts: Record<number, number> = {
+                              30: 0, 31: 50, 32: 100, 33: 160, 34: 220, 35: 290,
+                              36: 370, 37: 470, 38: 590, 39: 750, 40: 950,
+                            };
+                            return levelCosts[level] ?? 0;
+                          })()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+
+
               </div>
             )}
           </div>
