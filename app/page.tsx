@@ -259,7 +259,7 @@ useEffect(() => {
 
           <div className="flex justify-between items-end mb-3">
             <h2 className="text-xs uppercase font-medium text-white/80">{t("patchnote")}</h2>
-            <h2 className="text-xs uppercase font-medium text-white/80">{t("DERNIERS ARTICLES")}</h2>
+            <h2 className="text-xs uppercase font-medium text-white/80"><a href="https://ssloj.com/articles">{t("DERNIERS ARTICLES")}</a></h2>
           </div>
 
 
