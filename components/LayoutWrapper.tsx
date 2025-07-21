@@ -111,25 +111,40 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
             />
           </div>
 
-          <div className="absolute right-4 flex flex-col items-center justify-center">
-            <div className="text-xs mb-1">Version</div>
-            <select
-              className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
-              value={language}
-              onChange={(e) => {
-                setLanguage(e.target.value);
-                window.location.reload();
-              }}
+
+          <div className="absolute right-4 flex items-center gap-2">
+            {/* Bouton Discord */}
+            <a
+              href="https://discord.gg/enGQVj9WvJ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:bg-indigo-700 text-white font-semibold px-3 py-1 rounded-full transition text-sm mt-5"
             >
-              <option value="EN">🇬🇧 EN</option>
-              <option value="FR">🇫🇷 FR</option>
-              <option value="BR">🇧🇷 BR</option>
-              <option value="ES">🇪🇸 ES</option>
-              <option value="IT">🇮🇹 IT</option>
-              <option value="CN">🇨🇳 CN</option>
-              <option value="JP">🇯🇵 JP</option>
-            </select>
+              <img src="/images/icons/discord.png" alt="Discord" className="w-8 h-8" />
+            </a>
+
+            {/* Choix de version */}
+            <div className="flex flex-col items-start justify-center text-xs text-white">
+              <span className="mb-1">Version</span>
+              <select
+                className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
+                value={language}
+                onChange={(e) => {
+                  setLanguage(e.target.value);
+                  window.location.reload();
+                }}
+              >
+                <option value="EN">🇬🇧 EN</option>
+                <option value="FR">🇫🇷 FR</option>
+                <option value="BR">🇧🇷 BR</option>
+                <option value="ES">🇪🇸 ES</option>
+                <option value="IT">🇮🇹 IT</option>
+                <option value="CN">🇨🇳 CN</option>
+                <option value="JP">🇯🇵 JP</option>
+              </select>
+            </div>
           </div>
+
 
         </div>
 

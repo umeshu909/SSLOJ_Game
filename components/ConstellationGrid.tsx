@@ -29,7 +29,7 @@ const ConstellationGrid = ({ id }: ConstellationGridProps) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { t } = useTranslation("common");
-  const [mode, setMode] = useState<"C36" | "C9">("C36");
+  const [mode, setMode] = useState<"C9" | "C36">("C9");
 
   const prefix = "sactx-0-2048x2048-ASTC 6x6-xingzuo-";
 
