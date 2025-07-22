@@ -7,6 +7,7 @@ const PUBLIC_URL = process.env.NEXT_PUBLIC_PUBLIC_URL || 'http://localhost:8055'
 
 type Article = {
   id: number;
+  slug: string;
   title: string;
   text: string;
   date_created: string;
@@ -20,7 +21,7 @@ function cleanText(html: string): string {
 }
 
 async function getArticles(): Promise<Article[]> {
-  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,user_created.first_name,images,status&filter[status][_eq]=published`, {
+  const res = await fetch(`${API_URL}/items/Articles?fields=id,title,text,date_created,user_created.first_name,images,status,slug&filter[status][_eq]=published`, {
     cache: "no-store",
   });
 
@@ -59,8 +60,8 @@ export default async function ArticlesPage() {
 
           return (
             <a
-              key={article.id}
-              href={`/articles/${article.id}`}
+              key={article.slug}
+              href={`/articles/${article.slug}`}
               className="bg-[#1f1d3a] hover:bg-[#29264a] rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-transform duration-300 overflow-hidden flex flex-col h-full"
             >
               {/* Image */}

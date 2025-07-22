@@ -237,18 +237,8 @@ return (
                 )}
               </div>
 
-              {/* Colonne 2 : preview Chagall */}
-              <div className="relative">
-                <img
-                  src="/images/atlas/icon_tujian/K_xiakaer_nd.png"
-                  className="rounded w-full h-auto"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-[10px] text-center py-0.5 rounded-b z-10">
-                  Wyvern Chagall (ND)
-                </div>
-              </div>
 
-              {/* Colonne 3 : preview Kagaho */}
+              {/* Colonne 2 : preview Kagaho */}
               <div className="relative">
                 <img
                   src="/images/atlas/icon_tujian/K_huihuo_tianbao.png"
@@ -288,12 +278,6 @@ return (
           <div className="hidden lg:block bg-[#1f1d3a] rounded-lg shadow-lg p-4">
             <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
             <div className="flex justify-center items-center gap-4">
-              <div className="relative w-30">
-                <img src="/images/atlas/icon_tujian/K_xiakaer_nd.png" className="rounded-lg w-full h-auto" />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-xs text-center py-1 rounded-b-lg z-10">
-                  Wyvern Chagall ND
-                </div>
-              </div>
               <div className="relative w-30">
                 <img src="/images/atlas/icon_tujian/K_huihuo_tianbao.png" className="rounded-lg w-full h-auto" />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-xs text-center py-1 rounded-b-lg z-10">
@@ -335,8 +319,8 @@ return (
 
             return (
               <a
-                key={article.id}
-                href={`/articles/${article.id}`}
+                key={article.slug}
+                href={`/articles/${article.slug}`}
                 className="bg-[#1f1d3a] hover:bg-[#29264a] rounded-lg shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-transform duration-300 overflow-hidden flex flex-col h-full"
               >
                 {/* Image */}
