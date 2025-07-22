@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /translations
+Disallow: /items
+Disallow: /abilities
+Disallow: /compare
+
+# Host
+Host: https://ssloj.com
+
+# Sitemaps
+Sitemap: https://ssloj.com/sitemap.xml
