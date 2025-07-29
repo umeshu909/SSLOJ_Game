@@ -245,9 +245,20 @@ return (
                   className="rounded w-full h-auto"
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-[10px] text-center py-0.5 rounded-b z-10">
-                  Bennu Kagaho (LC)
+                  Bennu Kagaho
                 </div>
               </div>
+
+              <div className="relative">
+                <img
+                  src="/images/atlas/icon_tujian/K_yabaifeikalc_shuangyu.png"
+                  className="rounded w-full h-auto"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-[10px] text-center py-0.5 rounded-b z-10">
+                  Albafica
+                </div>
+              </div>
+
 
             </div>
           </div>
@@ -278,13 +289,22 @@ return (
           <div className="hidden lg:block bg-[#1f1d3a] rounded-lg shadow-lg p-4">
             <h2 className="text-xs uppercase font-medium mb-3 text-white/80">Preview CN</h2>
             <div className="flex justify-center items-center gap-4">
+
               <div className="relative w-30">
                 <img src="/images/atlas/icon_tujian/K_huihuo_tianbao.png" className="rounded-lg w-full h-auto" />
                 <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-xs text-center py-1 rounded-b-lg z-10">
                   Bennu Kagaho
                 </div>
               </div>
+              <div className="relative w-30">
+                <img src="/images/atlas/icon_tujian/K_yabaifeikalc_shuangyu.png" className="rounded-lg w-full h-auto" />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-yellow-400 text-xs text-center py-1 rounded-b-lg z-10">
+                  Albafica
+                </div>
+              </div>
+
             </div>
+
           </div>
         </div>
 
