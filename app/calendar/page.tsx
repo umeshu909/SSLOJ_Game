@@ -375,24 +375,24 @@ export default function TimelineCalendar() {
                             </td>
                             <td className="py-1 px-2">
                               {row.label === "Boss 1" && (
-                                <IconCanvas iconName="touxiang_aolufei_tianqin" canvasId="boss1" prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
+                                <img src="/images/avatar_rounded/15301.png" width="50px"/>
                               )}
                               {row.label === "Boss 2" && (
-                                <IconCanvas iconName="touxiang_ladamandisi_tianmeng" canvasId="boss2" prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
+                                <img src="/images/avatar_rounded/65202.png" width="50px"/>
                               )}
                               {row.label === "Boss 3" && (
-                                <IconCanvas iconName="touxiang_panduola_changfu" canvasId="boss3" prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
+                                <img src="/images/avatar_rounded/65302.png" width="50px"/>
                               )}
                               {row.label === "Boss 4" && (
                                 <div className="flex gap-2 items-center">
-                                  <IconCanvas iconName="touxiang_xiupunuosi_shuishen" canvasId="boss4-1" prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
-                                  <IconCanvas iconName="touxiang_tanatuosi_sishen" canvasId="boss4-2" prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
+                                  <img src="/images/avatar_rounded/65304.png" width="50px"/>
+                                  <img src="/images/avatar_rounded/65303.png" width="50px"/>
                                 </div>
                               )}
                               {row.label.startsWith("Rerun") && (
                                 <div className="flex gap-2 items-center">
-                                  <IconCanvas iconName="touxiang_xiupunuosi_shuishen" canvasId={`rerun-${i}-1`} prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
-                                  <IconCanvas iconName="touxiang_tanatuosi_sishen" canvasId={`rerun-${i}-2`} prefix="sactx-0-4096x2048-ASTC 6x6-icon_touxiang-" jsonDir="/images/atlas/icon_touxiang/" imgHeight="2048" size={2} />
+                                  <img src="/images/avatar_rounded/65304.png" width="50px"/>
+                                  <img src="/images/avatar_rounded/65303.png" width="50px"/>
                                 </div>
                               )}
                             </td>
