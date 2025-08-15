@@ -79,8 +79,13 @@ export default function CharacterArmor() {
 
 
   if (loading) return <p className="text-white">{t("interface.loading")}</p>;
-  if (error) return <div className="text-center"><h2 className="text-xl font-semibold">{error}</h2></div>
-  if (!armor) return <p>t("errors.noArmor")}</p>;
+  if (error) return (
+    <div className="text-center">
+      <h2 className="text-xl font-semibold">{error}</h2>
+    </div>
+  );
+  if (!armor) return <p>{t("errors.noArmor")}</p>;
+
 
   /*const formatDescription = (text: string) => {
     return text.replace(/\[([^\]]+)\]/g, '<span class="text-orange-300">$1</span>');
