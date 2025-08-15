@@ -48,6 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 "rarity": "SSR",
                 "element": data.Type,
                 "role": data.Category,
+                "profession": data.profession,
                 "release": data2 ? {
                     "Invocation": data2.Type !== '' ? data2.Type : '',
                     "Date": dbChoice === 'JP' ? formatDate(data2.datejp) : dbChoice === 'CN' ? formatDate(data2.datecn) : formatDate(data2.datefr)

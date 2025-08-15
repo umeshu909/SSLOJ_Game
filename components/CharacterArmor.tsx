@@ -142,34 +142,59 @@ export default function CharacterArmor() {
                   </span>
                 ))}
 
+                
                 {canSwitch && (
-                  <div className="w-full mt-4 ">
+                  <div className="w-full mt-4">
+                    <div className="flex flex-col w-full text-xs">
+                      <div className="flex items-center gap-2 w-full">
+                        {/* Libellé */}
+                        <span className="shrink-0 mr-2">{t("stat.Level")}</span>
 
-                    <div className="flex items-center gap-4">{t("stat.Level")}
-                      {/* Slider */}
-                      <div className="flex-1">
-                        <input
-                          type="range"
-                          min={30}
-                          max={40}
-                          step={1}
-                          value={level}
-                          onChange={(e) => handleLevelChange(Number(e.target.value))}
-                          className="w-full accent-yellow-400"
-                        />
-                        <div className="flex justify-between text-xs text-white/60 mt-1">
-                          {[...Array(11)].map((_, i) => (
-                            <span key={i}>{30 + i}</span>
-                          ))}
+                        {/* Slider + graduations */}
+                        <div className="flex-1">
+                          <input
+                            type="range"
+                            min={30}
+                            max={40}
+                            step={1}
+                            value={level}
+                            onChange={(e) => handleLevelChange(Number(e.target.value))}
+                            className="w-full accent-yellow-400"
+                          />
+
+                          {/* Graduations : toujours 30 → 40 */}
+                          <div className="flex justify-between text-xs text-white/60 mt-1 tabular-nums">
+                            {[...Array(11)].map((_, i) => (
+                              <span key={i}>{30 + i}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Coût sang de Dieu — affiché à droite uniquement en desktop */}
+                        <div className="hidden sm:flex items-center gap-1 min-w-[90px]">
+                          <img
+                            src="/images/icons/sang_or_transparent.png"
+                            alt="Sang de Dieu"
+                            className="w-6 h-6"
+                          />
+                          <span className="text-white text-sm">
+                            {(() => {
+                              const levelCosts: Record<number, number> = {
+                                30: 0, 31: 50, 32: 100, 33: 160, 34: 220, 35: 290,
+                                36: 370, 37: 470, 38: 590, 39: 750, 40: 950,
+                              };
+                              return levelCosts[level] ?? 0;
+                            })()}
+                          </span>
                         </div>
                       </div>
 
-                      {/* Coût en sang de Dieu */}
-                      <div className="flex items-center gap-1 min-w-[90px]">
+                      {/* Coût sang de Dieu en dessous pour mobile */}
+                      <div className="flex sm:hidden items-center gap-2 justify-end mt-2">
                         <img
                           src="/images/icons/sang_or_transparent.png"
                           alt="Sang de Dieu"
-                          className="w-6 h-6"
+                          className="w-5 h-5"
                         />
                         <span className="text-white text-sm">
                           {(() => {
@@ -184,6 +209,7 @@ export default function CharacterArmor() {
                     </div>
                   </div>
                 )}
+
 
 
 

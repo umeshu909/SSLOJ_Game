@@ -50,6 +50,7 @@ SELECT
     WHEN 4 THEN 'Assassin'
     WHEN 5 THEN 'Support'
   END AS Category,
+  HeroConfig.profession,
 
   CASE HeroConfig.party
     WHEN 1 THEN 'Eau'

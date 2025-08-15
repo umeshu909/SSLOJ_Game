@@ -93,60 +93,73 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         ref={headerRef}
         className="fixed top-0 right-0 left-0 w-full bg-[#0a091c] shadow-md z-50 text-white"
       >
-        {/* Header commun mobile/desktop */}
-        <div className="relative flex items-center justify-between pt-2 pb-2">
-          <button onClick={handleBack} className="md:hidden p-1 hover:opacity-80 transition absolute left-3">
+        
+      {/* Header commun mobile/desktop */}
+      <div className="relative flex items-center justify-between pt-2 pb-2">
+        {/* Cluster gauche (MOBILE) : flèche + Discord */}
+        <div className="absolute left-3 flex items-center gap-2 md:hidden">
+          <button onClick={handleBack} className="p-1 hover:opacity-80 transition">
             <ArrowLeft className="w-6 h-6 text-white" strokeWidth={1} />
           </button>
 
-          <div className="flex-1 flex justify-center">
-            <img
-              src="/images/logo.png"
-              alt="Logo"
-              className="h-14 cursor-pointer"
-              onClick={() => {
-                setActiveLink("/"); // ← mise à jour manuelle de l'état actif
-                router.push("/");
-              }}
-            />
-          </div>
-
-
-          <div className="absolute right-4 flex items-center gap-2">
-            {/* Bouton Discord */}
-            <a
-              href="https://discord.gg/enGQVj9WvJ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:bg-indigo-700 text-white font-semibold px-3 py-1 rounded-full transition text-sm mt-5"
-            >
-              <img src="/images/icons/discord.png" alt="Discord" className="w-8 h-8" />
-            </a>
-
-            {/* Choix de version */}
-            <div className="flex flex-col items-start justify-center text-xs text-white">
-              <span className="mb-1">Version</span>
-              <select
-                className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
-                value={language}
-                onChange={(e) => {
-                  setLanguage(e.target.value);
-                  window.location.reload();
-                }}
-              >
-                <option value="EN">🇬🇧 EN</option>
-                <option value="FR">🇫🇷 FR</option>
-                <option value="BR">🇧🇷 BR</option>
-                <option value="ES">🇪🇸 ES</option>
-                <option value="IT">🇮🇹 IT</option>
-                <option value="CN">🇨🇳 CN</option>
-                <option value="JP">🇯🇵 JP</option>
-              </select>
-            </div>
-          </div>
-
-
+          <a
+            href="https://discord.gg/enGQVj9WvJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1 hover:opacity-80 transition"
+            aria-label="Rejoindre notre Discord"
+          >
+            <img src="/images/icons/discord.png" alt="Discord" className="w-6 h-6" />
+          </a>
         </div>
+
+        {/* Logo centré */}
+        <div className="flex-1 flex justify-center">
+          <img
+            src="/images/logo.png"
+            alt="Logo"
+            className="h-14 cursor-pointer"
+            onClick={() => {
+              setActiveLink("/");
+              router.push("/");
+            }}
+          />
+        </div>
+
+        {/* Cluster droit : Discord (desktop) + sélecteur de langue */}
+        <div className="absolute right-4 flex items-center gap-2">
+          {/* Bouton Discord — caché en mobile, visible en ≥ md */}
+          <a
+            href="https://discord.gg/enGQVj9WvJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center gap-2 hover:bg-indigo-700 text-white font-semibold px-3 py-1 rounded-full transition text-sm"
+          >
+            <img src="/images/icons/discord.png" alt="Discord" className="w-8 h-8" />
+          </a>
+
+          {/* Choix de version */}
+          <div className="flex flex-col items-start justify-center text-xs text-white">
+            <span className="mb-1">Version</span>
+            <select
+              className="bg-gray-800 border border-white/30 text-white text-sm px-2 py-1 rounded"
+              value={language}
+              onChange={(e) => {
+                setLanguage(e.target.value);
+                window.location.reload();
+              }}
+            >
+              <option value="EN">🇬🇧 EN</option>
+              <option value="FR">🇫🇷 FR</option>
+              <option value="BR">🇧🇷 BR</option>
+              <option value="ES">🇪🇸 ES</option>
+              <option value="IT">🇮🇹 IT</option>
+              <option value="CN">🇨🇳 CN</option>
+              <option value="JP">🇯🇵 JP</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
         <nav
           className="
@@ -262,6 +275,15 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
                 onClick={() => setShowAutresDropdown(false)}
               >
                 {t("menu.Shops")}
+              </a>
+              <a
+                href="/teambuilder"
+                className={`block px-3 py-2 text-sm hover:bg-[#2a274a] ${
+                  activeLink.startsWith("/teambuilder") ? "text-yellow-400" : "text-white"
+                }`}
+                onClick={() => setShowAutresDropdown(false)}
+              >
+                {t("menu.teambuilder")}
               </a>
             </DropdownMenuPortal>
           )}
