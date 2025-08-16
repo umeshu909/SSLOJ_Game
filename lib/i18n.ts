@@ -21,3 +21,4 @@ i18next.use(initReactI18next).init({
 });
 
 export default i18next;
+export const tFallback = (k: string) => k; // au cas où pas de i18n dispo dans des helpers

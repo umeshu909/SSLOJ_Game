@@ -1,0 +1,15 @@
+/* garde l’animation/bordure du haut via ta classe existante .border-animated-gradient (inchangée ici) */
+
+/* bordure dégradée 1px pour le tableau */
+.border-gradient-1 { position: relative; }
+.border-gradient-1::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  background: linear-gradient(135deg, #7aa7ff, #c9d2ff 40%, #e9b4ff 70%, #a1b8ff);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
