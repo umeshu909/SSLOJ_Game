@@ -67,6 +67,21 @@
     "backToCharacters": "Retour aux personnages",
     "backtoStatues": "Retour aux statues"
   },
+  "teambuilder": {
+    "save": "Sauvegarder",
+    "share": "Partager",
+    "init": "Réinitialiser",
+    "export": "Exporter image",
+    "selectSage": "Selectionner un vestige",
+    "selectCharacter": "Selectionner un personnage",
+    "selectAraya": "Selectionner un Arayashiki",
+    "selectArtefact" : "Selectionner un artefact",
+    "teamName": "Nom de l'équipe",
+    "delete": "Supprimer",
+    "search": "Rechercher...",
+    "close": "Fermer",
+    "noPreview": "Aperçu indisponible"
+  },
   "interface": {
     "loading": "Chargement...",
     "filters": "Filtres",

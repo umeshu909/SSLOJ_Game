@@ -67,6 +67,21 @@
     "backToCharacters": "Back to characters",
     "backtoStatues": "Back to statues"
   },
+  "teambuilder": {
+    "save": "Save",
+    "share": "Share",
+    "init": "Reinitialize",
+    "export": "Export image",
+    "selectSage": "Select Sage Mark",
+    "selectCharacter": "Select a character",
+    "selectAraya": "Select Arayashiki",
+    "selectArtefact" : "Select Artefact",
+    "teamName": "Team Name",
+    "delete": "Delete",
+    "search": "Search...",
+    "close": "Close",
+    "noPreview": "No Preview"
+  },
   "interface": {
     "loading": "Loading...",
     "filters": "Filters",

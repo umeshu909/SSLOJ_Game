@@ -2,13 +2,13 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import IconCanvas from "@/components/IconCanvas";
+import { useTranslation } from 'next-i18next'
 
 /**
- * SSLOJ — Team Builder (optimisé)
- * - Anti-doublons : Personnages (team) & Arayashikis (par personnage)
- * - Filtrage Artefacts : affichés uniquement s'ils sont compatibles avec la classe du personnage
- * - Filtrage Arayashikis : proposés seulement si `param` est vide (universel) OU contient l'ID exact du héros
- * - Conserve l'export PNG 1080×1920, UI et raccourcis existants
+ * SSLOJ — Team Builder (configs locales)
+ * - Bouton "Sauvegarder" déplacé en bas (utilise le Nom de la team)
+ * - Liste des configs en haut : Nom + 5 miniatures persos + suppression
+ * - Anti-doublons, filtres, export/partage inchangés
  */
 
 const DATA_SOURCES = {
@@ -63,14 +63,13 @@ function resolveName(e: any, fallback = ""): string {
 const normalize = (s?: string) =>
   (s || "").toString().normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().trim();
 
-// map rôle (texte côté personnage) -> code profession (côté artefact)
 const roleToProfession = (role?: any): number | null => {
   const n = asNumber(role);
-  if (Number.isFinite(n) && n >= 1 && n <= 5) return n; // déjà un code
+  if (Number.isFinite(n) && n >= 1 && n <= 5) return n;
   const r = normalize((role ?? "").toString());
   if (r === "tank") return 1;
   if (r === "guerrier") return 2;
-  if (r === "competence") return 3; // "Compétence"
+  if (r === "competence") return 3;
   if (r === "assassin") return 4;
   if (r === "support") return 5;
   return null;
@@ -89,21 +88,19 @@ const professionLabel = (profession?: number | null): string | null => {
     case 5:
       return "Support";
     default:
-      return null; // 0 = non limité
+      return null;
   }
 };
 
-// Filtre centralisé Artefacts : retourne uniquement les artefacts compatibles avec le personnage
 function canUseArtifact(character?: Character | null, artifact?: Artifact | null): boolean {
   if (!artifact) return false;
   const profNum = asNumber((artifact as any)?.profession);
   const prof = Number.isFinite(profNum) ? profNum : 0;
-  if (!prof) return true; // 0 = pas de restriction
-  if (!character) return true; // sans perso, on n'empêche pas l'affichage
+  if (!prof) return true;
+  if (!character) return true;
   const code = roleToProfession((character as any)?.role);
   return code ? code === prof : false;
 }
-
 function filterArtifactsForCharacter(artifacts: Artifact[], character?: Character | null): Artifact[] {
   return artifacts.filter((a) => canUseArtifact(character, a));
 }
@@ -114,16 +111,14 @@ function parseParamToIdList(param?: string | null): string[] {
   if (!p) return [];
   return p.split("|").map((s) => s.trim()).filter(Boolean);
 }
-
 function isArayaAllowedForHero(ar: Arayashiki, heroId: string | number): boolean {
   const ids = parseParamToIdList(ar?.param);
-  if (ids.length === 0) return true; // carte universelle
+  if (ids.length === 0) return true;
   const hid = String(heroId).trim();
   return ids.includes(hid);
 }
-
 function filterArayasForHero(arayas: Arayashiki[], heroId: string | number | null | undefined): Arayashiki[] {
-  if (heroId == null) return arayas; // aucune restriction si pas de perso ciblé
+  if (heroId == null) return arayas;
   return arayas.filter((ar) => isArayaAllowedForHero(ar, heroId));
 }
 
@@ -246,6 +241,9 @@ function GridSelectorModal<T extends Entity>({
 }) {
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation("common");
+
+
   useEffect(() => {
     if (open) setTimeout(() => inputRef.current?.focus(), 0);
   }, [open]);
@@ -275,7 +273,7 @@ function GridSelectorModal<T extends Entity>({
             onError={() => setErr(true)}
           />
         ) : (
-          <div className="w-full h-28 sm:h-32 grid place-items-center text-white/40 text-sm">Aperçu indisponible</div>
+          <div className="w-full h-28 sm:h-32 grid place-items-center text-white/40 text-sm">{t("teambuilder.noPreview")}</div>
         )}
         {extra ? <div className="pointer-events-none absolute inset-0 z-10">{extra}</div> : null}
         <div className="absolute inset-x-0 bottom-0 z-20 p-1.5 bg-gradient-to-t from-black/80 to-transparent text-[11px] text-white/90 pointer-events-none">
@@ -291,14 +289,14 @@ function GridSelectorModal<T extends Entity>({
       <div className="absolute inset-x-0 top-8 mx-auto w-[min(1200px,94vw)] rounded-2xl bg-slate-950/95 border border-white/10 p-5 shadow-2xl">
         <header className="flex items-center justify-between gap-4">
           <h3 className="text-white text-lg font-semibold">{title}</h3>
-          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded-md bg-white/10 hover:bg-white/20">Fermer</button>
+          <button onClick={onClose} className="px-3 py-1.5 text-sm rounded-md bg-white/10 hover:bg-white/20">{t("teambuilder.close")}</button>
         </header>
         <div className="mt-3">
           <input
             ref={inputRef}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Rechercher..."
+            placeholder={t("teambuilder.search")}
             className="w-full rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30"
           />
         </div>
@@ -338,6 +336,7 @@ function TeamFormation({
   onPickVestige: () => void;
 }) {
   const [c1, c2, c3, c4, c5] = characters;
+  const { t } = useTranslation("common");
 
   const Frame: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="inline-block shrink-0 border-animated-gradient">
@@ -347,9 +346,9 @@ function TeamFormation({
 
   return (
     <section className="relative mx-auto w-full max-w-4xl px-2">
-      {/* Vestige : à droite, aligné sur le perso #2 */}
+      {/* Vestige */}
       <div className="absolute right-2 sm:right-4 md:right-6 top-1/2 translate-y-8 sm:translate-y-10 md:translate-y-12 z-10 text-right">
-        <div className="text-[11px] sm:text-xs text-white/70 mb-1 sm:mb-1.5">Vestige</div>
+        <div className="text-[11px] sm:text-xs text-white/70 mb-1 sm:mb-1.5">{t("menu.Vestiges")}</div>
         <VestigeSlot
           vestige={vestige}
           onClick={onPickVestige}
@@ -404,21 +403,23 @@ function CharacterSetupGrid({
   onPickArtifact: (characterId: string | number) => void;
   onPickAraya: (characterId: string | number, arayaIndex: number) => void;
 }) {
+  const { t } = useTranslation("common");
+
   return (
     <section className="mt-6 md:mt-8">
       <div className="border border-white/10 overflow-hidden">
         <div className="grid grid-cols-[1fr_24px_1fr_24px_1fr_1fr_1fr_1fr_1fr] gap-3 p-3 bg-white/5 text-white/70 text-[12px]">
-          <div>Personnage</div>
+          <div>{t("menu.Characters")}</div>
           <div></div>
-          <div>Artefact</div>
+          <div>{t("menu.Artefacts")}</div>
           <div></div>
-          <div className="col-span-5">Arayashikis</div>
+          <div className="col-span-5">{t("menu.Arayashikis")}</div>
         </div>
 
         <div className="divide-y divide-white/10 bg-slate-900/30">
           {selectedCharacters.map((ch, rowIdx) => (
             <div key={rowIdx} className="grid grid-cols-[1fr_24px_1fr_24px_1fr_1fr_1fr_1fr_1fr] gap-3 p-3 items-center">
-              {/* Personnage = dégradé 1px statique */}
+              {/* Personnage */}
               <div className="aspect-[4/5]">
                 <div className="w-full h-full relative border-gradient-1">
                   <div className="w-full h-full bg-[#0a091c]">
@@ -428,7 +429,7 @@ function CharacterSetupGrid({
               </div>
 
               <div />
-              {/* Artefact: 1px plein */}
+              {/* Artefact */}
               <div className="aspect-[4/5]">
                 {ch ? (
                   <SelectableSlot
@@ -444,7 +445,7 @@ function CharacterSetupGrid({
               </div>
 
               <div />
-              {/* Arayas: 1px plein */}
+              {/* Arayas */}
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="aspect-[4/5]">
                   {ch ? (
@@ -476,19 +477,36 @@ function CharacterSetupGrid({
   );
 }
 
-// ---------- Page ----------
+// ---------- Stockage courant + configs multiples ----------
 const STORAGE_KEY = "ssloj_team_builder_v1";
+const STORAGE_KEY_CONFIGS = "ssloj_team_builder_configs_v1";
 
+type SavedConfig = {
+  id: string;
+  name: string;
+  createdAt: number;
+  updatedAt: number;
+  team: (string | number | null)[];
+  vestigeId: string | number | null;
+  setups: Record<string | number, { artifactId: string | number | null; arayaIds: (string | number | null)[] }>;
+};
+
+// ---------- Page ----------
 export default function TeamBuilder() {
+  // État courant
   const [team, setTeam] = useState<(Character | null)[]>([null, null, null, null, null]);
   const [vestige, setVestige] = useState<Vestige | null>(null);
   const [setups, setSetups] = useState<Record<string | number, { artifact: Artifact | null; arayas: (Arayashiki | null)[] }>>({});
   const [teamName, setTeamName] = useState<string>("");
 
+  // Configs locales
+  const [configs, setConfigs] = useState<SavedConfig[]>([]);
+
   const [characters, setCharacters] = useState<Character[]>([]);
   const [arayas, setArayas] = useState<Arayashiki[]>([]);
   const [vestiges, setVestiges] = useState<Vestige[]>([]);
   const [artifacts, setArtifacts] = useState<Artifact[]>([]);
+  const { t } = useTranslation("common");
 
   const [modal, setModal] = useState<
     | { kind: "character"; slot: number }
@@ -500,7 +518,7 @@ export default function TeamBuilder() {
 
   const exportRef = useRef<HTMLDivElement>(null);
 
-  // Load
+  // Load état courant
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -513,12 +531,25 @@ export default function TeamBuilder() {
     } catch {}
   }, []);
 
-  // Save
+  // Save état courant
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ team, vestige, setups, teamName }));
     } catch {}
   }, [team, vestige, setups, teamName]);
+
+  // Load/Save configs multiples
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_CONFIGS);
+      if (raw) setConfigs(JSON.parse(raw));
+    } catch {}
+  }, []);
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_CONFIGS, JSON.stringify(configs));
+    } catch {}
+  }, [configs]);
 
   // Fetch data
   useEffect(() => {
@@ -554,7 +585,7 @@ export default function TeamBuilder() {
     [team]
   );
 
-  // Personnages : liste sans doublons (autorise le perso du slot en cours)
+  // Personnages : liste sans doublons
   const characterModalData = useMemo(() => {
     const ids = new Set(selectedCharacterIds);
     if (modal?.kind === "character") {
@@ -564,12 +595,11 @@ export default function TeamBuilder() {
     return [...charactersSorted].filter((c: any) => !ids.has(String(c.id))).reverse();
   }, [charactersSorted, selectedCharacterIds, modal, team]);
 
-  // Arayas : liste sans doublons pour CE personnage + **filtre par compatibilité `param`**
+  // Arayas : sans doublons pour CE perso + filtre compatibilité
   const arayaModalData = useMemo(() => {
     if (modal?.kind !== "araya") return [...arayas].reverse();
     const { characterId, idx } = modal as any;
 
-    // 1) empêcher les doublons pour CE personnage (sauf la case en cours)
     const currentSet = new Set(
       (setups[characterId]?.arayas || [])
         .map((a) => (a as any)?.id)
@@ -579,7 +609,6 @@ export default function TeamBuilder() {
     const currentAtIdx = (setups[characterId]?.arayas || [])[idx]?.id as any;
     if (currentAtIdx) currentSet.delete(String(currentAtIdx));
 
-    // 2) filtrer par compatibilité ID héros via `param`
     const deduped = [...arayas].filter((a: any) => !currentSet.has(String(a.id)));
     const filteredByHero = filterArayasForHero(deduped as Arayashiki[], characterId);
 
@@ -590,7 +619,9 @@ export default function TeamBuilder() {
   const artifactModalData = useMemo(() => {
     if (modal?.kind !== "artifact") return artifacts;
     const { characterId } = modal as any;
-    const char = team.find((c) => eqId((c as any)?.id, characterId)) || characters.find((c) => eqId((c as any).id, characterId));
+    const char =
+      team.find((c) => eqId((c as any)?.id, characterId)) ||
+      characters.find((c) => eqId((c as any).id, characterId));
     return filterArtifactsForCharacter(artifacts, char);
   }, [modal, artifacts, team, characters]);
 
@@ -599,7 +630,6 @@ export default function TeamBuilder() {
     if (modal?.kind !== "character") return;
     const { slot } = modal;
 
-    // Sécurité: refuser si le perso est déjà ailleurs
     if (team.some((t, i) => i !== slot && eqId((t as any)?.id, (ch as any).id))) {
       setModal(null);
       return;
@@ -625,9 +655,9 @@ export default function TeamBuilder() {
   const onSelectArtifact = (a: Artifact) => {
     if (modal?.kind !== "artifact") return;
     const id = (modal as any).characterId;
-    // Trouver le personnage ciblé par la ligne
-    const char = team.find((c) => eqId((c as any)?.id, id)) || characters.find((c) => eqId((c as any).id, id));
-    // Sécurité runtime : ne pas autoriser un artefact incompatible si jamais il apparaissait
+    const char =
+      team.find((c) => eqId((c as any)?.id, id)) ||
+      characters.find((c) => eqId((c as any).id, id));
     if (!canUseArtifact(char || undefined, a)) {
       alert("Cet artefact est limité à une autre classe.");
       return;
@@ -640,7 +670,6 @@ export default function TeamBuilder() {
     if (modal?.kind !== "araya") return;
     const { characterId: id, idx } = modal as any;
 
-    // Sécurité runtime : ne pas autoriser si incompatible avec ce héros
     if (!isArayaAllowedForHero(ar, id)) {
       alert("Cette carte Arayashiki n'est pas compatible avec ce personnage.");
       return;
@@ -661,7 +690,7 @@ export default function TeamBuilder() {
     setModal(null);
   };
 
-  // CRéation de l'image
+  // ---------- EXPORT CANVAS ----------
   async function drawTeamToCanvas(
     canvas: HTMLCanvasElement,
     {
@@ -683,7 +712,6 @@ export default function TeamBuilder() {
     const ARAYA_IMG_INSET = 12;
     const ARAYA_OVERLAY_INSET = 2;
 
-    // -- helpers (identiques à ceux dans doExport)
     const loadImage = (src?: string | null): Promise<HTMLImageElement | null> =>
       new Promise((resolve) => {
         if (!src) return resolve(null);
@@ -793,9 +821,10 @@ export default function TeamBuilder() {
     const titleText = (teamName?.trim() || "Ma team").trim();
     ctx.font = '400 64px "Times New Roman", Georgia, serif';
     const tm = ctx.measureText(titleText);
-    const titleH = (tm as any).actualBoundingBoxAscent && (tm as any).actualBoundingBoxDescent
-      ? (tm as any).actualBoundingBoxAscent + (tm as any).actualBoundingBoxDescent
-      : 64;
+    const titleH =
+      (tm as any).actualBoundingBoxAscent && (tm as any).actualBoundingBoxDescent
+        ? (tm as any).actualBoundingBoxAscent + (tm as any).actualBoundingBoxDescent
+        : 64;
     const titleX = (W - tm.width) / 2;
     const titleY = TITLE_TOP;
     const titleGrad = ctx.createLinearGradient(titleX, titleY, titleX + tm.width, titleY + 60);
@@ -852,7 +881,7 @@ export default function TeamBuilder() {
     await drawCharacterSlot(charactersSel[0], centerX - (slotW + colGapFront) / 2.2, rowFrontY, "1");
     await drawCharacterSlot(charactersSel[1], centerX + (slotW + colGapFront) / 2.2, rowFrontY, "2");
 
-    // Vestige: réutilise le <canvas> d'IconCanvas si présent
+    // Vestige
     if (vestigeSel?.id) {
       const vCanvas = document.getElementById(`canvas-vestige-${vestigeSel.id}`) as HTMLCanvasElement | null;
       if (vCanvas) {
@@ -918,8 +947,6 @@ export default function TeamBuilder() {
     ctx.fillText("généré par https://ssloj.com", (W - sw) / 2, H - P - 18);
   }
 
-
-  // ---------- EXPORT CANVAS ----------
   const doExport = async () => {
     const canvas = document.createElement("canvas");
     await drawTeamToCanvas(canvas, { team, setups, vestige, teamName });
@@ -929,7 +956,6 @@ export default function TeamBuilder() {
     a.download = `ssloj-team-mobile-${Date.now()}.png`;
     a.click();
   };
-
 
   const resetAll = () => {
     setTeam([null, null, null, null, null]);
@@ -941,7 +967,6 @@ export default function TeamBuilder() {
     } catch {}
   };
 
-  // 1) Factorise l’export pour obtenir un Blob PNG
   async function exportAsPngBlob(): Promise<Blob> {
     const canvas = document.createElement("canvas");
     await drawTeamToCanvas(canvas, { team, setups, vestige, teamName });
@@ -950,15 +975,11 @@ export default function TeamBuilder() {
     );
   }
 
-
-  // 2) Partage via la feuille de partage (si dispo), sinon fallbacks
   async function shareImage() {
     try {
       const blob = await exportAsPngBlob();
       const file = new File([blob], "ssloj-team.png", { type: "image/png" });
-
-      // a) Web Share API avec fichiers
-      // @ts-ignore (types incomplets sur certains TS)
+      // @ts-ignore
       const canShareFiles = !!navigator.canShare && navigator.canShare({ files: [file] });
       // @ts-ignore
       if (navigator.share && canShareFiles) {
@@ -970,8 +991,6 @@ export default function TeamBuilder() {
         });
         return;
       }
-
-      // b) Clipboard API (image) – pratique pour coller direct dans Discord sur desktop
       if (navigator.clipboard && "write" in navigator.clipboard && window.ClipboardItem) {
         // @ts-ignore
         const item = new ClipboardItem({ "image/png": blob });
@@ -980,8 +999,6 @@ export default function TeamBuilder() {
         alert("Image copiée dans le presse-papiers ! Ouvre Discord et colle (Ctrl/⌘+V).");
         return;
       }
-
-      // c) Fallback : téléchargement
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -989,22 +1006,141 @@ export default function TeamBuilder() {
       a.click();
       URL.revokeObjectURL(url);
       alert("Image téléchargée. Glisse-dépose dans Discord.");
-    } catch (e: any) {
-      //alert(`Impossible de partager: ${e?.message || e}`);
+    } catch {
+      // ignore
     }
   }
 
+  // ---------- Helpers Configs ----------
+  function byId<T extends Entity>(arr: T[], id: string | number | null | undefined): T | null {
+    if (id == null) return null;
+    return arr.find((x) => eqId(x?.id, id)) ?? null;
+  }
+
+  function serializeCurrentToSaved(name: string): SavedConfig {
+    const teamIds = team.map((ch) => (ch as any)?.id ?? null);
+    const vestigeId = (vestige as any)?.id ?? null;
+    const setupsIds: SavedConfig["setups"] = {};
+    Object.entries(setups).forEach(([chId, cfg]) => {
+      setupsIds[chId] = {
+        artifactId: (cfg.artifact as any)?.id ?? null,
+        arayaIds: (cfg.arayas || []).map((a) => (a as any)?.id ?? null),
+      };
+    });
+    const now = Date.now();
+    return {
+      id: String(now),
+      name: name?.trim() || "Ma team",
+      createdAt: now,
+      updatedAt: now,
+      team: teamIds,
+      vestigeId,
+      setups: setupsIds,
+    };
+  }
+
+  function applySavedConfig(cfg: SavedConfig) {
+    const nextTeam = (cfg.team || []).slice(0, 5).map((id) => byId(characters, id)) as (Character | null)[];
+    while (nextTeam.length < 5) nextTeam.push(null);
+    const nextVestige = byId(vestiges, cfg.vestigeId) as Vestige | null;
+
+    const nextSetups: typeof setups = {};
+    Object.entries(cfg.setups || {}).forEach(([chId, s]) => {
+      const art = byId(artifacts, s.artifactId) as Artifact | null;
+      const arayasList = (s.arayaIds || []).map((aid) => byId(arayas, aid)) as (Arayashiki | null)[];
+      while (arayasList.length < 5) arayasList.push(null);
+      nextSetups[chId] = { artifact: art, arayas: arayasList };
+    });
+
+    setTeam(nextTeam);
+    setVestige(nextVestige);
+    setSetups(nextSetups);
+    setTeamName(cfg.name || "");
+  }
+
+  function saveNewConfig() {
+    const name = (teamName || "").trim() || "Ma team";
+    const draft = serializeCurrentToSaved(name);
+    setConfigs((prev) => [draft, ...prev].slice(0, 200));
+  }
+
+  function deleteConfig(id: string) {
+    setConfigs((prev) => prev.filter((c) => c.id !== id));
+  }
+
+  function loadConfig(id: string) {
+    const cfg = configs.find((c) => c.id === id);
+    if (!cfg) return;
+    applySavedConfig(cfg);
+  }
+
+  // Rendu miniatures d'une config (utilise les IDs stockés)
+  const renderConfigThumbs = (cfg: SavedConfig) => {
+    const ids = (cfg.team || []).slice(0, 5);
+    return (
+      <div className="flex items-center gap-1.5">
+        {ids.map((cid, i) => {
+          const ch = byId(characters, cid);
+          const url = getCharImg(ch || undefined);
+          return url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={i}
+              src={url}
+              alt={resolveName(ch, `Slot ${i + 1}`)}
+              className="h-15 w-7 object-contain rounded-[2px] bg-slate-900/50 border border-white/10"
+            />
+          ) : (
+            <div
+              key={i}
+              className="h-15 w-7 rounded-[2px] bg-white/5 border border-white/10"
+              title="vide"
+            />
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-[#0b1020] text-white">
       <div id="export-root" className="relative mx-auto max-w-6xl p-4 md:p-6 space-y-4 bg-[#0f172a]" ref={exportRef}>
-        <h1 className="text-2xl font-semibold tracking-tight">Générateur de team</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">TEAM BUILDER</h1>
 
+        {/* --- Liste des configurations enregistrées (haut) --- */}
+        {configs.length > 0 ? (
+          <div className="border border-white/10">
+            <div className="bg-white/5 px-3 py-2 text-[12px] text-white/70">Configurations</div>
+            <div className="divide-y divide-white/10">
+              {configs.map((c) => (
+                <div key={c.id} className="flex items-center justify-between gap-2 px-3 py-2">
+                  <button
+                    onClick={() => loadConfig(c.id)}
+                    className="flex items-center gap-3 hover:underline"
+                    title="Charger cette configuration"
+                  >
+                    <span className="text-sm">{c.name}</span>
+                    {renderConfigThumbs(c)}
+                  </button>
+                  <button
+                    onClick={() => deleteConfig(c.id)}
+                    className="px-2 py-1 text-xs rounded bg-white/10 hover:bg-white/20"
+                    title={t("teambuilder.delete")}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {/* Nom de la team (sert de nom à la sauvegarde) */}
         <input
           value={teamName}
           onChange={(e) => setTeamName(e.target.value)}
           className="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white outline-none focus:ring-2 focus:ring-white/30"
-          placeholder="Nom de la team…"
+          placeholder={t("teambuilder.teamName")}
         />
 
         <TeamFormation
@@ -1021,13 +1157,18 @@ export default function TeamBuilder() {
           onPickAraya={openArayaModal}
         />
 
-        <div className="pt-2 md:pt-3 flex items-center justify-end gap-2">
-          <button onClick={resetAll} className="px-3 py-2 bg-white/5 hover:bg-white/15 border border-white/10 text-red-200" title="Tout effacer">Réinitialiser</button>
-          <button onClick={doExport} className="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/10">Exporter l’image</button>
-          <button onClick={shareImage} className="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/10">
-            Partager
+        {/* Boutons bas de page : Reset / Export / Partager / Sauvegarder */}
+        <div className="pt-2 md:pt-3 flex flex-wrap items-center justify-end gap-2">
+          <button onClick={resetAll} className="px-3 py-2 bg-white/5 hover:bg-white/15 border border-white/10 text-red-200" title={t("teambuilder.init")}>{t("teambuilder.init")}</button>
+          <button onClick={doExport} className="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/10">{t("teambuilder.export")}</button>
+          <button onClick={shareImage} className="px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/10">{t("teambuilder.share")}</button>
+          <button
+            onClick={saveNewConfig}
+            className="px-3 py-2 bg-emerald-600/90 hover:bg-emerald-600 border border-emerald-700/40 rounded-md"
+            title="Sauvegarder l'état courant comme nouvelle configuration"
+          >
+            {t("teambuilder.save")}
           </button>
-
         </div>
       </div>
 
@@ -1035,8 +1176,8 @@ export default function TeamBuilder() {
       <GridSelectorModal
         open={modal?.kind === "character"}
         onClose={() => setModal(null)}
-        title="Choisir un personnage"
-        data={characterModalData}
+        title={t("teambuilder.selectCharacter")}
+        data={charactersSorted}
         renderTile={(c: any) => ({ url: getCharImg(c), label: resolveName(c, "") })}
         onSelect={(c) => onSelectCharacter(c as Character)}
       />
@@ -1044,7 +1185,7 @@ export default function TeamBuilder() {
       <GridSelectorModal
         open={modal?.kind === "vestige"}
         onClose={() => setModal(null)}
-        title="Choisir un vestige"
+        title={t("teambuilder.selectSage")}
         data={vestiges}
         renderTile={(v: any) => ({
           url: "",
@@ -1068,8 +1209,15 @@ export default function TeamBuilder() {
       <GridSelectorModal
         open={modal?.kind === "artifact"}
         onClose={() => setModal(null)}
-        title="Choisir un artefact"
-        data={artifactModalData}
+        title={t("teambuilder.selectArtefact")}
+        data={(() => {
+          if (modal?.kind !== "artifact") return artifacts;
+          const { characterId } = modal as any;
+          const char =
+            team.find((c) => eqId((c as any)?.id, characterId)) ||
+            characters.find((c) => eqId((c as any).id, characterId));
+          return filterArtifactsForCharacter(artifacts, char);
+        })()}
         renderTile={(a: any) => ({
           url: getArtifactImg(a),
           label: resolveName(a, ""),
@@ -1086,7 +1234,7 @@ export default function TeamBuilder() {
       <GridSelectorModal
         open={modal?.kind === "araya"}
         onClose={() => setModal(null)}
-        title="Choisir un Arayashiki"
+        title={t("teambuilder.selectAraya")}
         data={arayaModalData}
         renderTile={(a: any) => ({
           url: getArayaImg(a),
@@ -1099,15 +1247,14 @@ export default function TeamBuilder() {
         onSelect={(a) => onSelectAraya(a as Arayashiki)}
       />
 
-
-      {/* --- CSS additionnel local pour la bordure dégradée 1px (statique) --- */}
+      {/* --- CSS additionnel pour la bordure dégradée 1px --- */}
       <style jsx global>{`
         .border-gradient-1 { position: relative; }
         .border-gradient-1::before {
           content: "";
           position: absolute;
           inset: 0;
-          padding: 1px; /* épaisseur de bordure */
+          padding: 1px;
           background: linear-gradient(135deg, #7aa7ff, #c9d2ff 40%, #e9b4ff 70%, #a1b8ff);
           -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           -webkit-mask-composite: xor;
