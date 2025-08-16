@@ -31,6 +31,7 @@ type SavedConfig = {
     }
   >;
 };
+
 import {
   sortCharactersLikeListing,
   resolveName,
@@ -57,6 +58,14 @@ import useExportCanvas from "@/hooks/useExportCanvas";
 // ===========================
 const STORAGE_KEY = "ssloj_team_builder_v1";
 const STORAGE_KEY_CONFIGS = "ssloj_team_builder_configs_v1";
+
+// util swap
+const swap = <T,>(arr: T[], i: number, j: number): T[] => {
+  if (i === j) return arr.slice();
+  const copy = arr.slice();
+  [copy[i], copy[j]] = [copy[j], copy[i]];
+  return copy;
+};
 
 // ===========================
 // Page
@@ -85,8 +94,7 @@ export default function TeamBuilderPage() {
   const [vestiges, setVestiges] = useState<Vestige[]>([]);
   const [artifacts, setArtifacts] = useState<Artifact[]>([]);
 
-  // --- cache des DÉTAILS Araya (hydratation paresseuse) ---
-  // On stocke, par id, les champs riches (ex: condition/param) obtenus via `/api/arayashikis/[id]`
+  // cache détails Araya
   const [arayaDetails, setArayaDetails] = useState<Record<string, Partial<Arayashiki>>>({});
 
   const exportRef = useRef<HTMLDivElement>(null);
@@ -121,8 +129,6 @@ export default function TeamBuilderPage() {
   // --------------------
   async function ensureArayaDetail(id: string | number) {
     const key = String(id);
-
-    // Si on a déjà un détail (ou un stub) avec condition / param définis (même undefined explicitement posé), on ne refetch pas
     const existing = arayaDetails[key];
     if (existing && ("condition" in existing || "param" in existing)) return;
 
@@ -130,7 +136,6 @@ export default function TeamBuilderPage() {
       const detail = await fetchJSON<Partial<Arayashiki>>(`/api/arayashikis/${key}`);
       setArayaDetails((prev) => ({ ...prev, [key]: detail || {} }));
     } catch (e) {
-      // Place un stub pour éviter les refetchs en boucle (même si vide)
       setArayaDetails((prev) => ({ ...prev, [key]: {} }));
       console.warn("[TeamBuilder] araya detail fetch error for", key, e);
     }
@@ -158,7 +163,6 @@ export default function TeamBuilderPage() {
       }
       const parsed = parseSharableState(decoded);
 
-      // helper
       const byId = <T extends Entity>(arr: T[], id: any): T | null =>
         id == null ? null : (arr.find((x) => eqId(x?.id, id)) ?? null);
 
@@ -194,7 +198,7 @@ export default function TeamBuilderPage() {
   // LocalStorage (état courant)
   // --------------------
   useEffect(() => {
-    if (readOnly) return; // ne pas écraser en RO
+    if (readOnly) return;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
@@ -203,14 +207,14 @@ export default function TeamBuilderPage() {
       if (data?.vestige !== undefined) setVestige(data.vestige);
       if (data?.setups) setSetups(data.setups);
       if (typeof data?.teamName === "string") setTeamName(data.teamName);
-    } catch { }
+    } catch {}
   }, [readOnly]);
 
   useEffect(() => {
     if (readOnly) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ team, vestige, setups, teamName }));
-    } catch { }
+    } catch {}
   }, [team, vestige, setups, teamName, readOnly]);
 
   // --------------------
@@ -220,12 +224,12 @@ export default function TeamBuilderPage() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY_CONFIGS);
       if (raw) setConfigs(JSON.parse(raw));
-    } catch { }
+    } catch {}
   }, []);
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY_CONFIGS, JSON.stringify(configs));
-    } catch { }
+    } catch {}
   }, [configs]);
 
   // --------------------
@@ -312,7 +316,7 @@ export default function TeamBuilderPage() {
   const openArayaModal = (characterId: string | number, idx: number) =>
     setModal({ kind: "araya", characterId, idx });
 
-  // Lorsque la modale Araya s’ouvre, on précharge les détails manquants (condition/param) pour les cartes listées
+  // Précharge détails Araya quand la modale s’ouvre
   useEffect(() => {
     if (modal?.kind !== "araya") return;
 
@@ -321,7 +325,6 @@ export default function TeamBuilderPage() {
         (a: any) =>
           a &&
           a.id != null &&
-          // si les champs n'existent pas sur l'item de liste ET pas encore présents dans le cache
           (a.condition === undefined && a.param === undefined) &&
           arayaDetails[String(a.id)] === undefined
       )
@@ -355,22 +358,19 @@ export default function TeamBuilderPage() {
     return [...charactersSorted].filter((c: any) => !ids.has(String(c.id))).reverse();
   }, [charactersSorted, selectedCharacterIds, modal, team]);
 
-  // Arayas : on fusionne les détails si disponibles, puis on applique le filtre + anti-doublon
+  // Arayas : fusion des détails + filtres + anti-doublon
   const arayaModalData = useMemo(() => {
     if (modal?.kind !== "araya") return [...arayas].reverse();
 
     const { characterId, idx } = modal as any;
 
-    // on résout l’objet personnage (pour récupérer son rôle)
     const hero =
       team.find((c) => eqId((c as any)?.id, characterId)) ||
       characters.find((c) => eqId((c as any)?.id, characterId)) ||
       null;
 
-    // on retire uniquement l’Araya déjà positionnée à l’index courant (pour réafficher celle du slot en cours)
     const already = (setups[characterId]?.arayas || []).map((a, i) => (i === idx ? null : a));
 
-    // fusion avec détails du cache (si liste ne possède pas condition/param)
     const mergedList: Arayashiki[] = arayas.map((a: any) => {
       const detail = arayaDetails[String(a?.id)] || {};
       const condition = a?.condition ?? detail?.condition;
@@ -378,33 +378,23 @@ export default function TeamBuilderPage() {
       return { ...a, condition, param } as Arayashiki;
     });
 
-    // filtrage compat + anti-doublon
     const allowed = filterArayasForHero(mergedList, hero, already);
-
-    // (optionnel) ordre d’affichage
     return allowed.slice().reverse();
   }, [arayas, arayaDetails, setups, modal, team, characters]);
 
-  // Artefacts : filtrage compatibilité
-  // Artefacts : filtrage compatibilité + tri simple
+  // Artefacts : filtrage compat + tri
   const artifactModalData = useMemo(() => {
     if (modal?.kind !== "artifact") return artifacts;
 
     const { characterId } = modal as any;
 
-    // on résout le héros pour connaître son rôle
     const hero =
       team.find((c) => eqId((c as any)?.id, characterId)) ||
       characters.find((c) => eqId((c as any).id, characterId)) ||
       null;
 
-    // si on a le héros -> on filtre, sinon on affiche tout
     const base = hero ? filterArtifactsForCharacter(artifacts, hero) : artifacts;
 
-    // tri optionnel :
-    // - d'abord ceux dont profession == rôle du héros (si héros connu)
-    // - puis les génériques (profession 0)
-    // - puis les autres
     const getRole = (a: any) => Number(a?.profession ?? 0) || 0;
     const heroRoleCode =
       hero && (Number((hero as any)?.role) || 0) ? Number((hero as any)?.role) : null;
@@ -413,19 +403,16 @@ export default function TeamBuilderPage() {
       const pa = getRole(a);
       const pb = getRole(b);
 
-      // priorité aux artefacts exactement du rôle du héros
       if (heroRoleCode) {
         const aExact = pa === heroRoleCode;
         const bExact = pb === heroRoleCode;
         if (aExact !== bExact) return aExact ? -1 : 1;
       }
 
-      // puis génériques (0)
       const aGen = pa === 0;
       const bGen = pb === 0;
       if (aGen !== bGen) return aGen ? -1 : 1;
 
-      // enfin, ordre alphabétique par nom
       return resolveName(a, "").localeCompare(resolveName(b, ""));
     });
 
@@ -440,7 +427,6 @@ export default function TeamBuilderPage() {
     if (modal?.kind !== "character") return;
     const { slot } = modal;
 
-    // bloque les doublons
     if (team.some((t, i) => i !== slot && eqId((t as any)?.id, (ch as any).id))) {
       setModal(null);
       return;
@@ -488,15 +474,11 @@ export default function TeamBuilderPage() {
     if (modal?.kind !== "araya") return;
     const { characterId: id, idx } = modal as any;
 
-    // Compatibilité stricte
-    // NB: ici on repasse par filterArayasForHero avec un tableau d’un seul élément,
-    //     comme tu faisais déjà.
     const hero =
       team.find((c) => eqId((c as any)?.id, id)) ||
       characters.find((c) => eqId((c as any)?.id, id)) ||
       null;
 
-    // on merge aussi le détail pour la carte sélectionnée (au cas où)
     const detail = arayaDetails[String((ar as any)?.id)] || {};
     const arMerged = { ...ar, condition: (ar as any).condition ?? detail?.condition, param: (ar as any).param ?? detail?.param };
 
@@ -506,7 +488,6 @@ export default function TeamBuilderPage() {
       return;
     }
 
-    // Anti-doublon dans la même ligne
     const already = (setups[id]?.arayas || []).some((x, i) => eqId(x?.id, (ar as any).id) && i !== idx);
     if (already) {
       setModal(null);
@@ -523,6 +504,24 @@ export default function TeamBuilderPage() {
   };
 
   // --------------------
+  // Drag & Drop: réordonner la team (branché à TeamFormation)
+  // --------------------
+  const handleReorderTeam = (from: number, to: number) => {
+    if (readOnly) return;
+    setTeam((prev) => {
+      if (from < 0 || to < 0 || from >= prev.length || to >= prev.length) return prev;
+      if (prev[to] !== null && prev[from] !== null) {
+        return swap(prev, from, to);     // SWAP si deux slots occupés
+      }
+      const copy = prev.slice();          // MOVE sinon
+      const [item] = copy.splice(from, 1);
+      copy.splice(to, 0, item);
+      return copy;
+    });
+    // `setups` reste cohérent car indexé par id perso
+  };
+
+  // --------------------
   // Actions globales
   // --------------------
   const resetAll = () => {
@@ -533,7 +532,7 @@ export default function TeamBuilderPage() {
     setTeamName("");
     try {
       localStorage.removeItem(STORAGE_KEY);
-    } catch { }
+    } catch {}
   };
 
   const doExport = async () => {
@@ -572,7 +571,6 @@ export default function TeamBuilderPage() {
     }
   }
 
-  // Lien partage (éditable)
   const shareEditableLink = () => {
     const payload = buildSharableState({ team, setups, vestige, teamName });
     const comp = btoa(JSON.stringify(payload));
@@ -583,7 +581,6 @@ export default function TeamBuilderPage() {
     alert(t("teambuilder.linkCopied") || "Lien copié !");
   };
 
-  // Lien partage (lecture seule)
   const shareReadonlyLink = () => {
     const payload = buildSharableState({ team, setups, vestige, teamName });
     const comp = btoa(JSON.stringify(payload));
@@ -594,7 +591,6 @@ export default function TeamBuilderPage() {
     alert(t("teambuilder.linkCopied") || "Lien copié !");
   };
 
-  // Miniatures pour les configs sauvegardées
   const renderConfigThumbs = (cfg: SavedConfig) => {
     const ids = (cfg.team || []).slice(0, 5);
     return (
@@ -674,15 +670,17 @@ export default function TeamBuilderPage() {
         <TeamFormation
           characters={team}
           vestige={vestige}
-          onPickVestige={readOnly ? () => { } : openVestigeModal}
-          onPickCharacter={readOnly ? () => { } : openCharacterModal}
+          onPickVestige={readOnly ? () => {} : openVestigeModal}
+          onPickCharacter={readOnly ? () => {} : openCharacterModal}
+          // ⬇️ PROP CORRIGÉE : le composant doit appeler onReorder(from, to)
+          onReorder={readOnly ? undefined : handleReorderTeam}
         />
 
         <CharacterSetupGrid
           selectedCharacters={team}
           setups={setups}
-          onPickArtifact={readOnly ? () => { } : openArtifactModal}
-          onPickAraya={readOnly ? () => { } : openArayaModal}
+          onPickArtifact={readOnly ? () => {} : openArtifactModal}
+          onPickAraya={readOnly ? () => {} : openArayaModal}
         />
 
         {/* Boutons bas de page */}
